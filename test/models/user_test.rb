@@ -21,7 +21,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "identif should not be too short" do
-    @user.identifiant = "a" * 5
+    @user.identifiant = "a" * 3
     assert_not @user.valid?
   end
 
@@ -60,12 +60,5 @@ class UserTest < ActiveSupport::TestCase
   test "password should have a minimum length" do
     @user.password = @user.password_confirmation = "a" * 5
     assert_not @user.valid?
-  end
-
-  test "identifs should be saved as lower-case" do
-    mixed_case_identif = "FooExAMPle.CoM"
-    @user.identifiant = mixed_case_identif
-    @user.save
-    assert_equal mixed_case_identif.downcase, @user.reload.identifiant
   end
 end
