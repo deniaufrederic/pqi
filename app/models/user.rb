@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-	before_save { email.downcase! }
+	before_save { identifiant.downcase! }
 	validates :nom, 		presence: true,
 							length: {maximum: 25}
 	validates :prenom, 		presence: true,

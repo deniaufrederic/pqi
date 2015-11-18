@@ -66,6 +66,6 @@ class UserTest < ActiveSupport::TestCase
     mixed_case_identif = "FooExAMPle.CoM"
     @user.identifiant = mixed_case_identif
     @user.save
-    assert_equal mixed_case_identifiant.downcase, @user.reload.identifiant
+    assert_equal mixed_case_identif.downcase, @user.reload.identifiant
   end
 end
