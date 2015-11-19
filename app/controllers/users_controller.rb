@@ -13,21 +13,29 @@ class UsersController < ApplicationController
 
   def new
   	@user = User.new
+  	if logged_in?
+  		admin_user
+  	end
   end
 
   def create
   	@user = User.new(user_params)
   	if @user.save
   	  if logged_in?
-  	  	flash[:success] = "Nouvel utilisateur créé !"
-  	  	redirect_to @user
+  	  	if params[:user][:admin] == '1'
+  	  	  flash[:success] = "Nouvel administrateur créé !"
+  	  	  redirect_to @user
+  	  	else
+  	   	  flash[:success] = "Nouvel utilisateur créé !"
+  	  	  redirect_to @user
+  	  	end
   	  else
-  	    log_in @user
+  	  	log_in @user
   	    flash[:success] = "Vous pouvez désormais accéder à l'application PQI !"
   	    redirect_to @user
   	  end
   	else
-      render 'new'
+  	  render 'new'
     end
   end
 
@@ -54,11 +62,20 @@ class UsersController < ApplicationController
   private
 
     def user_params
-      params.require(:user).permit( :nom,
-      								:prenom,
-      								:identifiant,
-      								:password,
-      								:password_confirmation)
+      if logged_in? && current_user.admin?
+      	params.require(:user).permit( :nom,
+      								  :prenom,
+      								  :identifiant,
+      								  :password,
+      								  :password_confirmation,
+      								  :admin)
+      else
+      	params.require(:user).permit( :nom,
+      								  :prenom,
+      								  :identifiant,
+      								  :password,
+      								  :password_confirmation)
+      end
     end
 
     def logged_in_user
