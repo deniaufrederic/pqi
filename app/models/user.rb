@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  before_save { nom.upcase! }
+  before_save { self.prenom = prenom.split(' ').map(&:capitalize).join(' ').split('-').map(&:capitalize).join('-') }
   validates :nom, 			presence: true,
   							length: {maximum: 25}
   validates :prenom, 		presence: true,

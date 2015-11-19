@@ -12,6 +12,7 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
     get users_path
     assert_template 'users/index'
     assert_select 'div.pagination'
+    assert_select 'a', text: "Ajouter un nouvel utilisateur"
     assert_difference 'User.count', -1 do
       delete user_path(@non_admin)
     end
@@ -20,6 +21,6 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
   test "index as non-admin" do
     log_in_as(@non_admin)
     get users_path
-    assert_select 'a', text: 'delete', count: 0
+    assert_select 'a', text: 'Supprimer', count: 0
   end
 end

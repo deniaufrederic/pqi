@@ -1,6 +1,24 @@
 <% provide(:title, @user.nom) %>
 
 <h1>
-  <%= @user.nom.upcase %>, <%= @user.prenom %><br>
-  <%= @user.identifiant %>
+  <%= "#{@user.nom.upcase} #{@user.prenom}" %>
+  
+  <% if !current_user.admin? %>
+    <% if current_user?(@user) %>
+      | <%= link_to "Editer", edit_user_path(@user) %>
+    <% end %>
+
+  <% else %>
+    | <%= link_to "Editer", edit_user_path(@user) %>
+    <% if !current_user?(@user) %>
+      | <%= link_to "Supprimer", @user, method: :delete,
+                                     data: { confirm: "Etes-vous sûr(e) ?" } %>
+    <% end %>
+  <% end %>
+  
+  <br><%= @user.identifiant %>
+
+  <% if @user.admin? %>
+    <br>Administrateur
+  <% end %>
 </h1>

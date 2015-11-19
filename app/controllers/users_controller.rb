@@ -18,9 +18,14 @@ class UsersController < ApplicationController
   def create
   	@user = User.new(user_params)
   	if @user.save
-  	  log_in @user
-  	  flash[:success] = "Vous pouvez désormais accéder à l'application PQI !"
-  	  redirect_to @user
+  	  if logged_in?
+  	  	flash[:success] = "Nouvel utilisateur créé !"
+  	  	redirect_to @user
+  	  else
+  	    log_in @user
+  	    flash[:success] = "Vous pouvez désormais accéder à l'application PQI !"
+  	    redirect_to @user
+  	  end
   	else
       render 'new'
     end
@@ -65,7 +70,7 @@ class UsersController < ApplicationController
 
     def correct_user
       @user = User.find(params[:id])
-      redirect_to(root_url) unless current_user?(@user)
+      redirect_to(root_url) unless current_user?(@user) || current_user.admin?
     end
 
     def admin_user

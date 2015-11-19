@@ -22,7 +22,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
   	log_in_as(@user)
     get edit_user_path(@user)
     assert_template 'users/edit'
-    nom  = "Bar"
+    nom  = "BAR"
     prenom = "Foo"
     identifiant = "Foo@Bar"
     patch user_path(@user), user: { nom: nom,

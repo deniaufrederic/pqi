@@ -1,8 +1,12 @@
 <% provide(:title, 'Utilisateurs') %>
 <h1>Utilisateurs du PQI</h1>
 
+<% if current_user.admin? %>
+  <%= link_to "Ajouter un nouvel utilisateur", signup_path %>
+<% end %>
+
 <ul class="users">
-    <%= render @users %>
+  <%= render @users %>
 </ul>
 
 <%= will_paginate %>
