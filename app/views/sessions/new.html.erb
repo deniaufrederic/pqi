@@ -1,11 +1,11 @@
-<% provide(:title, "Log in") %>
+<% provide(:title, "Connexion") %>
 
 <% if logged_in? %>
   <h1>En construction</h1>
 
 <% else %>
   <h1>Bienvenue sur le logiciel PQI du SAMU Social 93 !</h1><br>
-  <h3>Vous pouvez vous loggez ci-dessous.</h3>
+  <h3>Vous pouvez vous connecter ci-dessous.</h3>
 
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
@@ -17,7 +17,7 @@
         <%= f.label :password %>
         <%= f.password_field :password, class: 'form-control' %>
 
-        <%= f.submit "Log in", class: "btn btn-primary" %>
+        <%= f.submit "Connexion", class: "btn btn-primary" %>
       <% end %>
 
       <p>Pas inscrit ? <%= link_to "Créez votre compte !", signup_path %></p>

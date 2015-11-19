@@ -1,27 +1,9 @@
 <% provide(:title, 'Inscription') %>
+<% provide(:button_text, 'Créer mon compte !') %>
 <h1>Inscription</h1>
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <%= form_for(@user) do |f| %>
-   	  <%= render 'shared/error_messages' %>
-   	  
-      <%= f.label :nom %>
-      <%= f.text_field :nom, class: 'form-control' %>
-
-      <%= f.label :prenom, "Prénom" %>
-      <%= f.text_field :prenom, class: 'form-control' %>
-
-      <%= f.label :identifiant %>
-      <%= f.text_field :identifiant, class: 'form-control' %>
-
-      <%= f.label :password, "Mot de passe" %>
-      <%= f.password_field :password, class: 'form-control' %>
-
-      <%= f.label :password_confirmation, "Confirmation" %>
-      <%= f.password_field :password_confirmation, class: 'form-control' %>
-
-      <%= f.submit "Créer mon compte !", class: "btn btn-primary" %>
-    <% end %>
+    <%= render 'form' %>
   </div>
 </div>

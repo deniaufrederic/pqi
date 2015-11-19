@@ -3,3 +3,30 @@ michael:
   prenom: Example
   identifiant: MichEx
   password_digest: <%= User.digest('password') %>
+  admin: true
+
+archer:
+  nom: Sterling
+  prenom: Archer
+  identifiant: SterArch
+  password_digest: <%= User.digest('password') %>
+
+lana:
+  nom: Lana
+  prenom: Kane
+  identifiant: LanKan
+  password_digest: <%= User.digest('password') %>
+
+mallory:
+  nom: Mallory
+  prenom: Archer
+  identifiant: MalArch
+  password_digest: <%= User.digest('password') %>
+
+<% 10.times do |n| %>
+user_<%= n %>:
+  nom: <%= "#{n}" %>
+  prenom: Louis
+  identifiant: <%= "Louis-#{n}" %>
+  password_digest: <%= User.digest('password') %>
+<% end %>
