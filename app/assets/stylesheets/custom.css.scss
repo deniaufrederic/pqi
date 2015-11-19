@@ -1,0 +1,30 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+/* global */
+
+body {
+	padding-top: 60 px;
+}
+
+/* header */
+
+/* footer */
+
+footer {
+	background-color: blue;
+}
+
+/* typography */
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1;
+}
+
+h1 {
+  font-size: 3em;
+  letter-spacing: -2px;
+  margin-bottom: 30px;
+  margin-top:60px;
+  text-align: center;
+}
