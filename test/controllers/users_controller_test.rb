@@ -8,7 +8,8 @@ class UsersControllerTest < ActionController::TestCase
 
   test "should redirect index when not logged in" do
     get :index
-    assert_redirected_to login_url
+    assert_not flash.empty?
+    assert_redirected_to root_url
   end
 
   test "should get new" do
@@ -19,7 +20,7 @@ class UsersControllerTest < ActionController::TestCase
   test "should redirect edit when not logged in" do
     get :edit, id: @user
     assert_not flash.empty?
-    assert_redirected_to login_url
+    assert_redirected_to root_url
   end
 
   test "should redirect update when not logged in" do
@@ -27,17 +28,17 @@ class UsersControllerTest < ActionController::TestCase
     									prenom: @user.prenom,
     									identifiant: @user.identifiant }
     assert_not flash.empty?
-    assert_redirected_to login_url
+    assert_redirected_to root_url
   end
 
-  test "should redirect edit when logged in as wrong user" do
+  test "should redirect edit when logged in as non-admin wrong user" do
     log_in_as(@other_user)
     get :edit, id: @user
     assert flash.empty?
     assert_redirected_to root_url
   end
 
-  test "should redirect update when logged in as wrong user" do
+  test "should redirect update when logged in as non-admin wrong user" do
     log_in_as(@other_user)
     patch :update, id: @user, user: { 	nom: @user.nom,
     									prenom: @user.prenom,
@@ -50,7 +51,7 @@ class UsersControllerTest < ActionController::TestCase
     assert_no_difference 'User.count' do
       delete :destroy, id: @user
     end
-    assert_redirected_to login_url
+    assert_redirected_to root_url
   end
 
   test "should redirect destroy when logged in as a non-admin" do
@@ -59,5 +60,11 @@ class UsersControllerTest < ActionController::TestCase
       delete :destroy, id: @user
     end
     assert_redirected_to root_url
+  end
+
+  test "should not accept to edit admin if non-admin" do
+    log_in_as(@other_user)
+    patch :update, id: @user, user: { admin: false }
+    assert @user.admin?
   end
 end

@@ -20,4 +20,14 @@ module SessionsHelper
     session.delete(:user_id)
     @current_user = nil
   end
+
+  def store_ville
+    session[:stored_ville] = request.url if request.get?
+    session[:stored_ville] = session[:stored_ville].split('/').last.split('%20').join(' ')
+  end
+
+  def store_id
+    session[:stored_id] = request.url if request.get?
+    session[:stored_id] = session[:stored_id].split('/').last
+  end
 end

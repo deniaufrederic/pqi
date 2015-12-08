@@ -4,11 +4,10 @@
       <ul class="nav navbar-nav navbar-right">
         <li><%= link_to "Accueil",   root_path %></li>
         <% if logged_in? %>
+          <li><%= link_to "PQI", pqi_path %></li>
           <li><%= link_to "Editer profil", edit_user_path(current_user) %></li>
           <li><%= link_to "Utilisateurs", users_path %></li>
           <li><%= link_to "Déconnexion", logout_path, method: "delete" %></li>
-        <% else %>
-          <li>En construction</li>
         <% end %>
       </ul>
     </nav>

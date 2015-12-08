@@ -1,0 +1,22 @@
+<tr id="usager">
+  <td class="identité"><%= link_to "#{usager.sexe} #{usager.nom} #{usager.prenom}", usager %></td>
+  <td class="ville"><%= "#{usager.ville}" %></td>
+  <td class="adresse"><%= "#{usager.adresse}" %></td>
+  <td class="comp_adr"><%= "#{usager.adresse_précis}" %></td>
+  <td class="date_naissance"><%= "#{usager.date_naissance}" %></td>
+  <td class="tel"><%= "#{usager.tel}" %></td>
+  <td class="pqi">
+    <%= form_for(usager) do |f| %>
+      <%= f.check_box :pqi, class: 'form-control', disabled: true %>
+    <% end %>
+  </td>
+  <% user = User.find(usager.user_id) %>
+  <td class="ajout"><%= "Ajouté par " %><%= link_to "#{user.identifiant}", user %><%= " (#{usager.created_at})" %></td>
+  <td>
+    <%= link_to "Modifier", edit_usager_path(usager) %><br>
+    <% if current_user.admin? %>
+      <%= link_to "Supprimer", usager, method: :delete,
+                                       data: { confirm: "Etes-vous sûr(e) ?" } %>
+    <% end %>
+  </td>
+</tr>

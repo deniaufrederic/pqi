@@ -1,0 +1,66 @@
+<% provide(:title, @usager.nom) %>
+
+<h1>
+  <%= "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %><br>
+  Type de signalement ?<br>
+  <% if logged_in? && current_user.admin? %>
+    <%= link_to "Supprimer", @usager, method: :delete,
+                                      data: { confirm: "Etes-vous sûr(e) ?" } %>
+  <% end %>
+  | <%= link_to "Editer", edit_usager_path(@usager) %>
+</h1>
+
+<h3>Informations de base</h3>
+
+<table class="usager_show">
+  <tr class="table_head">
+    <%= render 'table_h' %>
+    <th class="pqi">PQI ?</th>
+    <th class="infos">Informations d'ajout</th>
+  </tr>
+  <tr id="usager-<%= @usager.id %>">
+    <td class="ville"><%= "#{@usager.ville}" %></td>
+    <td class="adresse"><%= "#{@usager.adresse}" %></td>
+    <td class="comp_adr"><%= "#{@usager.adresse_précis}" %></td>
+    <td class="date_naissance"><%= "#{@usager.date_naissance}" %></td>
+    <td class="tel"><%= "#{@usager.tel}" %></td>
+    <td class="pqi">
+      <%= form_for(@usager) do |f| %>
+        <%= f.check_box :pqi, class: 'form-control', disabled: true %>
+      <% end %>
+    </td>
+    <% user = User.find(@usager.user_id) %>
+    <td class="ajout"><%= "Ajouté par " %><%= link_to "#{user.identifiant}", user %><%= " (#{@usager.created_at})" %></td>
+  </tr>
+</table>
+
+<h3>PQI</h3>
+
+<span>Observations :
+  <% if @usager.pqi %>
+    <% if @usager.notes.nil? || @usager.notes.empty? %>
+      Rien de notable.
+    <% else %>
+      <%= "#{@usager.notes}" %>
+    <% end %>
+  <% else %>
+    <%= "#{@usager.sexe} #{@usager.nom} n'est pas sur le PQI." %>
+  <% end %>
+</span><br>
+
+<span>Dernières rencontres : <%= dates_ok(@usager.rencontres) %></span>
+
+<h3>Prestations</h3>
+
+<span>Accompagnement ?</span>
+
+<h3>Informations complémentaires</h3>
+
+<table class="infos-supp">
+  <tr class="table_head">
+    <th class="ressources">Ressources</th>
+    <th class="social">Suivi social</th>
+    <th class="médical">Suivi médical</th>
+    <th class="autre">Autres informations</th>
+  </tr>
+</table>

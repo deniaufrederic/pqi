@@ -1,0 +1,56 @@
+<% provide(:title, @usager.nom) %>
+
+<%= form_for(@usager) do |f| %>
+
+<div class="form-inline">
+
+  <%= f.radio_button :sexe, "Mr", class: 'form-control' %>
+  <%= f.label :sexe_m, "Mr" %>
+
+  <%= f.radio_button :sexe, "Mme", class: 'form-control' %>
+  <%= f.label :sexe_f, "Mme" %>
+
+  <%= f.text_field :nom, class: 'form-control' %>
+
+  <%= f.text_field :prenom, class: 'form-control' %>
+
+</div>
+
+<h3>Informations de base</h3>
+
+<table class="usager_show">
+  <tr class="table_head">
+    <%= render 'table_h' %>
+    <th class="pqi">PQI ?</th>
+    <th class="infos">Informations d'ajout</th>
+  </tr>
+  <tr id="usager-<%= @usager.id %>">
+    <td class="ville"><%= f.select :ville, @villes, prompt: "Choisissez une ville", class: 'form-control' %></td>
+    <td class="adresse"><%= f.text_field :adresse, class: 'form-control' %></td>
+    <td class="comp_adr"><%= f.text_field :adresse_précis, class: 'form-control' %></td>
+    <td class="date_naissance"><%= f.date_field :date_naissance, class: 'form-control' %></td>
+    <td class="tel"><%= f.text_field :tel, class: 'form-control' %></td>
+    <td class="pqi"><%= f.check_box :pqi, class: 'form-control' %></td>
+    <% user = User.find(@usager.user_id) %>
+    <td class="ajout"><%= "Ajouté par " %><%= link_to "#{user.identifiant}", user %><%= " (#{@usager.created_at})" %></td>
+  </tr>
+</table>
+
+<h3>Observations</h3><br>
+
+<%= f.text_field :notes, class: 'form-control' %>
+
+<h3>Informations complémentaires</h3>
+
+<table class="infos+">
+  <tr class="table_head">
+    <th class="ressources">Ressources</th>
+    <th class="social">Suivi social</th>
+    <th class="médical">Suivi médical</th>
+    <th class="autre">Autres informations</th>
+  </tr>
+</table>
+
+<%= f.submit "Enregistrer les modifications", class: "btn btn-primary" %>
+
+<% end %>

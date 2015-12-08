@@ -1,4 +1,5 @@
 michael:
+  id: 1
   nom: Michael
   prenom: Example
   identifiant: MichEx
@@ -10,6 +11,7 @@ archer:
   prenom: Archer
   identifiant: SterArch
   password_digest: <%= User.digest('password') %>
+  admin: false
 
 lana:
   nom: Lana

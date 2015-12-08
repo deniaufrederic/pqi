@@ -1,0 +1,30 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+poto:
+  nom: PO
+  prenom: To
+  sexe: Mr
+  ville: Bondy
+  user_id: 1
+
+pata:
+  nom: PA
+  prenom: Ta
+  sexe: Mme
+  ville: Bondy
+  user_id: 1
+
+first:
+  nom: AAAAAAAAAAAAAAA
+  sexe: Mr
+  ville: La Plaine Saint-Denis
+  user_id: 1
+
+<% 50.times do |n| %>
+usager_<%= n %>:
+  nom: B <%= "#{n+1}" %>
+  prenom: Henri
+  sexe: M
+  ville: Aubervilliers
+  user_id: 1
+<% end %>

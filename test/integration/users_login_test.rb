@@ -20,13 +20,19 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     get root_path
     post login_path, session: { identifiant: 'MichEx', password: 'password' }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to usagers_path
     follow_redirect!
-    assert_template 'users/show'
+    assert_template 'usagers/index'
     assert_select "a[href=?]", logout_path
     delete logout_path
     assert_not is_logged_in?
     assert_redirected_to root_url
     follow_redirect!    
+  end
+
+  test "redirect login when logged in" do
+    log_in_as(@user)
+    post login_path, session: { identifiant: 'SterArch', password: 'password'}
+    assert_redirected_to root_url
   end
 end

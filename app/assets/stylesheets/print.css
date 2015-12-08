@@ -1,0 +1,8 @@
+@media print {
+	h1, div#container-villes, header, footer, #print-link, #ajout-rencontre {
+		display: none;
+	}
+	a:link:after, a:visited:after {
+    content: "";
+	}
+}

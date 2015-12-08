@@ -1,0 +1,16 @@
+<% provide(:title, 'Ajouter une rencontre') %>
+
+<h1>Ajouter une rencontre</h1>
+
+<h3>Date de la rencontre ?</h3>
+
+<%= form_for(@usager, html: {style: 'text-align:center'}) do |f| %>
+  <%= f.date_field :derniere, class: 'form-control', value: Date.yesterday %>
+
+  <%= f.submit "Valider la rencontre", class: 'btn btn-primary' %>
+
+<% end %>
+
+<h3>Quel camtar ?</h3>
+
+<h3>Prestation délivrée ?</h3>

@@ -1,0 +1,58 @@
+<% provide(:title, 'PQI') %>
+
+<h1>PQI</h1>
+
+<div class="container" id="container-villes">
+  <ul class="villes">
+    <% @villes.each do |ville| %>
+      <li><%= link_to "#{ville.first}", choix_ville_path(:ville => ville.first) %></li>
+    <% end %>
+  </ul>
+</div>
+
+<% if @usagers %>
+
+<h3 id="ville-actuelle">
+  <%= "#{@ville_actuelle}" %>
+  <%= link_to image_tag("print.png", alt: "Imprimer", width: 30, length: 30), '#', onclick: "printpage()", id: 'print-link', class: "btn" %>
+</h3>
+
+<table class="usagers">
+  <tr class="table_head">
+    <th class="identité">Identité</th>
+    <th class="adresse">Adresse</th>
+    <th class="rencontres">Dernières rencontres</th>
+    <th class="notes">Observations</th>
+  </tr>
+  <% @usagers.each do |usager| %>
+    <tr id="table-pqi">
+      <td class="identité-tot">
+        <%= link_to "#{usager.sexe} #{usager.nom} #{usager.prenom}", usager %><br>
+        <% if usager.date_naissance? %>
+          <%= "#{usager.date_naissance}" %><br>
+        <% end %>
+        <% if usager.tel? %>
+          <%= "#{usager.tel}" %>
+        <% end %>
+      </td>
+      <td class="adresse-tot">
+        <%= "#{usager.adresse}" %><br>
+        <%= "#{usager.adresse_précis}" %>
+      </td>
+      <td class="rencontres">
+        <% if usager.rencontres? %>
+          <% disp = dates_ok(usager.rencontres) %>
+          <% if disp.length > 52 %>
+            <% d = disp.split(' - ') %>
+            <%= d[(d.length-5)..(d.length-1)].join(' - ') %><br>
+          <% else %>
+            <%= disp %><br>
+          <% end %>
+        <% end %>
+        <%= link_to "Ajouter une rencontre", id_rencontre_path(:id => usager.id), id: 'ajout-rencontre' %>
+      </td>
+      <td><%= "#{usager.notes}" %></td>
+    </tr>
+  <% end %>
+<% end %>
+</table>
