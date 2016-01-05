@@ -16,6 +16,9 @@ class UsersController < ApplicationController
   	if logged_in?
   		admin_user
   	end
+    unless logged_in? && current_user.admin?
+      redirect_to root_url
+    end
   end
 
   def create
