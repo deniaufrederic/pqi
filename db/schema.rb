@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151204152354) do
+ActiveRecord::Schema.define(version: 20160107123822) do
 
   create_table "usagers", force: :cascade do |t|
     t.string   "nom"
@@ -29,7 +29,12 @@ ActiveRecord::Schema.define(version: 20151204152354) do
     t.boolean  "pqi"
     t.date     "derniere"
     t.text     "rencontres"
+    t.string   "signalement"
   end
+
+  add_index "usagers", ["sexe"], name: "index_usagers_on_sexe"
+  add_index "usagers", ["signalement"], name: "index_usagers_on_signalement"
+  add_index "usagers", ["ville"], name: "index_usagers_on_ville"
 
   create_table "users", force: :cascade do |t|
     t.string   "nom"

@@ -2,7 +2,6 @@
 
 <h1>
   <%= "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %><br>
-  Type de signalement ?<br>
   <% if logged_in? && current_user.admin? %>
     <%= link_to "Supprimer", @usager, method: :delete,
                                       data: { confirm: "Etes-vous sûr(e) ?" } %>
@@ -15,6 +14,7 @@
 <table class="usager_show">
   <tr class="table_head">
     <%= render 'table_h' %>
+    <th class="signalement">Type de signalement</th>
     <th class="pqi">PQI ?</th>
     <th class="infos">Informations d'ajout</th>
   </tr>
@@ -24,6 +24,7 @@
     <td class="comp_adr"><%= "#{@usager.adresse_précis}" %></td>
     <td class="date_naissance"><%= "#{@usager.date_naissance}" %></td>
     <td class="tel"><%= "#{@usager.tel}" %></td>
+    <td class="signalement"><%= "#{@usager.signalement}" %></td>
     <td class="pqi">
       <%= form_for(@usager) do |f| %>
         <%= f.check_box :pqi, class: 'form-control', disabled: true %>
@@ -56,7 +57,7 @@
 
 <h3>Statistiques</h3>
 
-<span>Nombre de rencontres : <%= @usager.rencontres.split(' - ').length %></span>
+<span>Nombre de rencontres : <%= @usager.rencontres.split(' - ').length unless @usager.rencontres.nil? %></span>
 
 <h3>Informations complémentaires</h3>
 

@@ -44,6 +44,9 @@ class UsagersController < ApplicationController
                 ["Villemomble", "Villemomble"],
                 ["Villepinte", "Villepinte"],
                 ["Villetaneuse", "Villetaneuse"]]
+    @signalements = [ ["Signalement 115", "Signalement 115"],
+                      ["Signalement tiers", "Signalement tiers"],
+                      ["Croisé(e) en maraude", "Croisé(e) en maraude"]]
   	if logged_in?
       @usager = Usager.new
       @usagers = Usager.paginate(page: params[:page], per_page: 50)
@@ -113,6 +116,9 @@ class UsagersController < ApplicationController
                 ["Villemomble", "Villemomble"],
                 ["Villepinte", "Villepinte"],
                 ["Villetaneuse", "Villetaneuse"]]
+    @signalements = [ ["Signalement 115", "Signalement 115"],
+                      ["Signalement tiers", "Signalement tiers"],
+                      ["Croisé(e) en maraude", "Croisé(e) en maraude"]]
   	@usager = Usager.find(params[:id])
   end
 
@@ -158,6 +164,9 @@ class UsagersController < ApplicationController
                 ["Villemomble", "Villemomble"],
                 ["Villepinte", "Villepinte"],
                 ["Villetaneuse", "Villetaneuse"]]
+    @signalements = [ ["Signalement 115", "Signalement 115"],
+                      ["Signalement tiers", "Signalement tiers"],
+                      ["Croisé(e) en maraude", "Croisé(e) en maraude"]]
   	@usager = Usager.find(params[:id])
     if @usager.update_attribute(:derniere, params[:usager][:derniere]) && @usager.derniere
       if @usager.rencontres.nil?
@@ -251,7 +260,8 @@ class UsagersController < ApplicationController
                                       :notes,
                                       :pqi,
                                       :derniere,
-                                      :rencontres)
+                                      :rencontres,
+                                      :signalement)
     end
 
     def logged_in_user

@@ -29,6 +29,9 @@
    <%= f.label :pqi, "PQI ?" %>
    <%= f.check_box :pqi, class: 'form-control' %>
 
+   <%= f.label :signalement, "Type de signalement" %>
+   <%= f.select :signalement, @signalements, prompt: "Quel type de signalement ?", class: 'form-control' %>
+
    <%= f.submit "Ajouter usager", class: "btn btn-primary" %>
 
 <% end %>
