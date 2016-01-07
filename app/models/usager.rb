@@ -10,7 +10,6 @@ class Usager < ActiveRecord::Base
   validates :user_id, presence: true
   validates :sexe, presence: true
   validates :ville, presence: true
-  validates :signalement, presence: true
 
     def self.search(search)
       if search

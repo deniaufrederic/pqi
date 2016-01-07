@@ -29,7 +29,7 @@
       <td class="identité-tot">
         <%= link_to "#{usager.sexe} #{usager.nom} #{usager.prenom}", usager %><br>
         <% if usager.date_naissance? %>
-          <%= "#{usager.date_naissance}" %><br>
+          <%= "#{dates_ok(usager.date_naissance)}" %><br>
         <% end %>
         <% if usager.tel? %>
           <%= "#{usager.tel}" %>
@@ -40,15 +40,7 @@
         <%= "#{usager.adresse_précis}" %>
       </td>
       <td class="rencontres">
-        <% if usager.rencontres? %>
-          <% disp = dates_ok(usager.rencontres) %>
-          <% if disp.length > 52 %>
-            <% d = disp.split(' - ') %>
-            <%= d[(d.length-5)..(d.length-1)].join(' - ') %><br>
-          <% else %>
-            <%= disp %><br>
-          <% end %>
-        <% end %>
+        <%= dates_5(usager.rencontres) %><br>
         <%= link_to "Ajouter une rencontre", id_rencontre_path(:id => usager.id), id: 'ajout-rencontre' %>
       </td>
       <td><%= "#{usager.notes}" %></td>

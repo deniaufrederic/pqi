@@ -1,9 +1,13 @@
 <tr id="usager">
+  <td class="rencontres">
+    <%= dates_5(usager.rencontres) %><br>
+    <%= link_to "Ajouter une rencontre", id_rencontre_path(:id => usager.id), id: 'ajout-rencontre' %>
+  </td>
   <td class="identité"><%= link_to "#{usager.sexe} #{usager.nom} #{usager.prenom}", usager %></td>
   <td class="ville"><%= "#{usager.ville}" %></td>
   <td class="adresse"><%= "#{usager.adresse}" %></td>
   <td class="comp_adr"><%= "#{usager.adresse_précis}" %></td>
-  <td class="date_naissance"><%= "#{usager.date_naissance}" %></td>
+  <td class="date_naissance"><%= "#{dates_ok(usager.date_naissance)}" %></td>
   <td class="tel"><%= "#{usager.tel}" %></td>
   <td class="pqi">
     <%= form_for(usager) do |f| %>

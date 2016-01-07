@@ -21,9 +21,6 @@
 <table class="usager_show">
   <tr class="table_head">
     <%= render 'table_h' %>
-    <th class="signalement">Type de signalement</th>
-    <th class="pqi">PQI ?</th>
-    <th class="infos">Informations d'ajout</th>
   </tr>
   <tr id="usager-<%= @usager.id %>">
     <td class="ville"><%= f.select :ville, @villes, prompt: "Choisissez une ville", class: 'form-control' %></td>
@@ -31,7 +28,6 @@
     <td class="comp_adr"><%= f.text_field :adresse_précis, class: 'form-control' %></td>
     <td class="date_naissance"><%= f.date_field :date_naissance, class: 'form-control' %></td>
     <td class="tel"><%= f.text_field :tel, class: 'form-control' %></td>
-    <td class="signalement"><%= f.select :signalement, @signalements, prompt: "Quel type de signalement ?", class: 'form-control' %></td>
     <td class="pqi"><%= f.check_box :pqi, class: 'form-control' %></td>
     <% user = User.find(@usager.user_id) %>
     <td class="ajout"><%= "Ajouté par " %><%= link_to "#{user.identifiant}", user %><%= " (#{@usager.created_at})" %></td>

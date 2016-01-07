@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160107123822) do
+ActiveRecord::Schema.define(version: 20160107153244) do
 
   create_table "usagers", force: :cascade do |t|
     t.string   "nom"
@@ -30,6 +30,8 @@ ActiveRecord::Schema.define(version: 20160107123822) do
     t.date     "derniere"
     t.text     "rencontres"
     t.string   "signalement"
+    t.string   "dates_sig"
+    t.boolean  "signale"
   end
 
   add_index "usagers", ["sexe"], name: "index_usagers_on_sexe"

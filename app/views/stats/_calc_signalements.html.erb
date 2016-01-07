@@ -1,0 +1,28 @@
+<% h = 0 %>
+<% f = 0 %>
+<% @usagers.each do |u| %>
+  <% unless u.dates_sig.nil? %>
+    <% d = f+h %>
+    <% n = u.dates_sig.split(' - ') %>
+    <% (0..(n.length-1)).each do |i| %>
+      <% a = n[i].split(' (').first.split('/').join('') %>
+      <% if a.to_i > @dates.first.split('-').join('').to_i - 20000000 && a.to_i < @dates.last.split('-').join('').to_i - 20000000 %>
+  	    <% if u.sexe == "Mr" %>
+  	      <% h = h + 1 %>
+  	    <% else %>
+  	      <% f = f + 1 %>
+  	    <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+<% if f+h == 0 %>
+  0
+<% else %>
+  <%= "#{f+h} (#{h}/#{f})" %>
+<% end %>
+
+<% if @ville.nil? && !@dates.nil? %>
+  <% @f_sig = @f_sig + f %>
+  <% @h_sig = @h_sig + h %>
+<% end %>

@@ -1,16 +1,39 @@
-<% provide(:title, 'Ajouter une rencontre') %>
+<% provide(:title, 'Rencontre') %>
 
-<h1>Ajouter une rencontre</h1>
+<%= form_for(@usager) do |f| %>
+
+<% if @usager.rencontres.nil? %>
+  <h1>Renseigner la rencontre</h1>
+
+  <%= f.label :signale, "Non connu(e) du service avant ?" %>
+  <%= f.check_box :signale, class: 'form-control' %>
+
+  <%= f.label :signalement, "Si oui, type de signalement ?" %>
+  <%= f.select :signalement, @signalements, prompt: "Quel type de signalement ?", class: 'form-control' %>
+
+<% else %>
+  <h1>Ajouter une rencontre</h1>
+
+  <%= f.label :signale, "Nouveau signalement ?" %>
+  <%= f.check_box :signale, class: 'form-control' %>
+
+  <%= f.label :signalement, "Si oui, type de signalement ?" %>
+  <%= f.select :signalement,	[	["Signalement 115", "Signalement 115"],
+                      				  ["Signalement tiers", "Signalement tiers"]],
+                      			prompt: "Quel type de signalement ?",
+                      			class: 'form-control' %>
+
+<% end %>
 
 <h3>Date de la rencontre ?</h3>
 
-<%= form_for(@usager, html: {style: 'text-align:center'}) do |f| %>
-  <%= f.date_field :derniere, class: 'form-control', value: Date.yesterday %>
+  <%= f.date_field :derniere, class: 'form-control', html: {style: 'text-align:center'}, value: Date.yesterday %>
 
   <%= f.submit "Valider la rencontre", class: 'btn btn-primary' %>
 
 <% end %>
 
-<h3>Quel camtar ?</h3>
-
 <h3>Prestation délivrée ?</h3>
+
+Checkboxes avec duvet, vestiaire (on peut préciser), PA, hygiène
+Accompagnement et où
