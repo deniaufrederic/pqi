@@ -46,7 +46,10 @@ class UsagersController < ApplicationController
                 ["Villetaneuse", "Villetaneuse"]]
   	if logged_in?
       @usager = Usager.new
-  	  @usagers = Usager.paginate(page: params[:page], per_page: 50)
+      @usagers = Usager.paginate(page: params[:page], per_page: 50)
+      if params[:search]
+        @usagers = Usager.search(params[:search]).order("nom ASC").paginate(page: params[:page], per_page: 50)
+      end
   	else
   	  redirect_to root_url
   	end

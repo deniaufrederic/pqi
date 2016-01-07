@@ -1,0 +1,12 @@
+<%= form_for(:stat, url: stats_path, html: { class: "form-inline" }) do |f| %>	  
+   <%= f.label :date_deb, "Début de la période" %>
+   <%= f.date_field :date_deb, class: 'form-control' %>
+
+   <%= f.label :date_fin, "Fin" %>
+   <%= f.date_field :date_fin, class: 'form-control' %>
+
+   <%= f.label :ville %>
+   <%= f.select :ville, @villes, prompt: "Choisissez une ville", class: 'form-control' %>
+
+   <%= f.submit "Valider", class: "btn btn-primary" %>
+<% end %>

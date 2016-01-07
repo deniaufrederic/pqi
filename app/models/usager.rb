@@ -11,6 +11,14 @@ class Usager < ActiveRecord::Base
   validates :sexe, presence: true
   validates :ville, presence: true
 
+    def self.search(search)
+      if search
+        find(:all, :conditions => ['nom LIKE ?', "%#{search}%"])
+      else
+        find(:all)
+      end
+    end
+
   private
 
   	def at_least_one

@@ -1,0 +1,68 @@
+<% provide(:title, "Statistiques") %>
+
+<h3>Effectuer une recherche par période ou par ville et période</h3>
+
+<div class="container" id="container-periode">
+  <%= render 'form' %>
+</div>
+
+<% if @ville.nil? && !@dates.nil? %>
+  <h3>
+    <%= "Statistiques sur le département du #{@dates.first.split('-').reverse.join('/')} au #{@dates.last.split('-').reverse.join('/')}" %>
+  </h3>
+
+  <table class="stats">
+  	<tr id="table-head">
+      <th>Ville</th>
+      <th>Nombre total de rencontres (homme(s)/femme(s))</th>
+      <th>Nombre de rencontres différentes (homme(s)/femme(s))</th>
+  	</tr>
+    
+    <% @f_tot = 0 %>
+    <% @h_tot = 0 %>
+    <% @f_dif = 0 %>
+    <% @h_dif = 0 %>
+    <% @villes.each do |ville| %>
+      <tr>
+        <td><%= "#{ville.first}" %></td>
+        <td>
+          <% @usagers = Usager.where(ville: ville) %>
+          <%= render 'calc_rencontres' %>
+        </td>
+        <td>
+          <% @usagers = Usager.where(ville: ville) %>
+          <%= render 'calc_rencontres_diff' %>
+        </td>
+      </tr>
+    <% end %>
+
+    <tr>
+      <td id="total">Total</td>
+      <td><%= "#{@h_tot + @f_tot} (#{@h_tot}/#{@f_tot})" %></td>
+      <td><%= "#{@h_dif + @f_dif} (#{@h_dif}/#{@f_dif})" %></td>
+  </table>
+
+<% elsif !@ville.nil? && !@dates.nil? %>
+  <h3>
+    <%= "Statistiques sur #{@ville} du #{@dates.first.split('-').reverse.join('/')} au #{@dates.last.split('-').reverse.join('/')}" %>
+  </h3>
+
+  <table class="stats">
+  	<tr id="table-head">
+  	  <th>Nombre de rencontres (homme(s)/femme(s))</th>
+  	  <th>Nombre de personnes différentes rencontrées (homme(s)/femme(s))</th>
+  	  <th>Nombre de signalements (homme(s)/femme(s))</th>
+  	</tr>
+  	<tr>
+  	  <td>
+  	  	<% @usagers = Usager.where(ville: @ville) %>
+        <%= render 'calc_rencontres' %>
+      </td>
+      <td>
+      	<% @usagers = Usager.where(ville: @ville) %>
+        <%= render 'calc_rencontres_diff' %>
+      </td>
+    </tr>
+  </table>
+
+<% end %>
