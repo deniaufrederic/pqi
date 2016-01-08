@@ -20,9 +20,7 @@
 
 <table class="usagers">
   <tr id="table_head">
-    <th class="rencontres">Dernières rencontres</th>
-    <th class="identité">Identité</th>
-    <%= render 'table_h' %>
+    <%= render 'table_h_soft' %>
     <th class="supp">Edition et Suppression (privilège admin)</th>
   </tr>
   <% if !@usagers.empty? %>

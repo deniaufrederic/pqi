@@ -33,15 +33,29 @@
 
 <h3>PQI</h3>
 
-<span>Observations :
-  <% if @usager.pqi %>
-    <% if @usager.notes.nil? || @usager.notes.empty? %>
-      Rien de notable.
-    <% else %>
-      <%= "#{@usager.notes}" %>
+<span>
+  Périodes sur PQI : 
+  <% if @usager.pqi_histo %>
+    <%= "#{@usager.pqi_histo}" %>
+    <% if @usager.pqi %>
+      <%= " - toujours sur le PQI." %>
     <% end %>
   <% else %>
-    <%= "#{@usager.sexe} #{@usager.nom} n'est pas sur le PQI." %>
+    <%= "#{@usager.sexe} #{@usager.nom} n'a jamais été sur le PQI." %>
+  <% end %>
+</span><br>
+
+<span>
+  Observations :
+  <% if @usager.notes.nil? || @usager.notes.empty? %>
+    Rien de notable.
+  <% else %>
+    <% if @usager.pqi %>
+      <%= "#{@usager.notes}" %>
+    <% else %>
+      <%= "#{@usager.sexe} #{@usager.nom} n'est pas sur le PQI." %>
+      <%= " #{@usager.notes}" %>
+    <% end %>
   <% end %>
 </span><br>
 

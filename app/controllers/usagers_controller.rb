@@ -122,6 +122,23 @@ class UsagersController < ApplicationController
   def update
   	@usager = Usager.find(params[:id])
     if @usager.update_attribute(:derniere, params[:usager][:derniere]) && @usager.derniere
+      if @usager.update_attribute(:signale, params[:usager][:signale]) && @usager.signale
+        if !params[:usager][:signalement].empty?
+          @usager.update_attribute(:signalement, params[:usager][:signalement])
+          if @usager.dates_sig.nil?
+            @usager.dates_sig = ""
+          else
+            @usager.dates_sig << " - "
+          end
+          @usager.dates_sig << @usager.derniere.strftime("%y/%m/%d")
+          @usager.dates_sig << " (#{@usager.signalement})"
+        else
+          flash[:danger] = "Précisez le type de signalement"
+          redirect_to id_rencontre_path(:id => @usager.id)
+        end
+      else
+        params[:usager][:signalement] = nil
+      end
       if @usager.rencontres.nil?
         @usager.rencontres = ""
       else
@@ -130,21 +147,29 @@ class UsagersController < ApplicationController
       @usager.rencontres << @usager.derniere.strftime("%y/%m/%d")
       arr = @usager.rencontres.split(" - ").sort
       @usager.rencontres = arr.join(' - ')
-      if @usager.update_attribute(:signale, params[:usager][:signale]) && @usager.signale
-        @usager.update_attribute(:signalement, params[:usager][:signalement])
-        if @usager.dates_sig.nil?
-          @usager.dates_sig = ""
-        else
-          @usager.dates_sig << " - "
-        end
-        @usager.dates_sig << @usager.derniere.strftime("%y/%m/%d")
-        @usager.dates_sig << " (#{@usager.signalement})"
-      else
-        params[:usager][:signalement] = nil
+      if @usager.pqi && @usager.pqi_histo.nil?
+        @usager.pqi_histo = ""
+        @usager.pqi_histo << Date.today.strftime("%d/%m/%y")
       end
+      if (@usager.signale && !params[:usager][:signalement].empty?) || !@usager.signale
+        @usager.update_attributes(usager_params)
+        flash[:success] = "Rencontre ajoutée avec #{@usager.sexe} #{@usager.nom} #{@usager.prenom}"
+        redirect_to usagers_path
+      end
+    elsif @usager.update_attribute(:pqi, params[:usager][:pqi])
+      if @usager.pqi
+        if @usager.pqi_histo
+          @usager.pqi_histo << " ///// "
+        else
+          @usager.pqi_histo = ""
+        end
+      else
+        @usager.pqi_histo << " - "
+      end
+      @usager.pqi_histo << Date.today.strftime("%d/%m/%y")
       @usager.update_attributes(usager_params)
-      flash[:success] = "Rencontre ajoutée avec #{@usager.sexe} #{@usager.nom} #{@usager.prenom}"
-      redirect_to usagers_path
+      flash[:success] = "Usager édité"
+      redirect_to @usager
     elsif @usager.update_attributes(usager_params)
       flash[:success] = "Usager édité"
       redirect_to @usager
@@ -233,7 +258,8 @@ class UsagersController < ApplicationController
                                       :rencontres,
                                       :signalement,
                                       :signale,
-                                      :dates_sig)
+                                      :dates_sig,
+                                      :pqi_histo)
     end
 
     def logged_in_user

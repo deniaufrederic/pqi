@@ -1,18 +1,30 @@
 <tr id="usager">
-  <td class="rencontres">
-    <%= dates_5(usager.rencontres) %><br>
-    <%= link_to "Ajouter une rencontre", id_rencontre_path(:id => usager.id), id: 'ajout-rencontre' %>
+  <td class="identité">
+    <%= link_to "#{usager.sexe} #{usager.nom} #{usager.prenom}", usager %>
+    <% if usager.date_naissance %>
+      <br><%= "#{dates_ok(usager.date_naissance)}" %>
+    <% end %>
+    <% if usager.tel %>
+      <br><%= "#{usager.tel}" %>
+    <% end %>
   </td>
-  <td class="identité"><%= link_to "#{usager.sexe} #{usager.nom} #{usager.prenom}", usager %></td>
-  <td class="ville"><%= "#{usager.ville}" %></td>
-  <td class="adresse"><%= "#{usager.adresse}" %></td>
-  <td class="comp_adr"><%= "#{usager.adresse_précis}" %></td>
-  <td class="date_naissance"><%= "#{dates_ok(usager.date_naissance)}" %></td>
-  <td class="tel"><%= "#{usager.tel}" %></td>
+  <td class="adresse">
+    <%= "#{usager.ville}" %>
+    <% if usager.adresse %>
+      <br><%= "#{usager.adresse}" %>
+    <% end %>
+    <% if usager.adresse_précis %>
+      <br><%= "#{usager.adresse_précis}" %>
+    <% end %>
+  </td>
   <td class="pqi">
     <%= form_for(usager) do |f| %>
       <%= f.check_box :pqi, class: 'form-control', disabled: true %>
     <% end %>
+  </td>
+  <td class="rencontres">
+    <%= dates_5(usager.rencontres) %><br>
+    <%= link_to "Ajouter une rencontre", id_rencontre_path(:id => usager.id), id: 'ajout-rencontre' %>
   </td>
   <% user = User.find(usager.user_id) %>
   <td class="ajout"><%= "Ajouté par " %><%= link_to "#{user.identifiant}", user %><%= " (#{usager.created_at})" %></td>
