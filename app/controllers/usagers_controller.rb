@@ -120,6 +120,47 @@ class UsagersController < ApplicationController
   end
 
   def update
+    @villes = [ ["Aubervilliers", "Aubervilliers"],
+                ["Aulnay-sous-Bois", "Aulnay-sous-Bois"],
+                ["Bagnolet", "Bagnolet"],
+                ["Bobigny", "Bobigny"],
+                ["Bondy", "Bondy"],
+                ["Clichy-sous-Bois", "Clichy-sous-Bois"],
+                ["Coubron", "Coubron"],
+                ["Drancy", "Drancy"],
+                ["Dugny", "Dugny"],
+                ["Epinay-sur-Seine", "Epinay-sur-Seine"],
+                ["Gagny", "Gagny"],
+                ["Gournay-sur-Marne", "Gournay-sur-Marne"],
+                ["L'Ile-Saint-Denis", "L'Ile-Saint-Denis"],
+                ["La Courneuve", "La Courneuve"],
+                ["La Plaine Saint-Denis", "La Plaine Saint-Denis"],
+                ["Le Blanc-Mesnil", "Le Blanc-Mesnil"],
+                ["Le Bourget", "Le Bourget"],
+                ["Le Pré-Saint-Gervais", "Le Pré-Saint-Gervais"],
+                ["Le Raincy", "Le Raincy"],
+                ["Les Lilas", "Les Lilas"],
+                ["Les Pavillons-sous-Bois", "Les Pavillons-sous-Bois"],
+                ["Livry-Gargan", "Livry-Gargan"],
+                ["Montfermeil", "Montfermeil"],
+                ["Montreuil", "Montreuil"],
+                ["Neuilly-Plaisance", "Neuilly-Plaisance"],
+                ["Neuilly-sur-Marne", "Neuilly-sur-Marne"],
+                ["Noisy-le-Grand", "Noisy-le-Grand"],
+                ["Noisy-le-Sec", "Noisy-le-Sec"],
+                ["Pantin", "Pantin"],
+                ["Pierrefitte", "Pierrefitte"],
+                ["Romainville", "Romainville"],
+                ["Rosny-sous-Bois", "Rosny-sous-Bois"],
+                ["Saint-Denis", "Saint-Denis"],
+                ["Saint-Ouen", "Saint-Ouen"],
+                ["Sevran", "Sevran"],
+                ["Stains", "Stains"],
+                ["Tremblay-en-France", "Tremblay-en-France"],
+                ["Vaujours", "Vaujours"],
+                ["Villemomble", "Villemomble"],
+                ["Villepinte", "Villepinte"],
+                ["Villetaneuse", "Villetaneuse"]]
   	@usager = Usager.find(params[:id])
     if @usager.update_attribute(:derniere, params[:usager][:derniere]) && @usager.derniere
       if @usager.update_attribute(:signale, params[:usager][:signale]) && @usager.signale
@@ -157,23 +198,29 @@ class UsagersController < ApplicationController
         redirect_to usagers_path
       end
     elsif @usager.update_attribute(:pqi, params[:usager][:pqi])
-      if @usager.pqi
-        if @usager.pqi_histo
-          @usager.pqi_histo << " ///// "
+      if @usager.update_attributes(usager_params)
+        if @usager.pqi
+          if @usager.pqi_histo
+            @usager.pqi_histo << " ///// "
+          else
+            @usager.pqi_histo = ""
+          end
         else
-          @usager.pqi_histo = ""
+          @usager.pqi_histo << " - " unless @usager.pqi_histo.nil?
         end
+        @usager.pqi_histo << Date.today.strftime("%d/%m/%y") unless @usager.pqi_histo.nil?
+        @usager.update_attributes(usager_params)
+        flash[:success] = "Usager édité"
+        redirect_to @usager
       else
-        @usager.pqi_histo << " - "
+        flash[:danger] = "Mise à jour impossible. Veillez à remplir les informations nécessaires (Nom et/ou prénom, ville et sexe)."
+        render 'edit'
       end
-      @usager.pqi_histo << Date.today.strftime("%d/%m/%y")
-      @usager.update_attributes(usager_params)
-      flash[:success] = "Usager édité"
-      redirect_to @usager
     elsif @usager.update_attributes(usager_params)
       flash[:success] = "Usager édité"
       redirect_to @usager
     else
+      flash[:danger] = "Mise à jour impossible. Veillez à remplir les informations nécessaires (Nom et/ou prénom, ville et sexe)."
       render 'edit'
     end
   end

@@ -32,7 +32,7 @@ class UsagersCreateTest < ActionDispatch::IntegrationTest
                               			    tel: "",
                              			    notes: "" }
     end
-    assert_template 'usagers/index'
+    assert_template 'usagers/rencontre'
     assert_not flash.empty?
   end
 end
