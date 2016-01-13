@@ -1,0 +1,10 @@
+<% provide(:title, 'Maraudes') %>
+
+<table class="maraudes">
+  <tr id="table_head">
+    <%= render 'table_h' %>
+  </tr>
+  <% if !@maraudes.empty? %>
+    <%= render @maraudes %>
+  <% end %>
+</table>

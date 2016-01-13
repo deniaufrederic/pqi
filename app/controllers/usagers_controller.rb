@@ -1,5 +1,5 @@
 class UsagersController < ApplicationController
-  before_action :logged_in_user,  only: [:show, :index, :create, :edit, :update, :destroy, :pqi]
+  before_action :logged_in_user,  only: [:show, :index, :create, :edit, :update, :destroy, :pqi, :rencontre]
   before_action :admin_user,      only: :destroy
 
   def index
@@ -163,6 +163,26 @@ class UsagersController < ApplicationController
                 ["Villetaneuse", "Villetaneuse"]]
   	@usager = Usager.find(params[:id])
     if @usager.update_attribute(:derniere, params[:usager][:derniere]) && @usager.derniere
+      if Maraude.find_by(date: params[:usager][:derniere]).present?
+        @maraude = Maraude.find_by(date: params[:usager][:derniere])
+        @maraude.rencontres << "#{@usager.sexe} #{@usager.nom} #{@usager.prenom} (#{@usager.ville})\n"
+      else
+        @maraude = Maraude.new(date: params[:usager][:derniere], rencontres: "#{@usager.sexe} #{@usager.nom} #{@usager.prenom} (#{@usager.ville})\n", signalements: "", accompagnements: "")
+      end
+      @maraude.cr = "COMPTE-RENDU DE MARAUDE DU #{@usager.derniere}\n\n\n" unless @maraude.cr
+      @maraude.cr << "- #{@usager.sexe} #{@usager.nom} #{@usager.prenom} : "
+      rencontre_u = "// Rencontre du #{@usager.derniere.strftime("%d/%m/%y")} //"
+      if @usager.update_attribute(:details, params[:usager][:details]) && @usager.details
+        rencontre_u << "\n#{@usager.details}"
+        @maraude.cr << "#{@usager.details}\n\n"
+      else
+        rencontre_u << "\nRencontre sans détails."
+        @maraude.cr << "Rien de notable.\n\n"
+      end
+      rencontre_u << "\n\n\n" unless !@usager.fiche
+      rencontre_u << "#{@usager.fiche}"
+      @usager.fiche = rencontre_u
+      @maraude.save
       if @usager.update_attribute(:signale, params[:usager][:signale]) && @usager.signale
         if !params[:usager][:signalement].empty?
           @usager.update_attribute(:signalement, params[:usager][:signalement])
@@ -173,6 +193,8 @@ class UsagersController < ApplicationController
           end
           @usager.dates_sig << @usager.derniere.strftime("%y/%m/%d")
           @usager.dates_sig << " (#{@usager.signalement})"
+          @maraude.signalements << "#{@usager.sexe} #{@usager.nom} #{@usager.prenom} (#{@usager.signalement})\n"
+          @maraude.save
         else
           flash[:danger] = "Précisez le type de signalement"
           redirect_to id_rencontre_path(:id => @usager.id)
@@ -306,7 +328,9 @@ class UsagersController < ApplicationController
                                       :signalement,
                                       :signale,
                                       :dates_sig,
-                                      :pqi_histo)
+                                      :pqi_histo,
+                                      :details,
+                                      :fiche)
     end
 
     def logged_in_user

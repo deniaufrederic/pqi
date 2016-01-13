@@ -23,7 +23,9 @@
     <% end %>
   </td>
   <td class="rencontres">
-    <%= dates_5(usager.rencontres) %><br>
+    <% if usager.rencontres %>
+      <%= dates_5(usager.rencontres) %><br>
+    <% end %>
     <%= link_to "Ajouter une rencontre", id_rencontre_path(:id => usager.id), id: 'ajout-rencontre' %>
   </td>
   <% user = User.find(usager.user_id) %>

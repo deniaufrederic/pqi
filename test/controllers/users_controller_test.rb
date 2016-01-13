@@ -18,6 +18,14 @@ class UsersControllerTest < ActionController::TestCase
     assert_redirected_to root_url
   end
 
+  test "should redirect create when not logged in" do
+    post :create, user: { nom: @user.nom,
+                          prenom: @user.prenom,
+                          identifiant: "Youhou" }
+    assert_not flash.empty?
+    assert_redirected_to root_url
+  end
+
   test "should redirect update when not logged in" do
     patch :update, id: @user, user: { 	nom: @user.nom,
     									prenom: @user.prenom,

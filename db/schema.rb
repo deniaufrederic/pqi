@@ -11,7 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160108135515) do
+ActiveRecord::Schema.define(version: 20160113111917) do
+
+  create_table "maraudes", force: :cascade do |t|
+    t.date     "date"
+    t.text     "rencontres"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.text     "signalements"
+    t.text     "accompagnements"
+    t.text     "cr"
+  end
+
+  add_index "maraudes", ["date"], name: "index_maraudes_on_date", unique: true
 
   create_table "usagers", force: :cascade do |t|
     t.string   "nom"
@@ -33,10 +45,12 @@ ActiveRecord::Schema.define(version: 20160108135515) do
     t.string   "dates_sig"
     t.boolean  "signale"
     t.string   "pqi_histo"
+    t.text     "fiche"
+    t.text     "details"
   end
 
-  add_index "usagers", ["sexe"], name: "index_usagers_on_sexe"
-  add_index "usagers", ["signalement"], name: "index_usagers_on_signalement"
+  add_index "usagers", ["nom"], name: "index_usagers_on_nom"
+  add_index "usagers", ["signale"], name: "index_usagers_on_signale"
   add_index "usagers", ["ville"], name: "index_usagers_on_ville"
 
   create_table "users", force: :cascade do |t|

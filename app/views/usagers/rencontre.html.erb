@@ -29,8 +29,12 @@
 
   <%= f.date_field :derniere, class: 'form-control', html: {style: 'text-align:center'}, value: Date.yesterday %>
 
+<h3>Détails de la rencontre</h3>
+
+  <%= f.text_field :details, class: 'form-control', html: {style: 'text-align:center'} %>
+
   <%= f.submit "Valider la rencontre", class: 'btn btn-primary' %>
 
-<% end %>
-
 <h3>Prestation délivrée ?</h3>
+
+<% end %>

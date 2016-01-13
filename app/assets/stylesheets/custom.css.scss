@@ -5,6 +5,7 @@
 
 body {
   padding-top: 60px;
+  padding-bottom: 60px;
 }
 
 /* header */
@@ -32,6 +33,12 @@ h1 {
   margin-bottom: 30px;
   margin-top: 60px;
   text-align: center;
+}
+
+pre.maraude-list {
+  font-family: Helvetica;
+  background-color: transparent;
+  border-style: none;
 }
 
 /* usagers index */

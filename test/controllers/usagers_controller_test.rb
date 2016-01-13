@@ -9,13 +9,22 @@ class UsagersControllerTest < ActionController::TestCase
   end
 
   test "should redirect index if not logged in" do
-	get :index
-  assert_not flash.empty?
-	assert_redirected_to root_url	 
+	  get :index
+    assert_not flash.empty?
+	  assert_redirected_to root_url	 
   end
 
   test "should redirect edit when not logged in" do
     get :edit, id: @usager
+    assert_not flash.empty?
+    assert_redirected_to root_url
+  end
+
+  test "should redirect create when not logged in" do
+    post :create, usager: { nom: @usager.nom,
+                            sexe: @usager.sexe,
+                            ville: @usager.ville,
+                            user_id: @usager.user_id }
     assert_not flash.empty?
     assert_redirected_to root_url
   end
@@ -53,6 +62,12 @@ class UsagersControllerTest < ActionController::TestCase
 
   test "should redirect pqi if not logged in" do
     get :pqi
+    assert_not flash.empty?
+    assert_redirected_to root_url
+  end
+
+  test "should redirect rencontre if not logged in" do
+    get :rencontre, id: @usager
     assert_not flash.empty?
     assert_redirected_to root_url
   end
