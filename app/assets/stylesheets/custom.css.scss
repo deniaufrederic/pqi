@@ -8,6 +8,10 @@ body {
   padding-bottom: 60px;
 }
 
+abbr[title="required"] {
+  display: none;
+}
+
 /* header */
 
 /* footer */
@@ -39,6 +43,11 @@ pre.maraude-list {
   font-family: Helvetica;
   background-color: transparent;
   border-style: none;
+}
+
+#no-styling {
+  text-decoration: none;
+  color: white;
 }
 
 /* usagers index */

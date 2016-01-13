@@ -12,6 +12,16 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
 
+  test "signup if not logged in" do
+    assert_no_difference 'User.count' do
+      post users_path, user: {  nom:  "Exemple",
+                                prenom: "Exemple",
+                                identifiant: "Exzoo",
+                                password:              "password",
+                                password_confirmation: "password" }
+    end
+  end
+
   test "invalid signup information by admin" do
     log_in_as(@admin)
     get signup_path

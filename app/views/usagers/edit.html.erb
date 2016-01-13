@@ -1,6 +1,6 @@
 <% provide(:title, @usager.nom) %>
 
-<%= form_for(@usager) do |f| %>
+<%= simple_form_for(@usager) do |f| %>
 
 <div class="form-inline">
 
@@ -26,7 +26,7 @@
     <td class="ville"><%= f.select :ville, @villes, prompt: "Choisissez une ville", class: 'form-control' %></td>
     <td class="adresse"><%= f.text_field :adresse, class: 'form-control' %></td>
     <td class="comp_adr"><%= f.text_field :adresse_précis, class: 'form-control' %></td>
-    <td class="date_naissance"><%= f.date_field :date_naissance, class: 'form-control' %></td>
+    <td class="date_naissance"><%= f.input :date_naissance, label: false, :as => :date_picker, class: 'form-control' %></td>
     <td class="tel"><%= f.text_field :tel, class: 'form-control' %></td>
     <td class="pqi"><%= f.check_box :pqi, class: 'form-control' %></td>
     <% user = User.find(@usager.user_id) %>

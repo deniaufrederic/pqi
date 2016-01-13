@@ -1,8 +1,9 @@
 class UsagersController < ApplicationController
-  before_action :logged_in_user,  only: [:show, :index, :create, :edit, :update, :destroy, :pqi, :rencontre]
+  before_action :logged_in_user,  only: [:show, :index, :create, :edit, :update, :destroy, :pqi, :rencontre, :fiche]
   before_action :admin_user,      only: :destroy
 
-  def index
+  def new
+    @usager = Usager.new
     @villes = [ ["Aubervilliers", "Aubervilliers"],
                 ["Aulnay-sous-Bois", "Aulnay-sous-Bois"],
                 ["Bagnolet", "Bagnolet"],
@@ -44,15 +45,13 @@ class UsagersController < ApplicationController
                 ["Villemomble", "Villemomble"],
                 ["Villepinte", "Villepinte"],
                 ["Villetaneuse", "Villetaneuse"]]
-  	if logged_in?
-      @usager = Usager.new
-      @usagers = Usager.paginate(page: params[:page], per_page: 50)
-      if params[:search]
-        @usagers = Usager.search(params[:search]).order("nom ASC").paginate(page: params[:page], per_page: 50)
-      end
-  	else
-  	  redirect_to root_url
-  	end
+  end
+
+  def index
+    @usagers = Usager.paginate(page: params[:page], per_page: 50)
+    if params[:search]
+      @usagers = Usager.search(params[:search]).order("nom ASC").paginate(page: params[:page], per_page: 50)
+    end
   end
 
   def show
@@ -72,6 +71,7 @@ class UsagersController < ApplicationController
   end
 
   def edit
+    store_last
     @villes = [ ["Aubervilliers", "Aubervilliers"],
                 ["Aulnay-sous-Bois", "Aulnay-sous-Bois"],
                 ["Bagnolet", "Bagnolet"],
@@ -162,62 +162,67 @@ class UsagersController < ApplicationController
                 ["Villepinte", "Villepinte"],
                 ["Villetaneuse", "Villetaneuse"]]
   	@usager = Usager.find(params[:id])
-    if @usager.update_attribute(:derniere, params[:usager][:derniere]) && @usager.derniere
-      if Maraude.find_by(date: params[:usager][:derniere]).present?
-        @maraude = Maraude.find_by(date: params[:usager][:derniere])
-        @maraude.rencontres << "#{@usager.sexe} #{@usager.nom} #{@usager.prenom} (#{@usager.ville})\n"
-      else
-        @maraude = Maraude.new(date: params[:usager][:derniere], rencontres: "#{@usager.sexe} #{@usager.nom} #{@usager.prenom} (#{@usager.ville})\n", signalements: "", accompagnements: "")
-      end
-      @maraude.cr = "COMPTE-RENDU DE MARAUDE DU #{@usager.derniere}\n\n\n" unless @maraude.cr
-      @maraude.cr << "- #{@usager.sexe} #{@usager.nom} #{@usager.prenom} : "
-      rencontre_u = "// Rencontre du #{@usager.derniere.strftime("%d/%m/%y")} //"
-      if @usager.update_attribute(:details, params[:usager][:details]) && @usager.details
-        rencontre_u << "\n#{@usager.details}"
-        @maraude.cr << "#{@usager.details}\n\n"
-      else
-        rencontre_u << "\nRencontre sans détails."
-        @maraude.cr << "Rien de notable.\n\n"
-      end
-      rencontre_u << "\n\n\n" unless !@usager.fiche
-      rencontre_u << "#{@usager.fiche}"
-      @usager.fiche = rencontre_u
-      @maraude.save
-      if @usager.update_attribute(:signale, params[:usager][:signale]) && @usager.signale
-        if !params[:usager][:signalement].empty?
-          @usager.update_attribute(:signalement, params[:usager][:signalement])
-          if @usager.dates_sig.nil?
-            @usager.dates_sig = ""
-          else
-            @usager.dates_sig << " - "
-          end
-          @usager.dates_sig << @usager.derniere.strftime("%y/%m/%d")
-          @usager.dates_sig << " (#{@usager.signalement})"
-          @maraude.signalements << "#{@usager.sexe} #{@usager.nom} #{@usager.prenom} (#{@usager.signalement})\n"
-          @maraude.save
+    if @usager.update_attribute(:derniere, params[:usager][:derniere]) && session[:stored] == "rencontre"
+      if @usager.derniere
+        if Maraude.find_by(date: params[:usager][:derniere]).present?
+          @maraude = Maraude.find_by(date: params[:usager][:derniere])
+          @maraude.rencontres << "#{@usager.sexe} #{@usager.nom} #{@usager.prenom} (#{@usager.ville})\n"
         else
-          flash[:danger] = "Précisez le type de signalement"
-          redirect_to id_rencontre_path(:id => @usager.id)
+          @maraude = Maraude.new(date: params[:usager][:derniere], rencontres: "#{@usager.sexe} #{@usager.nom} #{@usager.prenom} (#{@usager.ville})\n", signalements: "", accompagnements: "")
+        end
+        @maraude.cr = "COMPTE-RENDU DE MARAUDE DU #{@usager.derniere}\n\n\n" unless @maraude.cr
+        @maraude.cr << "- #{@usager.sexe} #{@usager.nom} #{@usager.prenom} : "
+        rencontre_u = "// Rencontre du #{@usager.derniere.strftime("%d/%m/%y")} //"
+        if @usager.update_attribute(:details, params[:usager][:details]) && @usager.details
+          rencontre_u << "\n#{@usager.details}"
+          @maraude.cr << "#{@usager.details}\n\n"
+        else
+          rencontre_u << "\nRencontre sans détails."
+          @maraude.cr << "Rien de notable.\n\n"
+        end
+        rencontre_u << "\n\n\n" unless !@usager.fiche
+        rencontre_u << "#{@usager.fiche}"
+        @usager.fiche = rencontre_u
+        @maraude.save
+        if @usager.update_attribute(:signale, params[:usager][:signale]) && @usager.signale
+          if !params[:usager][:signalement].empty?
+            @usager.update_attribute(:signalement, params[:usager][:signalement])
+            if @usager.dates_sig.nil?
+              @usager.dates_sig = ""
+            else
+              @usager.dates_sig << " - "
+            end
+            @usager.dates_sig << @usager.derniere.strftime("%y/%m/%d")
+            @usager.dates_sig << " (#{@usager.signalement})"
+            @maraude.signalements << "#{@usager.sexe} #{@usager.nom} #{@usager.prenom} (#{@usager.signalement})\n"
+            @maraude.save
+          else
+            flash[:danger] = "Précisez le type de signalement"
+            redirect_to id_rencontre_path(:id => @usager.id)
+          end
+        else
+          params[:usager][:signalement] = nil
+        end
+        if @usager.rencontres.nil?
+          @usager.rencontres = ""
+        else
+          @usager.rencontres << " - "
+        end
+        @usager.rencontres << @usager.derniere.strftime("%y/%m/%d")
+        arr = @usager.rencontres.split(" - ").sort
+        @usager.rencontres = arr.join(' - ')
+        if @usager.pqi && @usager.pqi_histo.nil?
+          @usager.pqi_histo = ""
+          @usager.pqi_histo << Date.today.strftime("%d/%m/%y")
+        end
+        if (@usager.signale && !params[:usager][:signalement].empty?) || !@usager.signale
+          @usager.update_attributes(usager_params)
+          flash[:success] = "Rencontre ajoutée avec #{@usager.sexe} #{@usager.nom} #{@usager.prenom}"
+          redirect_to usagers_path
         end
       else
-        params[:usager][:signalement] = nil
-      end
-      if @usager.rencontres.nil?
-        @usager.rencontres = ""
-      else
-        @usager.rencontres << " - "
-      end
-      @usager.rencontres << @usager.derniere.strftime("%y/%m/%d")
-      arr = @usager.rencontres.split(" - ").sort
-      @usager.rencontres = arr.join(' - ')
-      if @usager.pqi && @usager.pqi_histo.nil?
-        @usager.pqi_histo = ""
-        @usager.pqi_histo << Date.today.strftime("%d/%m/%y")
-      end
-      if (@usager.signale && !params[:usager][:signalement].empty?) || !@usager.signale
-        @usager.update_attributes(usager_params)
-        flash[:success] = "Rencontre ajoutée avec #{@usager.sexe} #{@usager.nom} #{@usager.prenom}"
-        redirect_to usagers_path
+        flash[:danger] = "Renseignez une date"
+        redirect_to id_rencontre_path(:id => @usager.id)
       end
     elsif @usager.update_attribute(:pqi, params[:usager][:pqi])
       if @usager.update_attributes(usager_params)
@@ -302,10 +307,18 @@ class UsagersController < ApplicationController
   end
 
   def rencontre
+    store_last
     store_id
     @signalements = [ ["Signalement 115", "Signalement 115"],
                       ["Signalement tiers", "Signalement tiers"],
                       ["Croisé(e) en maraude", "Croisé(e) en maraude"]]
+    @usager = Usager.find_by(id: session[:stored_id])
+    session.delete(:stored_id)
+  end
+
+  def fiche
+    store_last
+    store_id
     @usager = Usager.find_by(id: session[:stored_id])
     session.delete(:stored_id)
   end

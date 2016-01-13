@@ -1,6 +1,6 @@
 <% provide(:title, 'Rencontre') %>
 
-<%= form_for(@usager) do |f| %>
+<%= simple_form_for(@usager) do |f| %>
 
 <% if @usager.rencontres.nil? %>
   <h1>Renseigner la rencontre</h1>
@@ -27,13 +27,21 @@
 
 <h3>Date de la rencontre ?</h3>
 
-  <%= f.date_field :derniere, class: 'form-control', html: {style: 'text-align:center'}, value: Date.yesterday %>
+  <%= f.input :derniere, label: false, :as => :date_picker, class: 'form-control', value: Date.yesterday %>
 
 <h3>Détails de la rencontre</h3>
 
   <%= f.text_field :details, class: 'form-control', html: {style: 'text-align:center'} %>
 
+<div class="btn-group">
   <%= f.submit "Valider la rencontre", class: 'btn btn-primary' %>
+
+  <% if @usager.rencontres.nil? %>
+    <button type="button" class="btn btn-danger">
+      <%= link_to "Pas besoin", usagers_path, id: 'no-styling' %>
+    </button>
+  <% end %>
+</div>
 
 <h3>Prestation délivrée ?</h3>
 

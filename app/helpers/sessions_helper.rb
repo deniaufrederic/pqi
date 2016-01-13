@@ -29,4 +29,10 @@ module SessionsHelper
     session[:stored_id] = request.url if request.get?
     session[:stored_id] = session[:stored_id].split('/').last
   end
+
+  def store_last
+    session[:stored] = request.url if request.get?
+    s = session[:stored].split('/')
+    session[:stored] = s[s.length-2]
+  end
 end

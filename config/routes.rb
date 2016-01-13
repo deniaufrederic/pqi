@@ -21,6 +21,11 @@ Rails.application.routes.draw do
     :action     => 'rencontre',
     :as         => :id_rencontre
 
+  get 'fiche/:id',
+    :controller => 'usagers',
+    :action     => 'fiche',
+    :as         => :id_fiche
+
   get 'stats/:date_deb/:date_fin',
     :controller => 'stats',
     :action     => 'show',

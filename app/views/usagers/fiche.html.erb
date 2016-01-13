@@ -1,0 +1,11 @@
+<% provide(:title, "Fiche de #{@usager.sexe} #{@usager.nom} #{@usager.prenom}") %>
+
+<h1><%= "Fiche de #{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %></h1>
+
+<%= simple_form_for(@usager) do |f| %>
+
+  <%= f.text_area :fiche, class: 'form-control', rows: "20" %>
+
+  <%= f.submit "Valider la fiche", class: "btn btn-primary" %>
+
+<% end %>
