@@ -76,7 +76,7 @@ class UsagersController < ApplicationController
   end
 
   def edit
-    store_last
+    session[:stored] = "edit"
     @villes = [ ["Aubervilliers", "Aubervilliers"],
                 ["Aulnay-sous-Bois", "Aulnay-sous-Bois"],
                 ["Bagnolet", "Bagnolet"],
