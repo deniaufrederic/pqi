@@ -1,7 +1,6 @@
 class Usager < ActiveRecord::Base
   before_save { nom.upcase! }
   before_save { self.prenom = prenom.split(' ').map(&:capitalize).join(' ').split('-').map(&:capitalize).join('-') }
-  before_save { self.date_naissance = date_naissance.strftime("%d/%m/%y") unless self.date_naissance.nil? }
   default_scope -> { order(pqi: :desc, nom: :asc) }
   validate :at_least_one
   VALID_TEL_REGEX = /\A\d{10}\Z/

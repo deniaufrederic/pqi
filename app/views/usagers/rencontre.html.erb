@@ -27,7 +27,7 @@
 
 <h3>Date de la rencontre ?</h3>
 
-  <%= f.input :derniere, label: false, :as => :date_picker, class: 'form-control', value: Date.yesterday %>
+  <%= f.input :derniere, label: false, :as => :date_picker, input_html: {value: Date.today}, class: 'form-control' %>
 
 <h3>Détails de la rencontre</h3>
 
