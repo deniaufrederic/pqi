@@ -12,7 +12,7 @@ class Usager < ActiveRecord::Base
   validates :ville, presence: true
 
     def self.search(search)
-      if params[:search]
+      if search
         where("nom LIKE ? OR ville LIKE? OR prenom LIKE? OR adresse LIKE? OR adresse_précis LIKE? OR sexe LIKE? OR rencontres LIKE?", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%") 
       else
         scoped
