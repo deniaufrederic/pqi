@@ -19,7 +19,7 @@
     <td class="ville"><%= "#{@usager.ville}" %></td>
     <td class="adresse"><%= "#{@usager.adresse}" %></td>
     <td class="comp_adr"><%= "#{@usager.adresse_précis}" %></td>
-    <td class="date_naissance"><%= "#{dates_ok(@usager.date_naissance)}" %></td>
+    <td class="date_naissance"><%= "#{@usager.date_naissance.strftime("%d/%m/%y")}" %></td>
     <td class="tel"><%= "#{@usager.tel}" %></td>
     <td class="pqi">
       <%= form_for(@usager) do |f| %>
