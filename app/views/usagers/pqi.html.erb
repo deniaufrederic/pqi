@@ -29,7 +29,7 @@
       <td class="identité-tot">
         <%= link_to "#{usager.sexe} #{usager.nom} #{usager.prenom}", usager %><br>
         <% if usager.date_naissance? %>
-          <%= "#{dates_ok(usager.date_naissance)}" %><br>
+          <%= "#{usager.date_naissance.strftime("%d/%m/%y")}" %><br>
         <% end %>
         <% if usager.tel? %>
           <%= "#{usager.tel}" %>
