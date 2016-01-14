@@ -3,14 +3,10 @@
 
 <%= will_paginate %>
 
-<div class="row">
-  <div class="col-md-6 col-md-offset-3">
     <%= form_tag(usagers_path, :method => "get", id: "search-form") do %>
-    <%= text_field_tag :search, params[:search], placeholder: "Rechercher" %>
-    <%= submit_tag "Rechercher", class: "btn btn-primary" %>
+    <%= text_field_tag :search, params[:search], placeholder: "Rechercher des usagers" %>
+    <%= submit_tag "Rechercher", class: 'btn btn-primary' %>
     <% end %>
-  </div>
-</div>
 
 <table class="usagers table table-hover">
   <tr id="table_head">

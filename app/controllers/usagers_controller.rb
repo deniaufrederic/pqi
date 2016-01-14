@@ -48,9 +48,10 @@ class UsagersController < ApplicationController
   end
 
   def index
-    @usagers = Usager.paginate(page: params[:page], per_page: 50)
     if params[:search]
-      @usagers = Usager.search(params[:search]).order("nom ASC").paginate(page: params[:page], per_page: 50)
+      @usagers = Usager.search(params[:search]).paginate(page: params[:page], per_page: 10)
+    else
+      @usagers = Usager.paginate(page: params[:page], per_page: 50)
     end
   end
 
