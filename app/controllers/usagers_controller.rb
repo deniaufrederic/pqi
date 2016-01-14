@@ -62,6 +62,11 @@ class UsagersController < ApplicationController
     @usager = Usager.new(usager_params)
     @usager.user_id = current_user.id
     if @usager.save
+      if @usager.pqi
+        @usager.pqi_histo = ""
+        @usager.pqi_histo << Date.today.strftime("%d/%m/%y")
+      end
+      @usager.save
       flash[:success] = "Nouvel usager ajouté !"
       redirect_to id_rencontre_path(:id => @usager.id)
     else
@@ -162,6 +167,7 @@ class UsagersController < ApplicationController
                 ["Villepinte", "Villepinte"],
                 ["Villetaneuse", "Villetaneuse"]]
   	@usager = Usager.find(params[:id])
+    stored_pqi = @usager.pqi
     if @usager.update_attribute(:derniere, params[:usager][:derniere]) && session[:stored] == "rencontre"
       if @usager.derniere
         if Maraude.find_by(date: params[:usager][:derniere]).present?
@@ -224,7 +230,7 @@ class UsagersController < ApplicationController
         flash[:danger] = "Renseignez une date"
         redirect_to id_rencontre_path(:id => @usager.id)
       end
-    elsif @usager.update_attribute(:pqi, params[:usager][:pqi])
+    elsif @usager.update_attribute(:pqi, params[:usager][:pqi]) && session[:stored] == "edit"
       if @usager.update_attributes(usager_params)
         if @usager.pqi
           if @usager.pqi_histo
@@ -243,6 +249,11 @@ class UsagersController < ApplicationController
         flash[:danger] = "Mise à jour impossible. Veillez à remplir les informations nécessaires (Nom et/ou prénom, ville et sexe)."
         render 'edit'
       end
+    elsif session[:stored] == "fiche"
+      @usager.update_attribute(:fiche, params[:usager][:fiche])
+      @usager.update_attribute(:pqi, stored_pqi)
+      flash[:success] = "Fiche de suivi usager éditée"
+      redirect_to @usager
     elsif @usager.update_attributes(usager_params)
       flash[:success] = "Usager édité"
       redirect_to @usager
