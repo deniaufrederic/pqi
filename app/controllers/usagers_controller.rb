@@ -326,6 +326,7 @@ class UsagersController < ApplicationController
                       ["Signalement tiers", "Signalement tiers"],
                       ["Croisé(e) en maraude", "Croisé(e) en maraude"]]
     @usager = Usager.find_by(id: session[:stored_id])
+    gon.rencontres = @usager.rencontres.split(' - ')
     session.delete(:stored_id)
   end
 

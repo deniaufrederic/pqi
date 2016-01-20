@@ -1,4 +1,10 @@
-<% provide(:title, @usager.nom) %>
+<% if @usager.nom && @usager.prenom %>
+  <% provide(:title, "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}") %>
+<% elsif @usager.nom && !@usager.prenom %>
+  <% provide(:title, "#{@usager.sexe} #{@usager.nom}") %>
+<% else %>
+  <% provide(:title, "#{@usager.sexe} #{@usager.prenom}") %>
+<% end %>
 
 <h1>
   <%= "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %><br>

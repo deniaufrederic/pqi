@@ -1,3 +1,16 @@
+<script>
+$(document).ready(function(){
+    $("#submit").mouseenter(function(){
+        var val = $("#usager_derniere").val();
+        val_ok = val.slice(2,4) + '/' + val.slice(5,7) + '/' + val.slice(8,10);
+        val_affiche = val.slice(8,10) + '/' + val.slice(5,7) + '/' + val.slice(2,4);
+        if (gon.rencontres.indexOf(val_ok) > -1) {
+            alert("Etes-vous sûr(e) ? Cette personne a déjà été rencontrée le " + val_affiche + ".");
+        };
+    });
+});
+</script>
+
 <% provide(:title, 'Rencontre') %>
 
 <%= simple_form_for(@usager) do |f| %>
@@ -34,7 +47,7 @@
   <%= f.text_field :details, class: 'form-control', html: {style: 'text-align:center'} %>
 
 <div class="btn-group">
-  <%= f.submit "Valider la rencontre", class: 'btn btn-primary' %>
+  <%= f.submit "Valider la rencontre", class: 'btn btn-primary', id: 'submit' %>
 
   <% if @usager.rencontres.nil? %>
     <button type="button" class="btn btn-danger">
