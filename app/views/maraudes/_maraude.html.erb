@@ -1,57 +1,81 @@
+<% # Listes villes parcourues et usagers rencontrés %>
+<% arr = maraude.rencontres.split(' #').sort %>
+<% liste_villes = [] %>
+<% liste_usagers = [] %>
+<% (0..(arr.length-1)).each do |i| %>
+  <% ville = arr[i].split(' @').first %>
+  <% usager = arr[i].split(' @').last %>
+  <% if liste_villes.last == "#{ville}" %>
+    <% liste_usagers.last << "   - #{usager}\n" %>
+  <% else %>
+    <% liste_villes << "#{ville}" %>
+    <% liste_usagers << "   - #{usager}\n" %>
+  <% end %>
+<% end %>
+<% disp = "" %>
+<% (0..(liste_villes.length-1)).each do |n| %>
+  <% disp << "#{liste_villes[n].upcase} :\n#{liste_usagers[n]}\n" %>
+<% end %>
+
+
+<% # Liste des déroutages %>
+<% der = "" %>
+<% (0..(liste_villes.length-1)).each do |i| %>
+  <% if !maraude.villes.include?("#{liste_villes[i]}") %>
+    <% der << "#{liste_villes[i]}\n" %>
+  <% end %>
+<% end %>
+
+
 <tr id="maraude">
   <td>
     <%= maraude.type_maraude %><br>
-    <%= maraude.date.strftime("%d/%m/%y") %>
-    <%= maraude.villes %>
-    <%= link_to "Ajouter les villes", id_m_villes_path(:id => maraude.id) %>
+    <%= maraude.date.strftime("%d/%m/%y") %><br>
+
+    <% villes = maraude.villes.split("\n") %>
+    <% (0..(villes.length-1)).each do |i| %>
+      <% if liste_villes.include?("#{villes[i]}") %>
+        <% villes[i] << " ☑" %>
+      <% else %>
+        <% villes[i] << " ☐" %>
+      <% end %>
+    <% end %>
+    <pre class="maraude-list"><%= villes.join("\n") %></pre>
+
+    <% if !der.empty? %>
+      Déroutage(s) : <pre class="maraude-list"><%= der %></pre>
+    <% end %>
+
+    <% if maraude.villes.empty? %>
+      <%= link_to "Ajouter les villes théoriquement parcourues", id_m_villes_path(:id => maraude.id) %>
+    <% else %>
+      <%= link_to "Modifier les villes", id_m_villes_path(:id => maraude.id) %>
+    <% end %>
   </td>
   <td>
-    <pre class="maraude-list">
-      <% arr = maraude.rencontres.split(' #').sort %>
-      <% liste_villes = [] %>
-      <% liste_usagers = [] %>
-      <% (0..(arr.length-1)).each do |i| %>
-        <% ville = arr[i].split(' @').first %>
-        <% usager = arr[i].split(' @').last %>
-        <% if liste_villes.last == "#{ville}" %>
-          <% liste_usagers.last << "   - #{usager}\n" %>
-        <% else %>
-          <% liste_villes << "#{ville}" %>
-          <% liste_usagers << "   - #{usager}\n" %>
-        <% end %>
-      <% end %>
-      <% disp = "" %>
-      <% (0..(liste_villes.length-1)).each do |n| %>
-        <% disp << "#{liste_villes[n].upcase} :\n#{liste_usagers[n]}\n" %>
-      <% end %>
-      <%= disp %>
-    </pre>
+    <pre class="maraude-list"><%= disp %></pre>
   </td>
   <td>
-    <pre class="maraude-list">
-      <% arr = maraude.signalements.split(' #').sort %>
-      <% liste_villes = [] %>
-      <% liste_usagers = [] %>
-      <% (0..(arr.length-1)).each do |i| %>
-        <% ville = arr[i].split(' @').first %>
-        <% usager = arr[i].split(' @').last %>
-        <% if liste_villes.last == "#{ville}" %>
-          <% liste_usagers.last << "   - #{usager}\n" %>
-        <% else %>
-          <% liste_villes << "#{ville}" %>
-          <% liste_usagers << "   - #{usager}\n" %>
-        <% end %>
+    <% arr = maraude.signalements.split(' #').sort %>
+    <% liste_villes = [] %>
+    <% liste_usagers = [] %>
+    <% (0..(arr.length-1)).each do |i| %>
+      <% ville = arr[i].split(' @').first %>
+      <% usager = arr[i].split(' @').last %>
+      <% if liste_villes.last == "#{ville}" %>
+        <% liste_usagers.last << "   - #{usager}\n" %>
+      <% else %>
+        <% liste_villes << "#{ville}" %>
+        <% liste_usagers << "   - #{usager}\n" %>
       <% end %>
-      <% disp = "" %>
-      <% (0..(liste_villes.length-1)).each do |n| %>
-        <% disp << "#{liste_villes[n].upcase} :\n#{liste_usagers[n]}\n" %>
-      <% end %>
-      <%= disp %>
-    </pre>
+    <% end %>
+    <% disp = "" %>
+    <% (0..(liste_villes.length-1)).each do |n| %>
+      <% disp << "#{liste_villes[n].upcase} :\n#{liste_usagers[n]}\n" %>
+    <% end %>
+    <pre class="maraude-list"><%= disp %></pre>
   </td>
   <td>
-    <pre class="maraude-list">
-      <%= maraude.accompagnements %>
-    </pre>
+    <pre class="maraude-list"><%= maraude.accompagnements %></pre>
   </td>
 </tr>

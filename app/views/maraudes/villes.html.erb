@@ -1,8 +1,16 @@
-<%= simple_form_for(:maraude, url: maraudes_path) do |f| %>
+<% provide(:title, 'Villes maraude') %>
 
-  <%= @villes.each do |ville| %>
-    <%= fields_for 'maraude[villes][]', ville do |ville_fields| %>
+<h3>Villes théoriquement parcourues pendant la <%= @maraude.type_maraude.downcase %> du <%= @maraude.date.strftime("%d/%m/%y") %></h3>
 
+<%= form_for(@maraude, url: maraudes_path, method: "POST") do |f| %>
+
+  <% for ville in @villes do %>
+    <% if @maraude.villes.split("\n").include?("#{ville.first}") %>
+      <%= f.check_box :villes, { :multiple => true, :checked => true }, "#{ville.first}" %>
+      <%= ville.first %><br>
+    <% else %>
+      <%= f.check_box :villes, { :multiple => true, :checked => false }, "#{ville.first}" %>
+      <%= ville.first %><br>
     <% end %>
   <% end %>
 

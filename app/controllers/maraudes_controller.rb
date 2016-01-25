@@ -53,7 +53,14 @@ class MaraudesController < ApplicationController
                 ["Villepinte", "Villepinte"],
                 ["Villetaneuse", "Villetaneuse"]]
     @maraude = Maraude.find_by(id: session[:stored_id])
+  end
+
+  def post_villes
+    villes = params[:maraude][:villes].reject{ |a| a == '0' }.join("\n")
+    @maraude = Maraude.find_by(id: session[:stored_id])
+    @maraude.update_attribute(:villes, villes)
     session.delete(:stored_id)
+    redirect_to maraudes_path
   end
 
   private
