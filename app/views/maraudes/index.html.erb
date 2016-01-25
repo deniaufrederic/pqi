@@ -1,6 +1,8 @@
 <% provide(:title, 'Maraudes') %>
 
-<table class="maraudes">
+<%= will_paginate %>
+
+<table class="maraudes table table-hover">
   <tr id="table_head">
     <%= render 'table_h' %>
   </tr>
@@ -8,3 +10,5 @@
     <%= render @maraudes %>
   <% end %>
 </table>
+
+<%= will_paginate %>

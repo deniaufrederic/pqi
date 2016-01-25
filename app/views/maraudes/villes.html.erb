@@ -1,0 +1,10 @@
+<%= simple_form_for(:maraude, url: maraudes_path) do |f| %>
+
+  <%= @villes.each do |ville| %>
+    <%= fields_for 'maraude[villes][]', ville do |ville_fields| %>
+
+    <% end %>
+  <% end %>
+
+  <%= f.submit "Valider", class: "btn btn-primary" %>
+<% end %>

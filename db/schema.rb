@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160113111917) do
+ActiveRecord::Schema.define(version: 20160125140929) do
 
   create_table "maraudes", force: :cascade do |t|
     t.date     "date"
@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 20160113111917) do
     t.text     "signalements"
     t.text     "accompagnements"
     t.text     "cr"
+    t.string   "type_maraude"
+    t.text     "villes"
   end
 
   add_index "maraudes", ["date"], name: "index_maraudes_on_date", unique: true
@@ -47,6 +49,7 @@ ActiveRecord::Schema.define(version: 20160113111917) do
     t.string   "pqi_histo"
     t.text     "fiche"
     t.text     "details"
+    t.string   "type_renc"
   end
 
   add_index "usagers", ["nom"], name: "index_usagers_on_nom"

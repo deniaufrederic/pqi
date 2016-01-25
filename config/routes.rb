@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get 'stats'     =>  'stats#show'
   post 'stats'    =>  'stats#create'
   get 'maraudes'  =>  'maraudes#index'
+  post 'maraudes' =>  'maraudes#post_villes'
 
   get	'pqi/:ville',
   	:controller => 'usagers',
@@ -20,6 +21,11 @@ Rails.application.routes.draw do
     :controller => 'usagers',
     :action     => 'rencontre',
     :as         => :id_rencontre
+
+  get 'maraude-villes/:id',
+    :controller => 'maraudes',
+    :action     => 'villes',
+    :as         => :id_m_villes
 
   get 'fiche/:id',
     :controller => 'usagers',

@@ -72,7 +72,7 @@ class UsagersController < ApplicationController
       redirect_to id_rencontre_path(:id => @usager.id)
     else
       flash[:danger] = "Ajoutez au moins le nom ou le prénom de l'usager ! Si ils ne sont pas connus, spécifiez 'Inconnu' pour le nom. Il faut également renseigner son sexe et sa ville."
-      redirect_to usagers_path
+      redirect_to new_usager_path
     end
   end
 
@@ -119,9 +119,6 @@ class UsagersController < ApplicationController
                 ["Villemomble", "Villemomble"],
                 ["Villepinte", "Villepinte"],
                 ["Villetaneuse", "Villetaneuse"]]
-    @signalements = [ ["Signalement 115", "Signalement 115"],
-                      ["Signalement tiers", "Signalement tiers"],
-                      ["Croisé(e) en maraude", "Croisé(e) en maraude"]]
   	@usager = Usager.find(params[:id])
   end
 
@@ -171,61 +168,97 @@ class UsagersController < ApplicationController
     stored_pqi = @usager.pqi
     if @usager.update_attribute(:derniere, params[:usager][:derniere]) && session[:stored] == "rencontre"
       if @usager.derniere
-        if Maraude.find_by(date: params[:usager][:derniere]).present?
-          @maraude = Maraude.find_by(date: params[:usager][:derniere])
-          @maraude.rencontres << "#{@usager.sexe} #{@usager.nom} #{@usager.prenom} (#{@usager.ville})\n"
-        else
-          @maraude = Maraude.new(date: params[:usager][:derniere], rencontres: "#{@usager.sexe} #{@usager.nom} #{@usager.prenom} (#{@usager.ville})\n", signalements: "", accompagnements: "")
-        end
-        @maraude.cr = "COMPTE-RENDU DE MARAUDE DU #{@usager.derniere}\n\n\n" unless @maraude.cr
-        @maraude.cr << "- #{@usager.sexe} #{@usager.nom} #{@usager.prenom} : "
-        rencontre_u = "// Rencontre du #{@usager.derniere.strftime("%d/%m/%y")} //"
-        if @usager.update_attribute(:details, params[:usager][:details]) && @usager.details
-          rencontre_u << "\n#{@usager.details}"
-          @maraude.cr << "#{@usager.details}\n\n"
-        else
-          rencontre_u << "\nRencontre sans détails."
-          @maraude.cr << "Rien de notable.\n\n"
-        end
-        rencontre_u << "\n\n\n" unless !@usager.fiche
-        rencontre_u << "#{@usager.fiche}"
-        @usager.fiche = rencontre_u
-        @maraude.save
-        if @usager.update_attribute(:signale, params[:usager][:signale]) && @usager.signale
-          if !params[:usager][:signalement].empty?
-            @usager.update_attribute(:signalement, params[:usager][:signalement])
-            if @usager.dates_sig.nil?
-              @usager.dates_sig = ""
+        @usager.update_attribute(:type_renc, params[:usager][:type_renc])
+        if !@usager.type_renc.empty?
+          if @usager.type_renc.split(' ').first == "Maraude"
+            mar = true
+            if Maraude.find_by(date: params[:usager][:derniere], type_maraude: params[:usager][:type_renc]).present?
+              @maraude = Maraude.find_by(date: params[:usager][:derniere], type_maraude: params[:usager][:type_renc])
+              m_rencontres = @maraude.rencontres
+              m_rencontres << " ##{@usager.ville} @#{@usager.sexe} #{@usager.nom} #{@usager.prenom}"
             else
-              @usager.dates_sig << " - "
+              @maraude = Maraude.new(date: params[:usager][:derniere], type_maraude: params[:usager][:type_renc], rencontres: "#{@usager.ville} @#{@usager.sexe} #{@usager.nom} #{@usager.prenom}")
             end
-            @usager.dates_sig << @usager.derniere.strftime("%y/%m/%d")
-            @usager.dates_sig << " (#{@usager.signalement})"
-            @maraude.signalements << "#{@usager.sexe} #{@usager.nom} #{@usager.prenom} (#{@usager.signalement})\n"
-            @maraude.save
+            if @maraude.cr
+              m_cr = @maraude.cr
+            else
+              m_cr = "COMPTE-RENDU DE MARAUDE DU #{@usager.derniere}\n" unless @maraude.cr
+              m_cr << "#{@maraude.type_maraude}\n\n\n"
+            end
+            m_cr << "- #{@usager.sexe} #{@usager.nom} #{@usager.prenom} : "
           else
-            flash[:danger] = "Précisez le type de signalement"
-            redirect_to id_rencontre_path(:id => @usager.id)
+            mar = false
+          end
+          rencontre_u = "// Rencontre du #{@usager.derniere.strftime("%d/%m/%y")} [#{@usager.type_renc}] //"
+          if @usager.update_attribute(:details, params[:usager][:details]) && @usager.details
+            rencontre_u << "\n#{@usager.details}"
+            m_cr << "#{@usager.details}\n\n" unless !mar
+          else
+            rencontre_u << "\nRencontre sans détails."
+            m_cr << "Rien de notable.\n\n" unless !mar
+          end
+          rencontre_u << "\n\n\n" unless !@usager.fiche
+          rencontre_u << "#{@usager.fiche}"
+          u_fiche = rencontre_u
+          if @usager.update_attribute(:signale, params[:usager][:signale]) && @usager.signale
+            if !params[:usager][:signalement].empty?
+              if mar
+                @usager.update_attribute(:signalement, params[:usager][:signalement])
+                if @usager.dates_sig.nil?
+                  u_dates_sig = ""
+                else
+                  u_dates_sig = @usager.dates_sig
+                  u_dates_sig << " - "
+                end
+                u_dates_sig << @usager.derniere.strftime("%y/%m/%d")
+                u_dates_sig << " (#{@usager.signalement})"
+                if @maraude.signalements.nil?
+                  m_signalements = "#{@usager.ville} @#{@usager.sexe} #{@usager.nom} #{@usager.prenom} (#{@usager.signalement})"
+                else
+                  m_signalements = @maraude.signalements
+                  m_signalements << " ##{@usager.ville} @#{@usager.sexe} #{@usager.nom} #{@usager.prenom} (#{@usager.signalement})"
+                end
+              else
+                err = true
+                flash[:danger] = "Erreur : signalement alors que la rencontre annoncée n'est pas une maraude"
+                redirect_to id_rencontre_path(:id => @usager.id)
+              end
+            else
+              flash[:danger] = "Précisez le type de signalement"
+              redirect_to id_rencontre_path(:id => @usager.id)
+            end
+          else
+            params[:usager][:signalement] = nil
+          end
+          if @usager.rencontres.nil?
+            u_rencontres = ""
+          else
+            u_rencontres = @usager.rencontres
+            u_rencontres << " - "
+          end
+          u_rencontres << @usager.derniere.strftime("%y/%m/%d")
+          arr = u_rencontres.split(" - ").sort
+          u_rencontres = arr.join(' - ')
+          if @usager.pqi && @usager.pqi_histo.nil?
+            u_pqi_histo = ""
+            u_pqi_histo << Date.today.strftime("%d/%m/%y")
+          end
+          @usager.fiche = u_fiche if u_fiche
+          @usager.rencontres = u_rencontres if u_rencontres
+          @usager.pqi_histo = u_pqi_histo if u_pqi_histo
+          @usager.dates_sig = u_dates_sig if u_dates_sig
+          @maraude.cr = m_cr if m_cr
+          @maraude.rencontres = m_rencontres if m_rencontres
+          @maraude.signalements = m_signalements if m_signalements
+          @maraude.save unless !mar
+          if !err && ((@usager.signale && !params[:usager][:signalement].empty?) || !@usager.signale)
+            @usager.update_attributes(usager_params)
+            flash[:success] = "Rencontre ajoutée avec #{@usager.sexe} #{@usager.nom} #{@usager.prenom}"
+            redirect_to usagers_path
           end
         else
-          params[:usager][:signalement] = nil
-        end
-        if @usager.rencontres.nil?
-          @usager.rencontres = ""
-        else
-          @usager.rencontres << " - "
-        end
-        @usager.rencontres << @usager.derniere.strftime("%y/%m/%d")
-        arr = @usager.rencontres.split(" - ").sort
-        @usager.rencontres = arr.join(' - ')
-        if @usager.pqi && @usager.pqi_histo.nil?
-          @usager.pqi_histo = ""
-          @usager.pqi_histo << Date.today.strftime("%d/%m/%y")
-        end
-        if (@usager.signale && !params[:usager][:signalement].empty?) || !@usager.signale
-          @usager.update_attributes(usager_params)
-          flash[:success] = "Rencontre ajoutée avec #{@usager.sexe} #{@usager.nom} #{@usager.prenom}"
-          redirect_to usagers_path
+          flash[:danger] = "Précisez un type de rencontre"
+          redirect_to id_rencontre_path(:id => @usager.id)
         end
       else
         flash[:danger] = "Renseignez une date"
@@ -325,8 +358,17 @@ class UsagersController < ApplicationController
     @signalements = [ ["Signalement 115", "Signalement 115"],
                       ["Signalement tiers", "Signalement tiers"],
                       ["Croisé(e) en maraude", "Croisé(e) en maraude"]]
+    @types =  [ ["Maraude salariés", "Maraude salariés"],
+                ["Maraude bénévoles", "Maraude bénévoles"],
+                ["Maraude jour", "Maraude jour"],
+                ["Rencontre pôle jour", "Rencontre pôle jour"],
+                ["Autre", "Autre"]]
     @usager = Usager.find_by(id: session[:stored_id])
-    gon.rencontres = @usager.rencontres.split(' - ')
+    if @usager.rencontres
+      gon.renc = @usager.rencontres.split(' - ')
+    else
+      gon.renc = []
+    end
     session.delete(:stored_id)
   end
 
@@ -357,7 +399,8 @@ class UsagersController < ApplicationController
                                       :dates_sig,
                                       :pqi_histo,
                                       :details,
-                                      :fiche)
+                                      :fiche,
+                                      :type_renc)
     end
 
     def logged_in_user

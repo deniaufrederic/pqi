@@ -1,14 +1,57 @@
 <tr id="maraude">
   <td>
+    <%= maraude.type_maraude %><br>
     <%= maraude.date.strftime("%d/%m/%y") %>
+    <%= maraude.villes %>
+    <%= link_to "Ajouter les villes", id_m_villes_path(:id => maraude.id) %>
   </td>
   <td>
-    <pre class="maraude-list"><%= maraude.rencontres %></pre>
+    <pre class="maraude-list">
+      <% arr = maraude.rencontres.split(' #').sort %>
+      <% liste_villes = [] %>
+      <% liste_usagers = [] %>
+      <% (0..(arr.length-1)).each do |i| %>
+        <% ville = arr[i].split(' @').first %>
+        <% usager = arr[i].split(' @').last %>
+        <% if liste_villes.last == "#{ville}" %>
+          <% liste_usagers.last << "   - #{usager}\n" %>
+        <% else %>
+          <% liste_villes << "#{ville}" %>
+          <% liste_usagers << "   - #{usager}\n" %>
+        <% end %>
+      <% end %>
+      <% disp = "" %>
+      <% (0..(liste_villes.length-1)).each do |n| %>
+        <% disp << "#{liste_villes[n].upcase} :\n#{liste_usagers[n]}\n" %>
+      <% end %>
+      <%= disp %>
+    </pre>
   </td>
   <td>
-    <pre class="maraude-list"><%= maraude.signalements %></pre>
+    <pre class="maraude-list">
+      <% arr = maraude.signalements.split(' #').sort %>
+      <% liste_villes = [] %>
+      <% liste_usagers = [] %>
+      <% (0..(arr.length-1)).each do |i| %>
+        <% ville = arr[i].split(' @').first %>
+        <% usager = arr[i].split(' @').last %>
+        <% if liste_villes.last == "#{ville}" %>
+          <% liste_usagers.last << "   - #{usager}\n" %>
+        <% else %>
+          <% liste_villes << "#{ville}" %>
+          <% liste_usagers << "   - #{usager}\n" %>
+        <% end %>
+      <% end %>
+      <% disp = "" %>
+      <% (0..(liste_villes.length-1)).each do |n| %>
+        <% disp << "#{liste_villes[n].upcase} :\n#{liste_usagers[n]}\n" %>
+      <% end %>
+      <%= disp %>
+    </pre>
   </td>
   <td>
-    <pre class="maraude-list"><%= maraude.accompagnements %></pre>
+    <pre class="maraude-list">
+      <%= maraude.accompagnements %>
+    </pre>
   </td>
 </tr>

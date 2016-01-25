@@ -11,12 +11,13 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery.turbolinks
 //= require jquery_ujs
-//= require turbolinks
 //= require_tree .
 //= require moment
 //= require bootstrap-datetimepicker
 //= require pickers
+//= require turbolinks
 
 function printpage()
 {
