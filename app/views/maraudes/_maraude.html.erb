@@ -3,7 +3,7 @@
 <% liste_villes = [] %>
 <% liste_usagers = [] %>
 <% (0..(arr.length-1)).each do |i| %>
-  <% ville = arr[i].split(' @').first %>
+  <% ville = arr[i].split(' @').first.upcase %>
   <% usager = arr[i].split(' @').last %>
   <% if liste_villes.last == "#{ville}" %>
     <% liste_usagers.last << "   - #{usager}\n" %>
@@ -14,7 +14,7 @@
 <% end %>
 <% disp = "" %>
 <% (0..(liste_villes.length-1)).each do |n| %>
-  <% disp << "#{liste_villes[n].upcase} :\n#{liste_usagers[n]}\n" %>
+  <% disp << "#{liste_villes[n]} :\n#{liste_usagers[n]}\n" %>
 <% end %>
 
 
