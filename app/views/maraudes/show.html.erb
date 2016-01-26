@@ -5,7 +5,7 @@
 <% liste_villes = [] %>
 <% liste_usagers = [] %>
 <% (0..(arr.length-1)).each do |i| %>
-  <% ville = arr[i].split(' @@').first.upcase %>
+  <% ville = arr[i].split(' @@').first %>
   <% usager = arr[i].split(' @@').last %>
   <% if liste_villes.last == "#{ville}" %>
     <% liste_usagers.last << "   - #{usager}\n" %>
