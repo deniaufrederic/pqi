@@ -172,25 +172,25 @@ class UsagersController < ApplicationController
         if !@usager.type_renc.empty?
           if @usager.type_renc.split(' ').first == "Maraude"
             mar = true
-            if Maraude.find_by(date: params[:usager][:derniere], type_maraude: params[:usager][:type_renc]).present?
-              @maraude = Maraude.find_by(date: params[:usager][:derniere], type_maraude: params[:usager][:type_renc])
+            if Maraude.find_by(date: @usager.derniere, type_maraude: @usager.type_renc).present?
+              @maraude = Maraude.find_by(date: @usager.derniere, type_maraude: @usager.type_renc)
               m_rencontres = @maraude.rencontres
               m_rencontres << " ##{@usager.ville} @#{@usager.sexe} #{@usager.nom} #{@usager.prenom}"
             else
-              @maraude = Maraude.new(date: params[:usager][:derniere], type_maraude: params[:usager][:type_renc], rencontres: "#{@usager.ville} @#{@usager.sexe} #{@usager.nom} #{@usager.prenom}")
+              @maraude = Maraude.new(date: @usager.derniere, type_maraude: @usager.type_renc, rencontres: "#{@usager.ville} @#{@usager.sexe} #{@usager.nom} #{@usager.prenom}", villes: "")
             end
             if @maraude.cr
               m_cr = @maraude.cr
             else
-              m_cr = "COMPTE-RENDU DE MARAUDE DU #{@usager.derniere}\n" unless @maraude.cr
-              m_cr << "#{@maraude.type_maraude}\n\n\n"
+              m_cr = "COMPTE-RENDU DE MARAUDE\n" unless @maraude.cr
+              m_cr << "#{@maraude.type_maraude} [#{@usager.derniere.strftime("%d/%m/%y")}]\n\n\n"
             end
             m_cr << "- #{@usager.sexe} #{@usager.nom} #{@usager.prenom} : "
           else
             mar = false
           end
           rencontre_u = "// #{@usager.type_renc} [#{@usager.derniere.strftime("%d/%m/%y")}] //"
-          if @usager.update_attribute(:details, params[:usager][:details]) && @usager.details
+          if @usager.update_attribute(:details, params[:usager][:details]) && !@usager.details.empty?
             rencontre_u << "\n#{@usager.details}"
             m_cr << "#{@usager.details}\n\n" unless !mar
           else

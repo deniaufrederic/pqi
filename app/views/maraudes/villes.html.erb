@@ -2,7 +2,7 @@
 
 <h3>Villes théoriquement parcourues pendant la <%= @maraude.type_maraude.downcase %> du <%= @maraude.date.strftime("%d/%m/%y") %></h3>
 
-<%= form_for(@maraude, url: maraudes_path, method: "POST") do |f| %>
+<%= form_for(:maraude, url: maraudes_path, method: "POST") do |f| %>
 
   <% for ville in @villes do %>
     <% if @maraude.villes.split("\n").include?("#{ville.first}") %>

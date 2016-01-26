@@ -29,8 +29,8 @@
 
 <tr id="maraude">
   <td>
-    <%= maraude.type_maraude %><br>
-    <%= maraude.date.strftime("%d/%m/%y") %><br>
+    <%= link_to "#{maraude.type_maraude}", maraude %><br>
+    <%= link_to "#{maraude.date.strftime("%d/%m/%y")}", maraude %><br>
 
     <% villes = maraude.villes.split("\n") %>
     <% (0..(villes.length-1)).each do |i| %>
@@ -42,7 +42,7 @@
     <% end %>
     <pre class="maraude-list"><%= villes.join("\n") %></pre>
 
-    <% if !der.empty? %>
+    <% if !der.empty? && !maraude.villes.empty? %>
       Déroutage(s) : <pre class="maraude-list"><%= der %></pre>
     <% end %>
 

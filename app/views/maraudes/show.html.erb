@@ -1,1 +1,11 @@
 <% provide(:title, 'Maraudes') %>
+
+<h1><%= @maraude.type_maraude %> [<%= @maraude.date.strftime("%d/%m/%y") %>]</h1>
+
+<h3>
+  <button type="button" class="btn btn-info btn-lg">
+    <%= link_to "Compte-rendu", '#', id: 'no-styling' %>
+  </button>
+</h3>
+
+<pre class="pre-scrollable"><%= @maraude.cr %></pre>

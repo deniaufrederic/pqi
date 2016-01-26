@@ -11,7 +11,7 @@
     <%= "Statistiques sur le département du #{@dates.first.split('-').reverse.join('/')} au #{@dates.last.split('-').reverse.join('/')}" %>
   </h3>
 
-  <table class="stats">
+  <table class="stats table table-striped">
   	<tr id="table-head">
       <th>Ville</th>
       <%= render 'table_h' %>
@@ -53,7 +53,7 @@
     <%= "Statistiques sur #{@ville} du #{@dates.first.split('-').reverse.join('/')} au #{@dates.last.split('-').reverse.join('/')}" %>
   </h3>
 
-  <table class="stats">
+  <table class="stats table">
   	<tr id="table-head">
   	  <%= render 'table_h' %>
   	</tr>

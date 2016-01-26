@@ -9,8 +9,8 @@ Rails.application.routes.draw do
   resources :usagers
   get 'stats'     =>  'stats#show'
   post 'stats'    =>  'stats#create'
-  get 'maraudes'  =>  'maraudes#index'
   post 'maraudes' =>  'maraudes#post_villes'
+  resources :maraudes
 
   get	'pqi/:ville',
   	:controller => 'usagers',
