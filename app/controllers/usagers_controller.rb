@@ -189,7 +189,7 @@ class UsagersController < ApplicationController
           else
             mar = false
           end
-          rencontre_u = "// Rencontre du #{@usager.derniere.strftime("%d/%m/%y")} [#{@usager.type_renc}] //"
+          rencontre_u = "// #{@usager.type_renc} [#{@usager.derniere.strftime("%d/%m/%y")}] //"
           if @usager.update_attribute(:details, params[:usager][:details]) && @usager.details
             rencontre_u << "\n#{@usager.details}"
             m_cr << "#{@usager.details}\n\n" unless !mar
