@@ -1,5 +1,26 @@
 <% provide(:title, 'Maraudes') %>
 
+<% # Listes villes parcourues et usagers rencontrés avec détails %>
+<% arr = @maraude.cr.split(' ##').sort %>
+<% liste_villes = [] %>
+<% liste_usagers = [] %>
+<% (0..(arr.length-1)).each do |i| %>
+  <% ville = arr[i].split(' @@').first %>
+  <% usager = arr[i].split(' @@').last %>
+  <% if liste_villes.last == "#{ville}" %>
+    <% liste_usagers.last << "   - #{usager}\n" %>
+  <% else %>
+    <% liste_villes << "#{ville}" %>
+    <% liste_usagers << "   - #{usager}\n" %>
+  <% end %>
+<% end %>
+<% disp = "COMPTE-RENDU DE MARAUDE\n" %>
+<% disp << "#{@maraude.type_maraude} [#{@maraude.date.strftime("%d/%m/%y")}]\n\n\n" %>
+<% (0..(liste_villes.length-1)).each do |n| %>
+  <% disp << "#{liste_villes[n].upcase} :\n#{liste_usagers[n]}\n" %>
+<% end %>
+
+
 <h1><%= @maraude.type_maraude %> [<%= @maraude.date.strftime("%d/%m/%y") %>]</h1>
 
 <h3>
@@ -8,4 +29,4 @@
   </button>
 </h3>
 
-<pre class="pre-scrollable"><%= @maraude.cr %></pre>
+<pre class="pre-scrollable"><%= disp %></pre>

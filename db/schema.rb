@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160126124548) do
+ActiveRecord::Schema.define(version: 20160126131536) do
 
   create_table "maraudes", force: :cascade do |t|
     t.date     "date"
@@ -24,6 +24,8 @@ ActiveRecord::Schema.define(version: 20160126124548) do
     t.string   "type_maraude"
     t.text     "villes"
   end
+
+  add_index "maraudes", ["date", "type_maraude"], name: "index_maraudes_on_date_and_type_maraude", unique: true
 
   create_table "usagers", force: :cascade do |t|
     t.string   "nom"

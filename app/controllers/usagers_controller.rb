@@ -177,15 +177,14 @@ class UsagersController < ApplicationController
               m_rencontres = @maraude.rencontres
               m_rencontres << " ##{@usager.ville} @#{@usager.sexe} #{@usager.nom} #{@usager.prenom}"
             else
-              @maraude = Maraude.new(date: @usager.derniere, type_maraude: @usager.type_renc, rencontres: "#{@usager.ville} @#{@usager.sexe} #{@usager.nom} #{@usager.prenom}", villes: "")
+              @maraude = Maraude.new(date: @usager.derniere, type_maraude: @usager.type_renc, rencontres: "#{@usager.ville} @#{@usager.sexe} #{@usager.nom} #{@usager.prenom}", villes: "", signalements: "")
             end
             if @maraude.cr
               m_cr = @maraude.cr
+              m_cr << " ###{@usager.ville} @@#{@usager.sexe} #{@usager.nom} #{@usager.prenom} : "
             else
-              m_cr = "COMPTE-RENDU DE MARAUDE\n" unless @maraude.cr
-              m_cr << "#{@maraude.type_maraude} [#{@usager.derniere.strftime("%d/%m/%y")}]\n\n\n"
+              m_cr = "#{@usager.ville} @@#{@usager.sexe} #{@usager.nom} #{@usager.prenom} : "
             end
-            m_cr << "- #{@usager.sexe} #{@usager.nom} #{@usager.prenom} : "
           else
             mar = false
           end
@@ -212,7 +211,7 @@ class UsagersController < ApplicationController
                 end
                 u_dates_sig << @usager.derniere.strftime("%y/%m/%d")
                 u_dates_sig << " (#{@usager.signalement})"
-                if @maraude.signalements.nil?
+                if @maraude.signalements.empty?
                   m_signalements = "#{@usager.ville} @#{@usager.sexe} #{@usager.nom} #{@usager.prenom} (#{@usager.signalement})"
                 else
                   m_signalements = @maraude.signalements
