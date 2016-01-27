@@ -46,7 +46,7 @@
           <% dates_renc << "#{r.date.strftime("%d/%m/%y")}" %>
         <% end %>
         <%= dates_5(dates_renc.join(' - ')) %><br>
-        <%= link_to "Ajouter une rencontre", id_rencontre_path(:id => usager.id), id: 'ajout-rencontre' %>
+        <%= link_to "Ajouter une rencontre", id_rencontre_path(:id => usager.id), id: 'ajout-rencontre', "data-no-turbolink" => true %>
       </td>
       <td><%= "#{usager.notes}" %></td>
       <td></td>

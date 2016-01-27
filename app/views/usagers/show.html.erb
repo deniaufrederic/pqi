@@ -81,7 +81,7 @@
   <%= dates_renc.join(' - ') %>
 </span><br>
 
-<span><%= link_to "Ajouter une rencontre", id_rencontre_path(:id => @usager.id), id: 'ajout-rencontre' %></span>
+<span><%= link_to "Ajouter une rencontre", id_rencontre_path(:id => @usager.id), id: 'ajout-rencontre', "data-no-turbolink" => true %></span>
 
 <% if @usager.rencontres.any? %>
   <br><span>
