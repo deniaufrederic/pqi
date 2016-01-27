@@ -1,5 +1,11 @@
 <% # Listes villes parcourues et usagers rencontrés %>
-<% arr = maraude.rencontres.split(' #').sort %>
+<% rencontres = Rencontre.where(date: maraude.date, type_renc: maraude.type_maraude) %>
+<% m_renc = [] %>
+<% rencontres.each do |r| %>
+  <% u = Usager.find_by(id: r.usager_id) %>
+  <% m_renc << "#{u.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
+<% end %>
+<% arr = m_renc.sort %>
 <% liste_villes = [] %>
 <% liste_usagers = [] %>
 <% (0..(arr.length-1)).each do |i| %>
@@ -12,9 +18,9 @@
     <% liste_usagers << "   - #{usager}\n" %>
   <% end %>
 <% end %>
-<% disp = "" %>
+<% disp_renc = "" %>
 <% (0..(liste_villes.length-1)).each do |n| %>
-  <% disp << "#{liste_villes[n].upcase} :\n#{liste_usagers[n]}\n" %>
+  <% disp_renc << "#{liste_villes[n].upcase} :\n#{liste_usagers[n]}\n" %>
 <% end %>
 
 
@@ -24,6 +30,32 @@
   <% if !maraude.villes.include?("#{liste_villes[i]}") %>
     <% der << "#{liste_villes[i]}\n" %>
   <% end %>
+<% end %>
+
+
+<% # Liste des signalements %>
+<% sigs = Rencontre.where(date: maraude.date, type_renc: maraude.type_maraude, signale: true) %>
+<% m_sig = [] %>
+<% sigs.each do |r| %>
+  <% u = Usager.find_by(id: r.usager_id) %>
+  <% m_sig << "#{u.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
+<% end %>
+<% arr = m_sig.sort %>
+<% liste_villes = [] %>
+<% liste_usagers = [] %>
+<% (0..(arr.length-1)).each do |i| %>
+  <% ville = arr[i].split(' @').first %>
+  <% usager = arr[i].split(' @').last %>
+  <% if liste_villes.last == "#{ville}" %>
+    <% liste_usagers.last << "   - #{usager}\n" %>
+  <% else %>
+    <% liste_villes << "#{ville}" %>
+    <% liste_usagers << "   - #{usager}\n" %>
+  <% end %>
+<% end %>
+<% disp_sig = "" %>
+<% (0..(liste_villes.length-1)).each do |n| %>
+  <% disp_sig << "#{liste_villes[n].upcase} :\n#{liste_usagers[n]}\n" %>
 <% end %>
 
 
@@ -53,27 +85,10 @@
     <% end %>
   </td>
   <td>
-    <pre class="maraude-list"><%= disp %></pre>
+    <pre class="maraude-list"><%= disp_renc %></pre>
   </td>
   <td>
-    <% arr = maraude.signalements.split(' #').sort %>
-    <% liste_villes = [] %>
-    <% liste_usagers = [] %>
-    <% (0..(arr.length-1)).each do |i| %>
-      <% ville = arr[i].split(' @').first %>
-      <% usager = arr[i].split(' @').last %>
-      <% if liste_villes.last == "#{ville}" %>
-        <% liste_usagers.last << "   - #{usager}\n" %>
-      <% else %>
-        <% liste_villes << "#{ville}" %>
-        <% liste_usagers << "   - #{usager}\n" %>
-      <% end %>
-    <% end %>
-    <% disp = "" %>
-    <% (0..(liste_villes.length-1)).each do |n| %>
-      <% disp << "#{liste_villes[n].upcase} :\n#{liste_usagers[n]}\n" %>
-    <% end %>
-    <pre class="maraude-list"><%= disp %></pre>
+    <pre class="maraude-list"><%= disp_sig %></pre>
   </td>
   <td>
     <pre class="maraude-list"><%= maraude.accompagnements %></pre>
