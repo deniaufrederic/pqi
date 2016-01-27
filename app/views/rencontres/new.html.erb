@@ -21,7 +21,7 @@ $(document).ready(function(){
 
 <%= simple_form_for(@rencontre) do |f| %>
 
-<% if !@usager.rencontres %>
+<% if @usager.rencontres.empty? %>
   <h1>Renseigner la rencontre</h1>
 
   <%= f.label :signale, "Non connu(e) du service avant ?" %>

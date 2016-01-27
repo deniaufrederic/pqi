@@ -60,13 +60,14 @@ class RencontresController < ApplicationController
       if !err
         @usager.fiche = u_fiche if u_fiche
         @usager.save
+        @rencontre.save
         flash[:success] = "Rencontre ajoutée avec #{@usager.sexe} #{@usager.nom} #{@usager.prenom}"
         redirect_to usagers_path
       end
-    elsif !@rencontre.date
+    elsif @rencontre.date.blank?
       flash[:danger] = "Renseignez une date"
       redirect_to id_rencontre_path(:id => @usager.id)
-    elsif !@rencontre.type_renc
+    elsif @rencontre.type_renc.empty?
       flash[:danger] = "Précisez un type de rencontre"
       redirect_to id_rencontre_path(:id => @usager.id)
     end
