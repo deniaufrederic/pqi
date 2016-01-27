@@ -72,14 +72,4 @@ before_action :logged_in_user, 	only: [:show, :create]
   											ville: params[:stat][:ville])
   	end
   end
-
-private
-
-	def logged_in_user
-      unless logged_in?
-      	flash[:danger] = "Merci de vous connecter."
-      	redirect_to root_url
-      end
-    end
-
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160127141940) do
+ActiveRecord::Schema.define(version: 20160127145346) do
 
   create_table "maraudes", force: :cascade do |t|
     t.date     "date"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20160127141940) do
     t.datetime "updated_at",  null: false
   end
 
+  add_index "rencontres", ["usager_id", "date", "type_renc"], name: "index_rencontres_on_usager_id_and_date_and_type_renc", unique: true
   add_index "rencontres", ["usager_id"], name: "index_rencontres_on_usager_id"
 
   create_table "usagers", force: :cascade do |t|

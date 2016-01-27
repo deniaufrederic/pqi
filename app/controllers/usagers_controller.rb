@@ -50,6 +50,9 @@ class UsagersController < ApplicationController
   def index
     if params[:search]
       @usagers = Usager.search(params[:search]).paginate(page: params[:page], per_page: 10)
+      if @usagers.empty?
+        @usagers = Usager.search(params[:search].split('/').reverse.join('-')).paginate(page: params[:page], per_page: 10)
+      end
     else
       @usagers = Usager.paginate(page: params[:page], per_page: 50)
     end

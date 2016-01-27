@@ -11,7 +11,8 @@ Rails.application.routes.draw do
   post 'stats'    =>  'stats#create'
   post 'maraudes' =>  'maraudes#post_villes'
   resources :maraudes
-  resources :rencontres, only: [:create, :destroy, :update]
+  resources :rencontres, only: [:create, :update]
+  delete 'rencontres' =>  'rencontres#destroy'
 
   get	'pqi/:ville',
   	:controller => 'usagers',
@@ -22,6 +23,11 @@ Rails.application.routes.draw do
     :controller => 'rencontres',
     :action     => 'new',
     :as         => :id_rencontre
+
+  get 'rencontres/destroy/:id',
+    :controller => 'rencontres',
+    :action     => 'destroy_form',
+    :as         => :id_destroy
 
   get 'maraude-villes/:id',
     :controller => 'maraudes',

@@ -3,7 +3,8 @@ class Rencontre < ActiveRecord::Base
 
   default_scope -> { order(date: :desc) }
 
-  validates :usager_id, presence: true
+  validates :usager_id, presence: true,
+  						uniqueness: { scope: [:date, :type_renc] }
   validates :date, presence: true
   validates :type_renc, presence: true
 end

@@ -2,7 +2,14 @@ class MaraudesController < ApplicationController
   before_action :logged_in_user, only: [:index, :show, :villes, :post_villes]
 
   def index
-  	@maraudes = Maraude.paginate(page: params[:page], per_page: 5)
+    if params[:search]
+      @maraudes = Maraude.search(params[:search]).paginate(page: params[:page], per_page: 5)
+      if @maraudes.empty?
+        @maraudes = Maraude.search(params[:search].split('/').reverse.join('-')).paginate(page: params[:page], per_page: 10)
+      end
+    else
+      @maraudes = Maraude.paginate(page: params[:page], per_page: 5)
+    end
   end
 
   def show

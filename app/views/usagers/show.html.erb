@@ -76,12 +76,19 @@
 <span>Dates de rencontres : 
   <% dates_renc = [] %>
   <% @usager.rencontres.each do |r| %>
-    <% dates_renc << "#{r.date.strftime("%d/%m/%y")}" %>
+    <% dates_renc << "#{r.date.strftime("%d/%m/%y")} [#{r.type_renc}]" %>
   <% end %>
   <%= dates_renc.join(' - ') %>
 </span><br>
 
 <span><%= link_to "Ajouter une rencontre", id_rencontre_path(:id => @usager.id), id: 'ajout-rencontre' %></span>
+
+<% if @usager.rencontres.any? %>
+  <br><span>
+    <%= link_to "Supprimer une rencontre",  id_destroy_path(:id => @usager.id),
+                                            data: { confirm: "Etes-vous sûr(e) ?"} %>
+  </span>
+<% end %>
 
 <h3>Statistiques</h3>
 

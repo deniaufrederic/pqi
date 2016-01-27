@@ -1,5 +1,5 @@
 class RencontresController < ApplicationController
-  before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
+  before_action :logged_in_user, only: [:new, :create, :destroy_form, :destroy]
 
   def new
     store_id
@@ -27,18 +27,8 @@ class RencontresController < ApplicationController
     if @rencontre.valid?
       if @rencontre.type_renc.split(' ').first == "Maraude"
         mar = true
-        if Maraude.find_by(date: @rencontre.date, type_maraude: @rencontre.type_renc).present?
-          @maraude = Maraude.find_by(date: @rencontre.date, type_maraude: @rencontre.type_renc)
-          m_rencontres = @maraude.rencontres
-          m_rencontres << " ##{@usager.ville} @#{@usager.sexe} #{@usager.nom} #{@usager.prenom}"
-        else
-          @maraude = Maraude.new(date: @rencontre.date, type_maraude: @rencontre.type_renc, rencontres: "#{@usager.ville} @#{@usager.sexe} #{@usager.nom} #{@usager.prenom}", villes: "", signalements: "")
-        end
-        if @maraude.cr
-          m_cr = @maraude.cr
-          m_cr << " ###{@usager.ville} @@#{@usager.sexe} #{@usager.nom} #{@usager.prenom} : "
-        else
-          m_cr = "#{@usager.ville} @@#{@usager.sexe} #{@usager.nom} #{@usager.prenom} : "
+        if !Maraude.find_by(date: @rencontre.date, type_maraude: @rencontre.type_renc).present?
+          @maraude = Maraude.create(date: @rencontre.date, type_maraude: @rencontre.type_renc, villes: "")
         end
       else
         mar = false
@@ -46,10 +36,8 @@ class RencontresController < ApplicationController
       rencontre_u = "// #{@rencontre.type_renc} [#{@rencontre.date.strftime("%d/%m/%y")}] //"
       if !@rencontre.details.empty?
         rencontre_u << "\n#{@rencontre.details}"
-        m_cr << "#{@rencontre.details}\n\n" unless !mar
       else
         rencontre_u << "\nRencontre sans détails."
-        m_cr << "Rien de notable.\n\n" unless !mar
       end
       rencontre_u << "\n\n\n" unless !@usager.fiche
       rencontre_u << "#{@usager.fiche}"
@@ -72,8 +60,6 @@ class RencontresController < ApplicationController
       if !err
         @usager.fiche = u_fiche if u_fiche
         @usager.save
-        @maraude.cr = m_cr if m_cr
-        @maraude.save unless !mar
         flash[:success] = "Rencontre ajoutée avec #{@usager.sexe} #{@usager.nom} #{@usager.prenom}"
         redirect_to usagers_path
       end
@@ -87,13 +73,30 @@ class RencontresController < ApplicationController
     session.delete(:stored_id)
   end
 
-  def edit
-  end
-
-  def update
+  def destroy_form
+    store_id
+    @types =  [ ["Maraude salariés", "Maraude salariés"],
+                ["Maraude bénévoles", "Maraude bénévoles"],
+                ["Maraude jour", "Maraude jour"],
+                ["Rencontre pôle jour", "Rencontre pôle jour"],
+                ["Autre", "Autre"]]
+    @usager = Usager.find_by(id: session[:stored_id])
   end
 
   def destroy
+    @usager = Usager.find_by(id: session[:stored_id])
+    r = Rencontre.find_by(usager_id: @usager.id,
+                          date: params[:rencontre][:date],
+                          type_renc: params[:rencontre][:type_renc])
+    if r.nil?
+      flash[:danger] = "Cette rencontre n'a pas été trouvée"
+      redirect_to id_destroy_path(:id => @usager.id)
+    else
+      r.destroy
+      flash[:success] = "Rencontre supprimée (N'oubliez pas de retirer la rencontre de la fiche de suivi de l'usager si besoin est)"
+      redirect_to usagers_path
+      session.delete(:stored_id)
+    end
   end
 
   private

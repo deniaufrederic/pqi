@@ -4,12 +4,19 @@
 
 <%= will_paginate %>
 
+  <%= form_tag(maraudes_path, :method => "get", id: "search-form") do %>
+    <%= text_field_tag :search, params[:search], placeholder: "Rechercher des maraudes" %>
+    <%= submit_tag "Rechercher", class: 'btn btn-primary' %>
+  <% end %>
+
 <table class="maraudes table table-hover">
   <tr id="table_head">
     <%= render 'table_h' %>
   </tr>
   <% if !@maraudes.empty? %>
     <%= render @maraudes %>
+  <% else %>
+  	<p>Aucune maraude correspondant au(x) terme(s) : "<%= params[:search] %>".</p>
   <% end %>
 </table>
 
