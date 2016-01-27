@@ -23,9 +23,11 @@
     <% end %>
   </td>
   <td class="rencontres">
-    <% if usager.rencontres %>
-      <%= dates_5(usager.rencontres) %><br>
+    <% dates_renc = [] %>
+    <% usager.rencontres.each do |r| %>
+      <% dates_renc << "#{r.date.strftime("%d/%m/%y")}" %>
     <% end %>
+    <%= dates_5(dates_renc.join(' - ')) %><br>
     <%= link_to "Ajouter une rencontre", id_rencontre_path(:id => usager.id), id: 'ajout-rencontre' %>
   </td>
   <% user = User.find(usager.user_id) %>

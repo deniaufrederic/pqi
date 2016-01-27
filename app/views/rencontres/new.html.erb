@@ -6,7 +6,7 @@ var val_affiche = ""
 
 $(document).ready(function(){
     $("#submit").mouseenter(function(){
-        val = $("#usager_derniere").val();
+        val = $("#rencontre_date").val();
         val_ok = val.slice(2,4) + '/' + val.slice(5,7) + '/' + val.slice(8,10);
         val_affiche = val.slice(8,10) + '/' + val.slice(5,7) + '/' + val.slice(2,4);
         if (val_stock != val_ok) {
@@ -21,9 +21,9 @@ $(document).ready(function(){
 
 <% provide(:title, 'Rencontre') %>
 
-<%= simple_form_for(@usager) do |f| %>
+<%= simple_form_for(@rencontre) do |f| %>
 
-<% if @usager.rencontres.nil? %>
+<% if !@usager.rencontres %>
   <h1>Renseigner la rencontre</h1>
 
   <%= f.label :signale, "Non connu(e) du service avant ?" %>
@@ -48,7 +48,7 @@ $(document).ready(function(){
 
 <h3>Date</h3>
 
-  <%= f.input :derniere, label: false, :as => :date_picker, input_html: {value: Date.today}, class: 'form-control' %>
+  <%= f.input :date, label: false, :as => :date_picker, input_html: {value: Date.today}, class: 'form-control' %>
 
 <h3>Type</h3>
 
@@ -61,7 +61,7 @@ $(document).ready(function(){
 <div class="btn-group">
   <%= f.submit "Valider la rencontre", class: 'btn btn-primary', id: 'submit' %>
 
-  <% if @usager.rencontres.nil? %>
+  <% if !@usager.rencontres %>
     <button type="button" class="btn btn-danger">
       <%= link_to "Pas besoin", usagers_path, id: 'no-styling' %>
     </button>

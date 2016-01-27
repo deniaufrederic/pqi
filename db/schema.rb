@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160126131536) do
+ActiveRecord::Schema.define(version: 20160127114158) do
 
   create_table "maraudes", force: :cascade do |t|
     t.date     "date"
@@ -27,6 +27,19 @@ ActiveRecord::Schema.define(version: 20160126131536) do
 
   add_index "maraudes", ["date", "type_maraude"], name: "index_maraudes_on_date_and_type_maraude", unique: true
 
+  create_table "rencontres", force: :cascade do |t|
+    t.integer  "usager_id"
+    t.date     "date"
+    t.string   "type_renc"
+    t.boolean  "signale"
+    t.string   "signalement"
+    t.text     "details"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "rencontres", ["usager_id"], name: "index_rencontres_on_usager_id"
+
   create_table "usagers", force: :cascade do |t|
     t.string   "nom"
     t.string   "prenom"
@@ -41,19 +54,11 @@ ActiveRecord::Schema.define(version: 20160126131536) do
     t.string   "adresse_précis"
     t.string   "user_id"
     t.boolean  "pqi"
-    t.date     "derniere"
-    t.text     "rencontres"
-    t.string   "signalement"
-    t.string   "dates_sig"
-    t.boolean  "signale"
     t.string   "pqi_histo"
     t.text     "fiche"
-    t.text     "details"
-    t.string   "type_renc"
   end
 
   add_index "usagers", ["nom"], name: "index_usagers_on_nom"
-  add_index "usagers", ["signale"], name: "index_usagers_on_signale"
   add_index "usagers", ["ville"], name: "index_usagers_on_ville"
 
   create_table "users", force: :cascade do |t|

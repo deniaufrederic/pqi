@@ -1,23 +1,14 @@
 <% h = 0 %>
 <% f = 0 %>
 <% @usagers.each do |u| %>
-  <% d = f+h %>
-  <% unless u.rencontres.nil? %>
-  	<% l = u.rencontres.split(' - ') %>
-  	<% i = 0 %>
-  	<% until f+h == d + 1 || i == l.length %>
-  	  <% n = l[i].split('/').join('') %>
-  	  <% if n.to_i > @dates.first.split('-').join('').to_i - 20000000 && n.to_i < @dates.last.split('-').join('').to_i - 20000000 %>
-  	  	<% if u.sexe == "Mr" %>
-  	  		<% h = h + 1 %>
-  	  	<% else %>
-  	  		<% f = f + 1 %>
-  	  	<% end %>
-  	  <% end %>
-  	  <% i = i + 1 %>
-    <% end %>
+  <% u_renc = Rencontre.where(usager_id: u.id, date: (Date.parse(@dates.first))..(Date.parse(@dates.last))) %>
+  <% if u.sexe == "Mr" %>
+  	<% h = h + 1 unless u_renc.count == 0 %>
+  <% else %>
+  	<% f = f + 1 unless u_renc.count == 0 %>
   <% end %>
 <% end %>
+
 <% if f+h == 0 %>
   0
 <% else %>

@@ -65,19 +65,29 @@
   <% end %>
 </span><br>
 
-<% if @usager.dates_sig %>
-  <span>Dates de signalement : <%= dates_sig_ok(@usager.dates_sig) %></span><br>
-<% end %>
+<span>Dates de signalement : 
+  <% dates_sig = [] %>
+  <% Rencontre.where(usager_id: @usager.id, signale: true).each do |r| %>
+    <% dates_sig << "#{r.date.strftime("%d/%m/%y")} [#{r.signalement}]" %>
+  <% end %>
+  <%= dates_sig.join(' - ') %>
+</span><br>
 
-<span>Dates de rencontres : <%= dates_ok(@usager.rencontres) %></span><br>
+<span>Dates de rencontres : 
+  <% dates_renc = [] %>
+  <% @usager.rencontres.each do |r| %>
+    <% dates_renc << "#{r.date.strftime("%d/%m/%y")}" %>
+  <% end %>
+  <%= dates_renc.join(' - ') %>
+</span><br>
 
 <span><%= link_to "Ajouter une rencontre", id_rencontre_path(:id => @usager.id), id: 'ajout-rencontre' %></span>
 
 <h3>Statistiques</h3>
 
-<span>Nombre de rencontres : <%= @usager.rencontres.split(' - ').length unless @usager.rencontres.nil? %></span><br>
+<span>Nombre de rencontres : <%= @usager.rencontres.count %></span><br>
 
-<span>Nombre de signalements : <%= @usager.dates_sig.split(' - ').length unless @usager.dates_sig.nil? %></span>
+<span>Nombre de signalements : <%= Rencontre.where(usager_id: @usager.id, signale: true).count %></span>
 
 <h3>Informations complémentaires</h3>
 

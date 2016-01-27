@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  usager_id: 
+  date: 2016-01-27
+  type_renc: MyString
+  signale: false
+  signalement: MyString
+  details: MyText
+
+two:
+  usager_id: 
+  date: 2016-01-27
+  type_renc: MyString
+  signale: false
+  signalement: MyString
+  details: MyText

@@ -1,4 +1,5 @@
 class Usager < ActiveRecord::Base
+  has_many :rencontres
   before_save { nom.upcase! }
   before_save { self.prenom = prenom.split(' ').map(&:capitalize).join(' ').split('-').map(&:capitalize).join('-') }
   default_scope -> { order(pqi: :desc, nom: :asc) }

@@ -1,5 +1,5 @@
 class MaraudesController < ApplicationController
-  before_action :logged_in_user, only: :index
+  before_action :logged_in_user, only: [:index, :show, :villes, :post_villes]
 
   def index
   	@maraudes = Maraude.paginate(page: params[:page], per_page: 5)
@@ -62,13 +62,4 @@ class MaraudesController < ApplicationController
     session.delete(:stored_id)
     redirect_to maraudes_path
   end
-
-  private
-
-  	def logged_in_user
-      unless logged_in?
-        flash[:danger] = "Merci de vous connecter."
-        redirect_to root_url
-      end
-    end
 end

@@ -11,15 +11,16 @@ Rails.application.routes.draw do
   post 'stats'    =>  'stats#create'
   post 'maraudes' =>  'maraudes#post_villes'
   resources :maraudes
+  resources :rencontres, only: [:create, :destroy, :update]
 
   get	'pqi/:ville',
   	:controller => 'usagers',
   	:action 	  => 'pqi',
 		:as 		    => :choix_ville
 
-  get 'rencontre/:id',
-    :controller => 'usagers',
-    :action     => 'rencontre',
+  get 'rencontres/:id',
+    :controller => 'rencontres',
+    :action     => 'new',
     :as         => :id_rencontre
 
   get 'maraude-villes/:id',
