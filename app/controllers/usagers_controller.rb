@@ -177,7 +177,16 @@ class UsagersController < ApplicationController
         else
           @usager.pqi_histo << " - " unless @usager.pqi_histo.nil?
         end
-        @usager.pqi_histo << Date.today.strftime("%d/%m/%y") unless @usager.pqi_histo.nil?
+        arr = @usager.pqi_histo.split(' ///// ')
+        if arr.last == "#{Date.today.strftime("%d/%m/%y")} - "
+          if arr.length >= 2
+            @usager.pqi_histo = arr[0..(arr.length-2)].join(' ///// ')
+          else
+            @usager.pqi_histo = nil
+          end
+        else
+          @usager.pqi_histo << Date.today.strftime("%d/%m/%y") unless @usager.pqi_histo.nil?
+        end
         @usager.update_attributes(usager_params)
         flash[:success] = "Usager édité"
         redirect_to @usager

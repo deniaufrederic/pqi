@@ -14,8 +14,7 @@ class RencontresController < ApplicationController
     @usager = Usager.find_by(id: session[:stored_id])
     @rencontre = @usager.rencontres.build
     gon.renc = []
-    if @usager.rencontres
-      gon.renc = []
+    if @usager.rencontres.any?
       @usager.rencontres.each do |r|
         gon.renc << "#{r.date}"
       end
