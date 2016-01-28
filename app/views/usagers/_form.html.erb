@@ -22,11 +22,11 @@
    <%= f.text_field :tel, class: 'form-control' %>
 </div>
 
-<div class="form-inline">
+<div>
    <h3>Adresse</h3>
 
    <%= f.label :ville %><br>
-   <%= f.select :ville, @villes, prompt: "Choisissez une ville", class: 'form-control' %>
+   <%= f.select :ville, @villes, prompt: "Choisissez une ville", class: 'form-control' %><br>
 
    <%= f.label :adresse %>
    <%= f.text_field :adresse, class: 'form-control' %>
