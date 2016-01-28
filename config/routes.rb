@@ -11,9 +11,9 @@ Rails.application.routes.draw do
   get 'stats'         =>  'stats#show'
   post 'stats'        =>  'stats#create'
   post 'maraudes'     =>  'maraudes#post_villes'
-  resources :maraudes
-  resources :rencontres, only: [:create, :update]
-  delete 'rencontres' =>  'rencontres#destroy'
+  resources :maraudes, only: [:index, :show, :destroy]
+  resources :rencontres, only: [:create, :edit, :update, :destroy]
+  delete 'rencontres' =>  'rencontres#destroy_via_form'
 
   get	'pqi/:ville',
   	:controller => 'usagers',

@@ -1,7 +1,7 @@
 <% provide(:title, 'Maraudes') %>
 
 <% # Listes villes parcourues et usagers rencontrés avec détails %>
-<% rencontres = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude) %>
+<% rencontres = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, prev: false) %>
 <% m_cr = [] %>
 <% rencontres.each do |r| %>
   <% u = Usager.find_by(id: r.usager_id) %>
@@ -31,7 +31,15 @@
 <% end %>
 
 
-<h1><%= @maraude.type_maraude %> [<%= @maraude.date.strftime("%d/%m/%y") %>]</h1>
+<h1>
+  <%= @maraude.type_maraude %> [<%= @maraude.date.strftime("%d/%m/%y") %>]
+  <br><button type="button" class="btn btn-danger">
+    <%= link_to "Supprimer la maraude", @maraude,
+                                        method: :delete,
+                                        data: { confirm: "Etes-vous sûr(e) ? Cette maraude ne sera pas récupérable." },
+                                        id: 'no-styling' %>
+  </button>
+</h1>
 
 <h3>
   <button type="button" class="btn btn-info btn-lg">

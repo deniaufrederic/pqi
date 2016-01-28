@@ -24,23 +24,27 @@ $(document).ready(function(){
 <% if @usager.rencontres.empty? %>
   <h1>Renseigner la rencontre</h1>
 
+<div class="form-inline">
   <%= f.label :signale, "Non connu(e) du service avant ?" %>
-  <%= f.check_box :signale, checked: false, class: 'form-control' %>
+  <%= f.check_box :signale, checked: false, class: 'form-control' %><br>
 
   <%= f.label :signalement, "Si oui, type de signalement ?" %>
   <%= f.select :signalement, @signalements, prompt: "Quel type de signalement ?", class: 'form-control' %>
+</div>
 
 <% else %>
   <h1>Ajouter une rencontre</h1>
 
+<div class="form-inline">
   <%= f.label :signale, "Nouveau signalement ?" %>
-  <%= f.check_box :signale, class: 'form-control' %>
+  <%= f.check_box :signale, class: 'form-control' %><br>
 
   <%= f.label :signalement, "Si oui, type de signalement ?" %>
   <%= f.select :signalement,	[	["Signalement 115", "Signalement 115"],
                       				  ["Signalement tiers", "Signalement tiers"]],
                       			prompt: "Quel type de signalement ?",
                       			class: 'form-control' %>
+</div>
 
 <% end %>
 
@@ -50,7 +54,12 @@ $(document).ready(function(){
 
 <h3>Type</h3>
 
-  <%= f.select :type_renc, @types, prompt: "Quel type de rencontre ?", class: 'form-control' %>
+  <%= f.select :type_renc, @types, prompt: "Quel type de rencontre ?", class: 'form-control' %><br>
+
+<div class="form-inline">
+  <%= f.label :prev, "Rencontre prévisionnelle ?" %>
+  <%= f.check_box :prev, checked: false, class: 'form-control' %>
+</div>
 
 <h3>Détails</h3>
 

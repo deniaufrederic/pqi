@@ -1,5 +1,6 @@
 class RencontresController < ApplicationController
-  before_action :logged_in_user, only: [:new, :create, :destroy_form, :destroy]
+  before_action :logged_in_user, only: [:new, :create, :destroy_form, :destroy_via_form, :destroy, :edit, :update]
+  before_action :admin_user, only: [:destroy]
 
   def new
     store_id
@@ -26,7 +27,7 @@ class RencontresController < ApplicationController
     @usager = Usager.find_by(id: session[:stored_id])
     @rencontre = @usager.rencontres.build(rencontre_params)
     if @rencontre.valid?
-      if @rencontre.type_renc.split(' ').first == "Maraude"
+      if @rencontre.type_renc.split(' ').first == "Maraude" && !@rencontre.prev
         mar = true
         if !Maraude.find_by(date: @rencontre.date, type_maraude: @rencontre.type_renc).present?
           @maraude = Maraude.create(date: @rencontre.date, type_maraude: @rencontre.type_renc, villes: "")
@@ -45,7 +46,7 @@ class RencontresController < ApplicationController
       u_fiche = rencontre_u
       if @rencontre.signale
         if !@rencontre.signalement.empty?
-          if !mar
+          if !mar && !@rencontre.prev
             err = true
             flash[:danger] = "Erreur : signalement alors que la rencontre annoncée n'est pas une maraude"
             redirect_to id_rencontre_path(:id => @usager.id)
@@ -75,9 +76,16 @@ class RencontresController < ApplicationController
     session.delete(:stored_id)
   end
 
+  def destroy
+    Rencontre.find(params[:id]).destroy
+    flash[:success] = "Rencontre supprimée (N'oubliez pas de retirer la rencontre de la fiche de suivi de l'usager si besoin est)"
+    redirect_to usagers_path
+  end
+
   def destroy_form
     store_id
-    @types =  [ ["Maraude salariés", "Maraude salariés"],
+    @types =  [ ["Maraude salariés 1", "Maraude salariés 1"],
+                ["Maraude salariés 2", "Maraude salariés 2"],
                 ["Maraude bénévoles", "Maraude bénévoles"],
                 ["Maraude jour", "Maraude jour"],
                 ["Rencontre pôle jour", "Rencontre pôle jour"],
@@ -85,7 +93,7 @@ class RencontresController < ApplicationController
     @usager = Usager.find_by(id: session[:stored_id])
   end
 
-  def destroy
+  def destroy_via_form
     @usager = Usager.find_by(id: session[:stored_id])
     r = Rencontre.find_by(usager_id: @usager.id,
                           date: params[:rencontre][:date],
@@ -101,6 +109,38 @@ class RencontresController < ApplicationController
     end
   end
 
+  def edit
+    @rencontre = Rencontre.find(params[:id])
+    @usager = Usager.find(@rencontre.usager_id)
+    @signalements = [ ["Signalement 115", "Signalement 115"],
+                      ["Signalement tiers", "Signalement tiers"],
+                      ["Croisé(e) en maraude", "Croisé(e) en maraude"]]
+    @types =  [ ["Maraude salariés 1", "Maraude salariés 1"],
+                ["Maraude salariés 2", "Maraude salariés 2"],
+                ["Maraude bénévoles", "Maraude bénévoles"],
+                ["Maraude jour", "Maraude jour"],
+                ["Rencontre pôle jour", "Rencontre pôle jour"],
+                ["Autre", "Autre"]]
+    gon.renc = []
+    if @usager.rencontres.any?
+      @usager.rencontres.each do |r|
+        gon.renc << "#{r.date}"
+      end
+    end
+  end
+
+  def update
+    @rencontre = Rencontre.find(params[:id])
+    @usager = Usager.find(@rencontre.usager_id)
+    if @rencontre.update_attributes(rencontre_params)
+      flash[:success] = "Rencontre mise à jour"
+      redirect_to @usager
+    else
+      flash[:danger] = "Mise à jour impossible. Veillez à remplir les informations nécessaires (Date, type de rencontre)."
+      render 'edit'
+    end
+  end
+
   private
 
     def rencontre_params
@@ -108,6 +148,7 @@ class RencontresController < ApplicationController
                                         :type_renc,
                                         :details,
                                         :signale,
-                                        :signalement)
+                                        :signalement,
+                                        :prev)
     end
 end

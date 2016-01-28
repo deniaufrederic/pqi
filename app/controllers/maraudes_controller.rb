@@ -1,5 +1,6 @@
 class MaraudesController < ApplicationController
-  before_action :logged_in_user, only: [:index, :show, :villes, :post_villes]
+  before_action :logged_in_user, only: [:index, :show, :villes, :post_villes, :destroy]
+  before_action :admin_user, only: [:destroy]
 
   def index
     if params[:search]
@@ -67,6 +68,12 @@ class MaraudesController < ApplicationController
     @maraude = Maraude.find_by(id: session[:stored_id])
     @maraude.update_attribute(:villes, villes)
     session.delete(:stored_id)
+    redirect_to maraudes_path
+  end
+
+  def destroy
+    Maraude.find(params[:id]).destroy
+    flash[:success] = "Maraude supprimée"
     redirect_to maraudes_path
   end
 end

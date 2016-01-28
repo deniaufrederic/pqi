@@ -1,7 +1,7 @@
 <% h = 0 %>
 <% f = 0 %>
 <% @usagers.each do |u| %>
-  <% u_renc = Rencontre.where(usager_id: u.id, date: (Date.parse(@dates.first))..(Date.parse(@dates.last))) %>
+  <% u_renc = Rencontre.where(usager_id: u.id, date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), prev: false) %>
   <% if u.sexe == "Mr" %>
   	<% h = h + 1 unless u_renc.count == 0 %>
   <% else %>

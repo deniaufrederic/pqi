@@ -15,6 +15,21 @@
   | <%= link_to "Editer", edit_usager_path(@usager) %>
 </h1>
 
+<% if Rencontre.find_by(usager_id: @usager.id, prev: true) %>
+  <% renc_prev = Rencontre.where(usager_id: @usager.id, prev: true) %>
+  <h3><%= pluralize(renc_prev.count, "Rencontre") %> <%= "prévue".pluralize(renc_prev.count) %></h3>
+  <ul>
+    <% renc_prev.each do |r| %>
+      <li>
+        <%= link_to "#{r.type_renc}", edit_rencontre_path(r), "data-no-turbolink" => true %>
+        du <%= link_to "#{r.date.strftime("%d/%m/%y")}", edit_rencontre_path(r), "data-no-turbolink" => true %><br>
+        <pre><%= r.details %></pre>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+
 <% if @usager.enfants.any? %>
   <h3>Enfants</h3>
 
@@ -95,7 +110,7 @@
 
 <span>Dates de rencontres : 
   <% dates_renc = [] %>
-  <% @usager.rencontres.each do |r| %>
+  <% Rencontre.where(usager_id: @usager.id, prev: false).each do |r| %>
     <% dates_renc << "#{r.date.strftime("%d/%m/%y")} [#{r.type_renc}]" %>
   <% end %>
   <%= dates_renc.join(' - ') %>
@@ -112,7 +127,7 @@
 
 <h3>Statistiques</h3>
 
-<span>Nombre de rencontres : <%= @usager.rencontres.count %></span><br>
+<span>Nombre de rencontres : <%= Rencontre.where(usager_id: @usager.id, prev: false).count %></span><br>
 
 <span>Nombre de signalements : <%= Rencontre.where(usager_id: @usager.id, signale: true).count %></span>
 
