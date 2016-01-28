@@ -21,17 +21,14 @@
   <ul class="enfants">
     <% @usager.enfants.each do |e| %>
       <li>
-        <%= e.nom %> <%= e.prenom %>, 
-        <% if e.sexe == "Mr" %>
-          garçon 
-          <% if e.date_naissance %>
-            né le <%= e.date_naissance %>
+        <%= e.nom %> <%= e.prenom %>, <%= e.sexe.downcase  %> 
+        <% if e.date_naissance %>
+          <% if e.sexe == "Fille" %>
+            née 
+          <% else %>
+            né 
           <% end %>
-        <% else %>
-          fille 
-          <% if e.date_naissance %>
-            née le <%= e.date_naissance %>
-          <% end %>
+          le <%= e.date_naissance.strftime("%d/%m/%y") %>
         <% end %>
       </li>
     <% end %>
