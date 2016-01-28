@@ -16,6 +16,7 @@ gem 'jquery-turbolinks'
 gem 'turbolinks',               '2.3.0'
 gem 'jbuilder',                 '2.2.3'
 gem 'gon'
+gem 'cocoon'
 gem 'sdoc',                     '0.4.0', group: :doc
 
 group :development, :test do
@@ -23,6 +24,7 @@ group :development, :test do
   gem 'byebug',      '3.4.0'
   gem 'web-console', '2.0.0.beta3'
   gem 'spring',      '1.1.3'
+  gem 'unicorn'
 end
 
 group :test do

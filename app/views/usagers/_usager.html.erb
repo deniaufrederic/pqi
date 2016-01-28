@@ -1,6 +1,9 @@
 <tr id="usager">
   <td class="identité">
     <%= link_to "#{usager.sexe} #{usager.nom} #{usager.prenom}", usager %>
+    <% if usager.enfants.any? %>
+      <br><%= pluralize(usager.enfants.count, 'enfant') %>
+    <% end %>
     <% if usager.date_naissance %>
       <br><%= "#{usager.date_naissance.strftime("%d/%m/%Y")}" %>
     <% end %>

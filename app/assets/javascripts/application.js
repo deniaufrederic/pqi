@@ -17,9 +17,10 @@
 //= require moment
 //= require bootstrap-datetimepicker
 //= require pickers
+//= require cocoon
 //= require turbolinks
 
 function printpage()
 {
-	window.print()
+	window.print();
 }

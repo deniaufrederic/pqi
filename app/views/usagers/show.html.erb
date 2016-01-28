@@ -15,6 +15,29 @@
   | <%= link_to "Editer", edit_usager_path(@usager) %>
 </h1>
 
+<% if @usager.enfants.any? %>
+  <h3>Enfants</h3>
+
+  <ul class="enfants">
+    <% @usager.enfants.each do |e| %>
+      <li>
+        <%= e.nom %> <%= e.prenom %>, 
+        <% if e.sexe == "Mr" %>
+          garçon 
+          <% if e.date_naissance %>
+            né le <%= e.date_naissance %>
+          <% end %>
+        <% else %>
+          fille 
+          <% if e.date_naissance %>
+            née le <%= e.date_naissance %>
+          <% end %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
 <h3>Informations de base</h3>
 
 <table class="usager_show">

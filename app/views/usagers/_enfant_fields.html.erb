@@ -1,0 +1,18 @@
+<div class="form-inline nested-fields">
+  <%= f.label :nom %>
+  <%= f.text_field :nom, class: 'form-control' %>
+
+  <%= f.label :prenom, "Prénom" %>
+  <%= f.text_field :prenom, class: 'form-control' %>
+
+  <%= f.radio_button :sexe, "Mr", class: 'form-control' %>
+  <%= f.label :sexe_m, "Mr" %>
+
+  <%= f.radio_button :sexe, "Mme", class: 'form-control' %>
+  <%= f.label :sexe_f, "Mme" %>
+
+  <%= f.label :date_naissance, "Date de naissance" %>
+  <%= f.input :date_naissance, :as => :date_picker, label: false, class: 'form-control' %>
+  
+  <%= link_to_remove_association "Retirer", f %>
+</div>

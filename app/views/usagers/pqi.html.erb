@@ -28,12 +28,15 @@
   <% @usagers.each do |usager| %>
     <tr id="table-pqi">
       <td class="identité-tot">
-        <%= link_to "#{usager.sexe} #{usager.nom} #{usager.prenom}", usager %><br>
+        <%= link_to "#{usager.sexe} #{usager.nom} #{usager.prenom}", usager %>
+        <% if usager.enfants.any? %>
+          <br><%= pluralize(usager.enfants.count, 'enfant') %>
+        <% end %>
         <% if usager.date_naissance? %>
-          <%= "#{usager.date_naissance.strftime("%d/%m/%y")}" %><br>
+          <br><%= "#{usager.date_naissance.strftime("%d/%m/%y")}" %>
         <% end %>
         <% if usager.tel? %>
-          <%= "#{usager.tel}" %>
+          <br><%= "#{usager.tel}" %>
         <% end %>
       </td>
       <td class="adresse-tot">

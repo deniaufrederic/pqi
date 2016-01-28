@@ -1,8 +1,14 @@
 class Usager < ActiveRecord::Base
   has_many :rencontres
+  has_many :enfants, :dependent => :destroy
+  accepts_nested_attributes_for :enfants, reject_if: lambda { |a| a[:nom].blank? && a[:prenom].blank? },
+                                          allow_destroy: true
+
   before_save { nom.upcase! }
   before_save { self.prenom = prenom.split(' ').map(&:capitalize).join(' ').split('-').map(&:capitalize).join('-') }
+  
   default_scope -> { order(pqi: :desc, nom: :asc) }
+  
   validate :at_least_one
   VALID_TEL_REGEX = /\A\d{10}\Z/
   validates :tel, length: {is: 10}, format: {with: VALID_TEL_REGEX}, allow_blank: true

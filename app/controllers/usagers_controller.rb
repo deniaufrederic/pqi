@@ -287,6 +287,12 @@ class UsagersController < ApplicationController
                                       :notes,
                                       :pqi,
                                       :pqi_histo,
-                                      :fiche)
+                                      :fiche,
+                                      enfants_attributes: [ :id,
+                                                            :nom,
+                                                            :prenom,
+                                                            :sexe,
+                                                            :date_naissance,
+                                                            :_destroy ])
     end
 end

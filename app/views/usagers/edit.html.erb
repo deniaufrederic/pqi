@@ -16,6 +16,14 @@
 
 </div>
 
+<h3>Enfants</h3>
+<ul id="enfants">
+   <%= f.simple_fields_for :enfants do |enf| %>
+      <li><%= render 'enfant_fields', f: enf %></li>
+   <% end %>
+   <%= link_to_add_association 'Ajouter un enfant', f, :enfants, class: 'links' %>
+</ul>
+
 <h3>Informations de base</h3>
 
 <table class="usager_show">
