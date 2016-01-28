@@ -1,15 +1,16 @@
 Rails.application.routes.draw do
-  root					      'sessions#new'
-  get 'signup'    =>  'users#new'
-  post 'login' 		=>  'sessions#create'
-  delete 'logout' =>  'sessions#destroy'
+  root					          'sessions#new'
+  get 'signup'        =>  'users#new'
+  post 'login' 		    =>  'sessions#create'
+  delete 'logout'     =>  'sessions#destroy'
   resources :users
-  post 'add'		  =>	'usagers#create'
-  get 'pqi'			  =>	'usagers#pqi'
+  post 'add'		      =>	'usagers#create'
+  get 'pqi'			      =>	'usagers#pqi'
+  get 'new_inconnu'   =>  'usagers#new_inconnu'
   resources :usagers
-  get 'stats'     =>  'stats#show'
-  post 'stats'    =>  'stats#create'
-  post 'maraudes' =>  'maraudes#post_villes'
+  get 'stats'         =>  'stats#show'
+  post 'stats'        =>  'stats#create'
+  post 'maraudes'     =>  'maraudes#post_villes'
   resources :maraudes
   resources :rencontres, only: [:create, :update]
   delete 'rencontres' =>  'rencontres#destroy'

@@ -6,7 +6,8 @@ class RencontresController < ApplicationController
     @signalements = [ ["Signalement 115", "Signalement 115"],
                       ["Signalement tiers", "Signalement tiers"],
                       ["Croisé(e) en maraude", "Croisé(e) en maraude"]]
-    @types =  [ ["Maraude salariés", "Maraude salariés"],
+    @types =  [ ["Maraude salariés 1", "Maraude salariés 1"],
+                ["Maraude salariés 2", "Maraude salariés 2"],
                 ["Maraude bénévoles", "Maraude bénévoles"],
                 ["Maraude jour", "Maraude jour"],
                 ["Rencontre pôle jour", "Rencontre pôle jour"],
