@@ -13,7 +13,7 @@ class Usager < ActiveRecord::Base
   VALID_TEL_REGEX = /\A\d{10}\Z/
   validates :tel, length: {is: 10}, format: {with: VALID_TEL_REGEX}, allow_blank: true
   validates :user_id, presence: true
-  validates :sexe, presence: true
+  validates :sexe, presence: true, allow_blank: true
   validates :ville, presence: true
 
     def self.search(search)

@@ -114,10 +114,10 @@ class UsagersController < ApplicationController
     @usager.user_id = current_user.id
     if session[:stored] == "new_inconnu"
       if !params[:usager][:sexe]
-        @usager.sexe = "Usager"
+        @usager.sexe = ""
       end
       @usager.nom = ""
-      @usager.prenom = "Inconnu"
+      @usager.prenom = "Inconnu(e)"
     end
     if @usager.save
       if @usager.pqi
