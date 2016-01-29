@@ -10,8 +10,8 @@ Rails.application.routes.draw do
   resources :usagers
   get 'stats'         =>  'stats#show'
   post 'stats'        =>  'stats#create'
-  post 'maraudes'     =>  'maraudes#post_villes'
-  resources :maraudes, only: [:index, :show, :destroy]
+  post 'villes'       =>  'maraudes#post_villes'
+  resources :maraudes, only: [:index, :show, :destroy, :new, :create]
   resources :rencontres, only: [:create, :edit, :update, :destroy]
   delete 'rencontres' =>  'rencontres#destroy_via_form'
 

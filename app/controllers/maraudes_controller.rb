@@ -1,5 +1,5 @@
 class MaraudesController < ApplicationController
-  before_action :logged_in_user, only: [:index, :show, :villes, :post_villes, :destroy]
+  before_action :logged_in_user, only: [:new, :create, :index, :show, :villes, :post_villes, :destroy]
   before_action :admin_user, only: [:destroy]
 
   def index
@@ -15,6 +15,29 @@ class MaraudesController < ApplicationController
 
   def show
   	@maraude = Maraude.find(params[:id])
+  end
+
+  def new
+    @maraude = Maraude.new
+    @types =  [ ["Maraude salariés 1", "Maraude salariés 1"],
+                ["Maraude salariés 2", "Maraude salariés 2"],
+                ["Maraude bénévoles", "Maraude bénévoles"],
+                ["Maraude jour", "Maraude jour"]]
+  end
+
+  def create
+    @maraude = Maraude.new(maraude_params)
+    @maraude.villes = ""
+    if Maraude.find_by(date: params[:maraude][:date], type_maraude: params[:maraude][:type_maraude])
+      flash[:danger] = "Cette maraude existe déjà"
+      redirect_to new_maraude_path
+    elsif @maraude.save
+      flash[:success] = "Maraude créée"
+      redirect_to id_m_villes_path(id: @maraude.id)
+    else  
+      flash[:danger] = "Renseignez la date et le type de la maraude"
+      redirect_to new_maraude_path
+    end
   end
 
   def villes
@@ -76,4 +99,12 @@ class MaraudesController < ApplicationController
     flash[:success] = "Maraude supprimée"
     redirect_to maraudes_path
   end
+
+  private
+
+    def maraude_params
+      params.require(:maraude).permit(:date,
+                                      :type_maraude,
+                                      :villes)
+    end
 end

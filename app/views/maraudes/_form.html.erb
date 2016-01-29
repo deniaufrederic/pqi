@@ -1,0 +1,13 @@
+<%= simple_form_for(@maraude) do |f| %>
+
+<div class="form-inline">
+  <%= f.label :date %>
+  <%= f.input :date, :as => :date_picker, label: false, class: 'form-control' %>
+
+  <%= f.label :type_maraude, "Type de maraude" %>
+  <%= f.select :type_maraude, @types, prompt: "Choisissez un type de maraude", class: 'form-control' %>
+</div>
+
+<div><%= f.submit "Créer la maraude", class: "btn btn-primary" %></div>
+
+<% end %>

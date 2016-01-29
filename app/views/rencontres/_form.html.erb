@@ -1,0 +1,59 @@
+<%= simple_form_for(@rencontre) do |f| %>
+
+<% if @usager.rencontres.empty? %>
+  <h1>Renseigner la rencontre</h1>
+
+<div class="form-inline">
+  <%= f.label :signale, "Non connu(e) du service avant ?" %>
+  <%= f.check_box :signale, checked: false, class: 'form-control' %><br>
+
+  <%= f.label :signalement, "Si oui, type de signalement ?" %>
+  <%= f.select :signalement, @signalements, prompt: "Quel type de signalement ?", class: 'form-control' %>
+</div>
+
+<% else %>
+  <h1>Ajouter une rencontre</h1>
+
+<div class="form-inline">
+  <%= f.label :signale, "Nouveau signalement ?" %>
+  <%= f.check_box :signale, class: 'form-control' %><br>
+
+  <%= f.label :signalement, "Si oui, type de signalement ?" %>
+  <%= f.select :signalement,	[	["Signalement 115", "Signalement 115"],
+                      				  ["Signalement tiers", "Signalement tiers"]],
+                      			prompt: "Quel type de signalement ?",
+                      			class: 'form-control' %>
+</div>
+
+<% end %>
+
+<h3>Date</h3>
+
+  <%= f.input :date, label: false, :as => :date_picker, input_html: {value: Date.today}, class: 'form-control' %>
+
+<h3>Type</h3>
+
+  <%= f.select :type_renc, @types, prompt: "Quel type de rencontre ?", class: 'form-control' %><br>
+
+<div class="form-inline">
+  <%= f.label :prev, "Rencontre prévisionnelle ?" %>
+  <%= f.check_box :prev, checked: false, class: 'form-control' %>
+</div>
+
+<h3>Détails</h3>
+
+  <%= f.text_field :details, class: 'form-control', html: {style: 'text-align:center'} %>
+
+<div class="btn-group">
+  <%= f.submit "Valider la rencontre", class: 'btn btn-primary', id: 'submit' %>
+
+  <% if !@usager.rencontres %>
+    <button type="button" class="btn btn-danger">
+      <%= link_to "Pas besoin", usagers_path, id: 'no-styling' %>
+    </button>
+  <% end %>
+</div>
+
+<h3>Prestation délivrée ?</h3>
+
+<% end %>

@@ -1,7 +1,8 @@
 class Maraude < ActiveRecord::Base
   default_scope -> { order(date: :desc) }
   validates :date, 	presence: true,
-  					uniqueness: { scope: :type_maraude }
+  					        uniqueness: { scope: :type_maraude }
+  validates :type_maraude, presence: true
 
   	def self.search(search)
       if search
