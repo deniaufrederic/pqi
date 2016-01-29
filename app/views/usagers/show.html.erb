@@ -119,7 +119,7 @@
   <% Rencontre.where(usager_id: @usager.id, prev: false, dnv: false).each do |r| %>
     <% dates_renc << "#{r.date.strftime("%d/%m/%y")} [#{r.type_renc}]" %>
     <% if @usager.enfants.any? %>
-      <% dates_sig.last << " [#{pluralize(r.nb_enf, "enfant")}]" %>
+      <% dates_renc.last << " [#{pluralize(r.nb_enf, "enfant")}]" %>
     <% end %>
   <% end %>
   <%= dates_renc.join(' - ') %>
