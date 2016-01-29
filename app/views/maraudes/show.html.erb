@@ -9,6 +9,9 @@
   <% if r.signalement %>
     <% m_cr.last << " [#{r.signalement}]" %>
   <% end %>
+  <% if r.dnv %>
+    <% m_cr.last << " [Maraude déplacée mais personne non vue]" %>
+  <% end %>
   <% m_cr.last << " : #{r.details}" %>
 <% end %>
 <% arr = m_cr.sort %>

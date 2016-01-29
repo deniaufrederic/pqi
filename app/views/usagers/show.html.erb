@@ -104,13 +104,16 @@
   <% dates_sig = [] %>
   <% Rencontre.where(usager_id: @usager.id, signale: true).each do |r| %>
     <% dates_sig << "#{r.date.strftime("%d/%m/%y")} [#{r.signalement}]" %>
+    <% if r.dnv %>
+      <% dates_sig.last << " [Maraude déplacée mais personne non vue]" %>
+    <% end %>
   <% end %>
   <%= dates_sig.join(' - ') %>
 </span><br>
 
 <span>Dates de rencontres : 
   <% dates_renc = [] %>
-  <% Rencontre.where(usager_id: @usager.id, prev: false).each do |r| %>
+  <% Rencontre.where(usager_id: @usager.id, prev: false, dnv: false).each do |r| %>
     <% dates_renc << "#{r.date.strftime("%d/%m/%y")} [#{r.type_renc}]" %>
   <% end %>
   <%= dates_renc.join(' - ') %>
@@ -127,9 +130,13 @@
 
 <h3>Statistiques</h3>
 
-<span>Nombre de rencontres : <%= Rencontre.where(usager_id: @usager.id, prev: false).count %></span><br>
+<span>Nombre de rencontres : <%= Rencontre.where(usager_id: @usager.id, prev: false, dnv: false).count %></span><br>
 
-<span>Nombre de signalements : <%= Rencontre.where(usager_id: @usager.id, signale: true).count %></span>
+<span>Nombre de déplacements sans voir la personne : <%= Rencontre.where(usager_id: @usager.id, prev: false, dnv: true).count %></span><br>
+
+<span>Nombre de signalements : <%= Rencontre.where(usager_id: @usager.id, signale: true).count %></span><br>
+
+<span>Dont signalements déplacés sans voir la personne : <%= Rencontre.where(usager_id: @usager.id, signale: true, dnv: true).count %></span>
 
 <h3>Informations complémentaires</h3>
 

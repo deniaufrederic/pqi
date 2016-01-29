@@ -27,7 +27,7 @@
   </td>
   <td class="rencontres">
     <% dates_renc = [] %>
-    <% Rencontre.where(usager_id: usager.id, prev: false).each do |r| %>
+    <% Rencontre.where(usager_id: usager.id, prev: false, dnv: false).each do |r| %>
       <% dates_renc << "#{r.date.strftime("%d/%m/%y")}" %>
     <% end %>
     <%= dates_5(dates_renc.join(' - ')) %><br>

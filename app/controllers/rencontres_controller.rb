@@ -34,6 +34,11 @@ class RencontresController < ApplicationController
         end
       else
         mar = false
+        if @rencontre.dnv
+          err = true
+          flash[:danger] = "Erreur : Maraude déplacée mais personne non vue alors qu'il ne s'agit pas d'une maraude ou que la rencontre est prévisionnelle"
+          redirect_to id_rencontre_path(:id => @usager.id)
+        end
       end
       rencontre_u = "// #{@rencontre.type_renc} [#{@rencontre.date.strftime("%d/%m/%y")}] //"
       if !@rencontre.details.empty?
@@ -47,19 +52,27 @@ class RencontresController < ApplicationController
       if @rencontre.signale
         if !@rencontre.signalement.empty?
           if !mar && !@rencontre.prev
-            err = true
-            flash[:danger] = "Erreur : signalement alors que la rencontre annoncée n'est pas une maraude"
-            redirect_to id_rencontre_path(:id => @usager.id)
+            errb = true
+            if err
+              flash[:danger] << "\nErreur : signalement alors que la rencontre annoncée n'est pas une maraude"
+            else
+              flash[:danger] = "Erreur : signalement alors que la rencontre annoncée n'est pas une maraude"
+              redirect_to id_rencontre_path(:id => @usager.id)
+            end
           end
         else
-          err = true
-          flash[:danger] = "Précisez le type de signalement"
-          redirect_to id_rencontre_path(:id => @usager.id)
+          errb = true
+          if err
+            flash[:danger] << "\nPrécisez le type de signalement"
+          else
+            flash[:danger] = "Précisez le type de signalement"
+            redirect_to id_rencontre_path(:id => @usager.id)
+          end
         end
       else
         params[:rencontre][:signalement] = nil
       end
-      if !err
+      if !err && !errb
         @usager.fiche = u_fiche if u_fiche
         @usager.save
         @rencontre.save
@@ -141,8 +154,16 @@ class RencontresController < ApplicationController
         end
       else
         mar = false
+        if @rencontre.dnv
+          err = true
+          flash[:danger] = "Erreur : Maraude déplacée mais personne non vue alors qu'il ne s'agit pas d'une maraude ou que la rencontre est prévisionnelle"
+          redirect_to id_rencontre_path(:id => @usager.id)
+        end
       end
       rencontre_u = "// #{@rencontre.type_renc} [#{@rencontre.date.strftime("%d/%m/%y")}] //"
+      if @rencontre.dnv
+        rencontre_u << "\nMaraude déplacée mais personne non vue"
+      end
       if !@rencontre.details.empty?
         rencontre_u << "\n#{@rencontre.details}"
       else
@@ -154,19 +175,27 @@ class RencontresController < ApplicationController
       if @rencontre.signale
         if !@rencontre.signalement.empty?
           if !mar && !@rencontre.prev
-            err = true
-            flash[:danger] = "Erreur : signalement alors que la rencontre annoncée n'est pas une maraude"
-            redirect_to id_rencontre_path(:id => @usager.id)
+            errb = true
+            if err
+              flash[:danger] << "\nErreur : signalement alors que la rencontre annoncée n'est pas une maraude"
+            else
+              flash[:danger] = "Erreur : signalement alors que la rencontre annoncée n'est pas une maraude"
+              redirect_to id_rencontre_path(:id => @usager.id)
+            end
           end
         else
-          err = true
-          flash[:danger] = "Précisez le type de signalement"
-          redirect_to id_rencontre_path(:id => @usager.id)
+          errb = true
+          if err
+            flash[:danger] << "\nPrécisez le type de signalement"
+          else
+            flash[:danger] = "Précisez le type de signalement"
+            redirect_to id_rencontre_path(:id => @usager.id)
+          end
         end
       else
         params[:rencontre][:signalement] = nil
       end
-      if !err
+      if !err && !errb
         @usager.fiche = u_fiche if u_fiche
         @usager.save
         @rencontre.update_attributes(rencontre_params)
@@ -187,6 +216,7 @@ class RencontresController < ApplicationController
                                         :details,
                                         :signale,
                                         :signalement,
-                                        :prev)
+                                        :prev,
+                                        :dnv)
     end
 end

@@ -1,0 +1,21 @@
+<% h = 0 %>
+<% f = 0 %>
+<% @usagers.each do |u| %>
+  <% u_dnv = Rencontre.where(usager_id: u.id, date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), prev: false, dnv: true) %>
+  <% if u.sexe == "Mr" %>
+  	<% h = h + u_dnv.count %>
+  <% else %>
+  	<% f = f + u_dnv.count %>
+  <% end %>
+<% end %>
+ 
+<% if f+h == 0 %>
+  0
+<% else %>
+  <%= "#{f+h} (#{h}/#{f})" %>
+<% end %>
+
+<% if @ville.nil? && !@dates.nil? %>
+  <% @f_dnv = @f_dnv + f %>
+  <% @h_dnv = @h_dnv + h %>
+<% end %>

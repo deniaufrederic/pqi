@@ -1,5 +1,5 @@
 <% # Listes villes parcourues et usagers rencontrés %>
-<% rencontres = Rencontre.where(date: maraude.date, type_renc: maraude.type_maraude, prev: false) %>
+<% rencontres = Rencontre.where(date: maraude.date, type_renc: maraude.type_maraude, prev: false, dnv: false) %>
 <% m_renc = [] %>
 <% rencontres.each do |r| %>
   <% u = Usager.find_by(id: r.usager_id) %>
@@ -30,6 +30,32 @@
   <% if !maraude.villes.include?("#{liste_villes[i]}") %>
     <% der << "#{liste_villes[i]}\n" %>
   <% end %>
+<% end %>
+
+
+<% # Listes des dnv %>
+<% dnv = Rencontre.where(date: maraude.date, type_renc: maraude.type_maraude, prev: false, dnv: true) %>
+<% m_dnv = [] %>
+<% dnv.each do |r| %>
+  <% u = Usager.find_by(id: r.usager_id) %>
+  <% m_dnv << "#{u.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
+<% end %>
+<% arr = m_dnv.sort %>
+<% liste_villes = [] %>
+<% liste_usagers = [] %>
+<% (0..(arr.length-1)).each do |i| %>
+  <% ville = arr[i].split(' @').first %>
+  <% usager = arr[i].split(' @').last %>
+  <% if liste_villes.last == "#{ville}" %>
+    <% liste_usagers.last << "   - #{usager}\n" %>
+  <% else %>
+    <% liste_villes << "#{ville}" %>
+    <% liste_usagers << "   - #{usager}\n" %>
+  <% end %>
+<% end %>
+<% disp_dnv = "" %>
+<% (0..(liste_villes.length-1)).each do |n| %>
+  <% disp_dnv << "#{liste_villes[n].upcase} :\n#{liste_usagers[n]}\n" %>
 <% end %>
 
 
@@ -86,6 +112,9 @@
   </td>
   <td>
     <pre class="maraude-list"><%= disp_renc %></pre>
+  </td>
+  <td>
+    <pre class="maraude-list"><%= disp_dnv %></pre>
   </td>
   <td>
     <pre class="maraude-list"><%= disp_sig %></pre>

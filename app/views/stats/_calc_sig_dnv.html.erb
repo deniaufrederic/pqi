@@ -1,14 +1,14 @@
 <% h = 0 %>
 <% f = 0 %>
 <% @usagers.each do |u| %>
-  <% u_renc = Rencontre.where(usager_id: u.id, date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), prev: false, dnv: false) %>
+  <% u_renc = Rencontre.where(usager_id: u.id, date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), signale: true, dnv: true) %>
   <% if u.sexe == "Mr" %>
   	<% h = h + u_renc.count %>
   <% else %>
   	<% f = f + u_renc.count %>
   <% end %>
 <% end %>
- 
+
 <% if f+h == 0 %>
   0
 <% else %>
@@ -16,6 +16,6 @@
 <% end %>
 
 <% if @ville.nil? && !@dates.nil? %>
-  <% @f_tot = @f_tot + f %>
-  <% @h_tot = @h_tot + h %>
+  <% @f_sig_dnv = @f_sig_dnv + f %>
+  <% @h_sig_dnv = @h_sig_dnv + h %>
 <% end %>
