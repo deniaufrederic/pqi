@@ -133,8 +133,45 @@ class RencontresController < ApplicationController
     @rencontre = Rencontre.find(params[:id])
     @usager = Usager.find(@rencontre.usager_id)
     if @rencontre.update_attributes(rencontre_params)
-      flash[:success] = "Rencontre mise à jour"
-      redirect_to @usager
+      if @rencontre.type_renc.split(' ').first == "Maraude" && !@rencontre.prev
+        mar = true
+        if !Maraude.find_by(date: @rencontre.date, type_maraude: @rencontre.type_renc).present?
+          @maraude = Maraude.create(date: @rencontre.date, type_maraude: @rencontre.type_renc, villes: "")
+        end
+      else
+        mar = false
+      end
+      rencontre_u = "// #{@rencontre.type_renc} [#{@rencontre.date.strftime("%d/%m/%y")}] //"
+      if !@rencontre.details.empty?
+        rencontre_u << "\n#{@rencontre.details}"
+      else
+        rencontre_u << "\nRencontre sans détails."
+      end
+      rencontre_u << "\n\n\n" unless !@usager.fiche
+      rencontre_u << "#{@usager.fiche}"
+      u_fiche = rencontre_u
+      if @rencontre.signale
+        if !@rencontre.signalement.empty?
+          if !mar && !@rencontre.prev
+            err = true
+            flash[:danger] = "Erreur : signalement alors que la rencontre annoncée n'est pas une maraude"
+            redirect_to id_rencontre_path(:id => @usager.id)
+          end
+        else
+          err = true
+          flash[:danger] = "Précisez le type de signalement"
+          redirect_to id_rencontre_path(:id => @usager.id)
+        end
+      else
+        params[:rencontre][:signalement] = nil
+      end
+      if !err
+        @usager.fiche = u_fiche if u_fiche
+        @usager.save
+        @rencontre.update_attributes(rencontre_params)
+        flash[:success] = "Rencontre mise à jour"
+        redirect_to @usager
+      end
     else
       flash[:danger] = "Mise à jour impossible. Veillez à remplir les informations nécessaires (Date, type de rencontre)."
       render 'edit'

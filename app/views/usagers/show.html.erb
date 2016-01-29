@@ -143,9 +143,8 @@
 </table>
 
 <h3>
-  <button type="button" class="btn btn-info btn-lg">
-    <%= link_to "Fiche de suivi", id_fiche_path(:id => @usager.id), id: 'no-styling' %>
-  </button>
+  <%= link_to "Fiche de suivi", id_fiche_path(:id => @usager.id),
+                                class: "btn btn-info btn-lg" %>
 </h3>
 
 <pre class="pre-scrollable"><%= @usager.fiche %></pre>
