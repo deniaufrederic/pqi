@@ -14,6 +14,12 @@ class RencontresController < ApplicationController
                 ["Rencontre pôle jour", "Rencontre pôle jour"],
                 ["Autre", "Autre"]]
     @usager = Usager.find_by(id: session[:stored_id])
+    @nb_enf = []
+    i = 0
+    until i == @usager.enfants.count + 1 do
+      @nb_enf << ["#{i}", "#{i}"]
+      i += 1
+    end
     @rencontre = @usager.rencontres.build
     gon.renc = []
     if @usager.rencontres.any?
@@ -75,6 +81,7 @@ class RencontresController < ApplicationController
       if !err && !errb
         @usager.fiche = u_fiche if u_fiche
         @usager.save
+        @rencontre.nb_enf = nil unless @rencontre.nb_enf
         @rencontre.save
         flash[:success] = "Rencontre ajoutée avec #{@usager.sexe} #{@usager.nom} #{@usager.prenom}"
         redirect_to usagers_path
@@ -126,6 +133,12 @@ class RencontresController < ApplicationController
   def edit
     @rencontre = Rencontre.find(params[:id])
     @usager = Usager.find(@rencontre.usager_id)
+    @nb_enf = []
+    i = 0
+    until i == @usager.enfants.count + 1 do
+      @nb_enf << ["#{i}", "#{i}"]
+      i += 1
+    end
     @signalements = [ ["Signalement 115", "Signalement 115"],
                       ["Signalement tiers", "Signalement tiers"],
                       ["Croisé(e) en maraude", "Croisé(e) en maraude"]]
@@ -164,6 +177,9 @@ class RencontresController < ApplicationController
       if @rencontre.dnv
         rencontre_u << "\nMaraude déplacée mais personne non vue"
       end
+      if @usager.enfants.any? && !@rencontre.dnv
+        rencontre_u << "\nAvec #{pluralize(@rencontre.nb_enf, "enfant")}."
+      end
       if !@rencontre.details.empty?
         rencontre_u << "\n#{@rencontre.details}"
       else
@@ -198,6 +214,7 @@ class RencontresController < ApplicationController
       if !err && !errb
         @usager.fiche = u_fiche if u_fiche
         @usager.save
+        @rencontre.update_attribute(:nb_enf, 0) unless params[:rencontre][:nb_enf]
         @rencontre.update_attributes(rencontre_params)
         flash[:success] = "Rencontre mise à jour"
         redirect_to @usager
@@ -217,6 +234,7 @@ class RencontresController < ApplicationController
                                         :signale,
                                         :signalement,
                                         :prev,
-                                        :dnv)
+                                        :dnv,
+                                        :nb_enf)
     end
 end

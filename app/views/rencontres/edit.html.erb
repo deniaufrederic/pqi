@@ -63,7 +63,11 @@ $(document).ready(function(){
 
 <h3>Détails</h3>
 
-  <%= f.text_field :details, class: 'form-control', html: {style: 'text-align:center'} %>
+  <%= f.text_area :details, class: 'form-control', html: {style: 'text-align:center'} %>
+
+<% if @usager.enfants.any? %>
+  <br><%= f.select :nb_enf, @nb_enf, prompt: "Nb d'enfants vus", class: 'form-control' %><br>
+<% end %>
 
   <%= f.submit "Valider les modifications", class: 'btn btn-primary', id: 'submit' %>
 

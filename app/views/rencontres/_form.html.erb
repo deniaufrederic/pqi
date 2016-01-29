@@ -47,7 +47,12 @@
 
 <h3>Détails</h3>
 
-  <%= f.text_field :details, class: 'form-control', html: {style: 'text-align:center'} %>
+  <%= f.text_area :details, class: 'form-control', html: {style: 'text-align:center'} %>
+
+<% if @usager.enfants.any? %>
+  <br><%= f.label :nb_enf, "Nombre d'enfants vus" %>
+  <%= f.select :nb_enf, @nb_enf, class: 'form-control' %><br>
+<% end %>
 
 <div class="btn-group">
   <%= f.submit "Valider la rencontre", class: 'btn btn-primary', id: 'submit' %>

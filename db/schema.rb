@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160129134849) do
+ActiveRecord::Schema.define(version: 20160129150435) do
 
   create_table "enfants", force: :cascade do |t|
     t.integer  "usager_id"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 20160129134849) do
     t.datetime "updated_at",  null: false
     t.boolean  "prev"
     t.boolean  "dnv"
+    t.integer  "nb_enf"
   end
 
   add_index "rencontres", ["usager_id", "date", "type_renc"], name: "index_rencontres_on_usager_id_and_date_and_type_renc", unique: true

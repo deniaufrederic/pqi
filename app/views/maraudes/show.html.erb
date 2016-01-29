@@ -6,6 +6,9 @@
 <% rencontres.each do |r| %>
   <% u = Usager.find_by(id: r.usager_id) %>
   <% m_cr << "#{u.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
+  <% if u.enfants.any? %>
+    <% m_cr.last << " et #{pluralize(r.nb_enf, "enfant")}" %>
+  <% end %>
   <% if r.signalement %>
     <% m_cr.last << " [#{r.signalement}]" %>
   <% end %>

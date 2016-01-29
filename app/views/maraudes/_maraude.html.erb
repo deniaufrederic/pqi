@@ -4,6 +4,9 @@
 <% rencontres.each do |r| %>
   <% u = Usager.find_by(id: r.usager_id) %>
   <% m_renc << "#{u.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
+  <% if u.enfants.any? %>
+    <% m_renc.last << " et #{pluralize(r.nb_enf, "enfant")}" %>
+  <% end %>
 <% end %>
 <% arr = m_renc.sort %>
 <% liste_villes = [] %>
@@ -65,6 +68,9 @@
 <% sigs.each do |r| %>
   <% u = Usager.find_by(id: r.usager_id) %>
   <% m_sig << "#{u.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
+  <% if u.enfants.any? %>
+    <% m_sig.last << " et #{pluralize(r.nb_enf, "enfant")}" %>
+  <% end %>
 <% end %>
 <% arr = m_sig.sort %>
 <% liste_villes = [] %>
