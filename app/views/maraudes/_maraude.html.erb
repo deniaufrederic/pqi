@@ -7,6 +7,9 @@
   <% if u.enfants.any? %>
     <% m_renc.last << " et #{pluralize(r.nb_enf, "enfant")}" %>
   <% end %>
+  <% if r.prestas && !r.prestas.empty? %>
+    <% m_renc.last << " {#{r.prestas.split(' #').join(' - ')}}" %>
+  <% end %>
 <% end %>
 <% arr = m_renc.sort %>
 <% liste_villes = [] %>

@@ -1,0 +1,37 @@
+<% a = 0 %>
+<% v = 0 %>
+<% d = 0 %>
+<% h = 0 %>
+<% @usagers.each do |u| %>
+  <% u_renc = Rencontre.where(usager_id: u.id, date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), prev: false, dnv: false) %>
+  <% u_renc.each do |r| %>
+    <% if r.prestas && !r.prestas.empty? %>
+      <% prestas = r.prestas.split(' #') %>
+      <% if prestas.include?("Prestation alimentaire") %>
+        <% a += 1 %>
+      <% end %>
+      <% if prestas.include?("Vestiaire") %>
+        <% v += 1 %>
+      <% end %>
+      <% if prestas.include?("Duvet") %>
+        <% d += 1 %>
+      <% end %>
+      <% if prestas.include?("Hygiène") %>
+        <% h += 1 %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+ 
+<% if a+v+d+h == 0 %>
+  0
+<% else %>
+  <%= "#{a}/#{v}/#{d}/#{h}" %>
+<% end %>
+
+<% if @ville.nil? && !@dates.nil? %>
+  <% @pa_tot = @pa_tot + a %>
+  <% @pv_tot = @pv_tot + v %>
+  <% @pd_tot = @pd_tot + d %>
+  <% @ph_tot = @ph_tot + h %>
+<% end %>

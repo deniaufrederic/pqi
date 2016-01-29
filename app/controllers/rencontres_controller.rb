@@ -13,6 +13,10 @@ class RencontresController < ApplicationController
                 ["Maraude jour", "Maraude jour"],
                 ["Rencontre pôle jour", "Rencontre pôle jour"],
                 ["Autre", "Autre"]]
+    @prestas = [["Prestation alimentaire", "Prestation alimentaire"],
+                ["Vestiaire", "Vestiaire"],
+                ["Duvet", "Duvet"],
+                ["Hygiène", "Hygiène"]]
     @usager = Usager.find_by(id: session[:stored_id])
     @nb_enf = []
     i = 0
@@ -43,10 +47,16 @@ class RencontresController < ApplicationController
         if @rencontre.dnv
           err = true
           flash[:danger] = "Erreur : Maraude déplacée mais personne non vue alors qu'il ne s'agit pas d'une maraude ou que la rencontre est prévisionnelle"
-          redirect_to id_rencontre_path(:id => @usager.id)
         end
       end
       rencontre_u = "// #{@rencontre.type_renc} [#{@rencontre.date.strftime("%d/%m/%y")}] //"
+      rencontre_p = params[:rencontre][:prestas].reject{ |a| a == '0' }.join(' #')
+      if rencontre_p && !rencontre_p.empty?
+        rencontre_u << "\n#{rencontre_p.split(' #').join(' - ')}"
+      end
+      if @rencontre.dnv
+        rencontre_u << "\nMaraude déplacée mais personne non vue."
+      end
       if !@rencontre.details.empty?
         rencontre_u << "\n#{@rencontre.details}"
       else
@@ -60,19 +70,17 @@ class RencontresController < ApplicationController
           if !mar && !@rencontre.prev
             errb = true
             if err
-              flash[:danger] << "\nErreur : signalement alors que la rencontre annoncée n'est pas une maraude"
+              flash[:danger] << " et signalement alors que la rencontre annoncée n'est pas une maraude"
             else
               flash[:danger] = "Erreur : signalement alors que la rencontre annoncée n'est pas une maraude"
-              redirect_to id_rencontre_path(:id => @usager.id)
             end
           end
         else
           errb = true
           if err
-            flash[:danger] << "\nPrécisez le type de signalement"
+            flash[:danger] << "et précisez le type de signalement"
           else
             flash[:danger] = "Précisez le type de signalement"
-            redirect_to id_rencontre_path(:id => @usager.id)
           end
         end
       else
@@ -82,9 +90,12 @@ class RencontresController < ApplicationController
         @usager.fiche = u_fiche if u_fiche
         @usager.save
         @rencontre.nb_enf = nil unless @rencontre.nb_enf
+        @rencontre.prestas = rencontre_p
         @rencontre.save
         flash[:success] = "Rencontre ajoutée avec #{@usager.sexe} #{@usager.nom} #{@usager.prenom}"
         redirect_to usagers_path
+      else
+        redirect_to id_rencontre_path(:id => @usager.id)
       end
     elsif @rencontre.date.blank?
       flash[:danger] = "Renseignez une date"
@@ -148,6 +159,10 @@ class RencontresController < ApplicationController
                 ["Maraude jour", "Maraude jour"],
                 ["Rencontre pôle jour", "Rencontre pôle jour"],
                 ["Autre", "Autre"]]
+    @prestas = [["Prestation alimentaire", "Prestation alimentaire"],
+                ["Vestiaire", "Vestiaire"],
+                ["Duvet", "Duvet"],
+                ["Hygiène", "Hygiène"]]
     gon.renc = []
     if @usager.rencontres.any?
       @usager.rencontres.each do |r|
@@ -170,10 +185,13 @@ class RencontresController < ApplicationController
         if @rencontre.dnv
           err = true
           flash[:danger] = "Erreur : Maraude déplacée mais personne non vue alors qu'il ne s'agit pas d'une maraude ou que la rencontre est prévisionnelle"
-          redirect_to id_rencontre_path(:id => @usager.id)
         end
       end
       rencontre_u = "// #{@rencontre.type_renc} [#{@rencontre.date.strftime("%d/%m/%y")}] //"
+      rencontre_p = params[:rencontre][:prestas].reject{ |a| a == '0' }.join(' #')
+      if rencontre_p && !rencontre_p.empty?
+        rencontre_u << "\n#{rencontre_p.split(' #').join(' - ')}"
+      end
       if @rencontre.dnv
         rencontre_u << "\nMaraude déplacée mais personne non vue"
       end
@@ -193,19 +211,17 @@ class RencontresController < ApplicationController
           if !mar && !@rencontre.prev
             errb = true
             if err
-              flash[:danger] << "\nErreur : signalement alors que la rencontre annoncée n'est pas une maraude"
+              flash[:danger] << " et signalement alors que la rencontre annoncée n'est pas une maraude"
             else
               flash[:danger] = "Erreur : signalement alors que la rencontre annoncée n'est pas une maraude"
-              redirect_to id_rencontre_path(:id => @usager.id)
             end
           end
         else
           errb = true
           if err
-            flash[:danger] << "\nPrécisez le type de signalement"
+            flash[:danger] << " et précisez le type de signalement"
           else
             flash[:danger] = "Précisez le type de signalement"
-            redirect_to id_rencontre_path(:id => @usager.id)
           end
         end
       else
@@ -215,9 +231,12 @@ class RencontresController < ApplicationController
         @usager.fiche = u_fiche if u_fiche
         @usager.save
         @rencontre.update_attribute(:nb_enf, 0) unless params[:rencontre][:nb_enf]
+        @rencontre.update_attribute(:prestas, params[:rencontre][:prestas].reject{ |a| a == '0' }.join(' #'))
         @rencontre.update_attributes(rencontre_params)
         flash[:success] = "Rencontre mise à jour"
         redirect_to @usager
+      else
+        redirect_to id_rencontre_path(:id => @usager.id)
       end
     else
       flash[:danger] = "Mise à jour impossible. Veillez à remplir les informations nécessaires (Date, type de rencontre)."

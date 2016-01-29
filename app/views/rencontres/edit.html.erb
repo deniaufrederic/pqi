@@ -69,8 +69,20 @@ $(document).ready(function(){
   <br><%= f.select :nb_enf, @nb_enf, prompt: "Nb d'enfants vus", class: 'form-control' %><br>
 <% end %>
 
-  <%= f.submit "Valider les modifications", class: 'btn btn-primary', id: 'submit' %>
+<h3>Prestations</h3>
 
-<h3>Prestation délivrée ?</h3>
+<div>
+  <% for presta in @prestas do %>
+    <% if @rencontre.prestas.split(" #").include?("#{presta.first}") %>
+      <%= f.check_box :prestas, { :multiple => true, :checked => true }, "#{presta.first}" %>
+      <%= presta.first %><br>
+    <% else %>
+      <%= f.check_box :prestas, { :multiple => true, :checked => false }, "#{presta.first}" %>
+      <%= presta.first %><br>
+    <% end %>
+  <% end %>
+</div>
+
+  <%= f.submit "Valider les modifications", class: 'btn btn-primary', id: 'submit' %>
 
 <% end %>

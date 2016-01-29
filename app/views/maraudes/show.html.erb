@@ -15,6 +15,9 @@
   <% if r.dnv %>
     <% m_cr.last << " [Maraude déplacée mais personne non vue]" %>
   <% end %>
+  <% if r.prestas && !r.prestas.empty? %>
+    <% m_cr.last << " {#{r.prestas.split(' #').join(' - ')}}" %>
+  <% end %>
   <% m_cr.last << " : #{r.details}" %>
 <% end %>
 <% arr = m_cr.sort %>

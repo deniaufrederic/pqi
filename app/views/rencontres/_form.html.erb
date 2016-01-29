@@ -54,6 +54,15 @@
   <%= f.select :nb_enf, @nb_enf, class: 'form-control' %><br>
 <% end %>
 
+<h3>Prestations</h3>
+
+<div>
+  <% for presta in @prestas do %>
+    <%= f.check_box :prestas, { :multiple => true }, "#{presta.first}" %>
+    <%= presta.first %><br>
+  <% end %>
+</div>
+
 <div class="btn-group">
   <%= f.submit "Valider la rencontre", class: 'btn btn-primary', id: 'submit' %>
 
@@ -63,7 +72,5 @@
     </button>
   <% end %>
 </div>
-
-<h3>Prestation délivrée ?</h3>
 
 <% end %>

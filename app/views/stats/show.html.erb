@@ -11,7 +11,10 @@
     <%= "Statistiques sur le département du #{@dates.first.split('-').reverse.join('/')} au #{@dates.last.split('-').reverse.join('/')}" %>
   </h3>
 
-  <h5>Entre parenthèses : (Nb d'hommes/Nb de femmes)</h5>
+  <h5>
+    Entre parenthèses : (Nb d'hommes/Nb de femmes)<br>
+    Pour les prestations : Alimentaire/Vestiaire/Duvet/Hygiène
+  </h5>
 
   <table class="stats table table-striped">
   	<tr id="table-head">
@@ -31,6 +34,10 @@
     <% @e_sig = 0 %>
     <% @f_sig_dnv = 0 %>
     <% @h_sig_dnv = 0 %>
+    <% @pa_tot = 0 %>
+    <% @pv_tot = 0 %>
+    <% @pd_tot = 0 %>
+    <% @ph_tot = 0 %>
     <% @villes.each do |ville| %>
       <tr>
         <td><%= "#{ville.first}" %></td>
@@ -40,11 +47,11 @@
         </td>
         <td>
           <% @usagers = Usager.where(ville: ville) %>
-          <%= render 'calc_dnv' %>
+          <%= render 'calc_rencontres_diff' %>
         </td>
         <td>
           <% @usagers = Usager.where(ville: ville) %>
-          <%= render 'calc_rencontres_diff' %>
+          <%= render 'calc_dnv' %>
         </td>
         <td>
           <% @usagers = Usager.where(ville: ville) %>
@@ -53,6 +60,10 @@
         <td>
           <% @usagers = Usager.where(ville: ville) %>
           <%= render 'calc_sig_dnv' %>
+        </td>
+        <td>
+          <% @usagers = Usager.where(ville: ville) %>
+          <%= render 'calc_prestas' %>
         </td>
       </tr>
     <% end %>
@@ -64,6 +75,7 @@
       <td><%= "#{@h_dnv + @f_dnv} (#{@h_dnv}/#{@f_dnv})" %></td>
       <td><%= "#{@h_sig + @f_sig} (#{@h_sig}/#{@f_sig}) et #{pluralize(@e_sig.to_i, 'enfant')}" %></td>
       <td><%= "#{@h_sig_dnv + @f_sig_dnv} (#{@h_sig_dnv}/#{@f_sig_dnv})" %></td>
+      <td><%= "#{@pa_tot}/#{@pv_tot}/#{@pd_tot}/#{@ph_tot}" %></td>
   </table>
 
 <% elsif !@ville.nil? && !@dates.nil? %>
@@ -71,7 +83,10 @@
     <%= "Statistiques sur #{@ville} du #{@dates.first.split('-').reverse.join('/')} au #{@dates.last.split('-').reverse.join('/')}" %>
   </h3>
 
-  <h5>Entre parenthèses : (Nb d'hommes/Nb de femmes)</h5>
+  <h5>
+    Entre parenthèses : (Nb d'hommes/Nb de femmes)<br>
+    Pour les prestations : Alimentaire/Vestiaire/Duvet/Hygiène
+  </h5>
 
   <table class="stats table">
   	<tr id="table-head">
@@ -97,6 +112,10 @@
       <td>
         <% @usagers = Usager.where(ville: @ville) %>
         <%= render 'calc_sig_dnv' %>
+      </td>
+      <td>
+        <% @usagers = Usager.where(ville: @ville) %>
+        <%= render 'calc_prestas' %>
       </td>
     </tr>
   </table>
