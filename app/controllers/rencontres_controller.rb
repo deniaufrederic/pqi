@@ -77,9 +77,10 @@ class RencontresController < ApplicationController
   end
 
   def destroy
+    @usager = Usager.find(Rencontre.find(params[:id]).usager_id)
     Rencontre.find(params[:id]).destroy
     flash[:success] = "Rencontre supprimée (N'oubliez pas de retirer la rencontre de la fiche de suivi de l'usager si besoin est)"
-    redirect_to usagers_path
+    redirect_to @usager
   end
 
   def destroy_form
@@ -104,7 +105,7 @@ class RencontresController < ApplicationController
     else
       r.destroy
       flash[:success] = "Rencontre supprimée (N'oubliez pas de retirer la rencontre de la fiche de suivi de l'usager si besoin est)"
-      redirect_to usagers_path
+      redirect_to @usager
       session.delete(:stored_id)
     end
   end
