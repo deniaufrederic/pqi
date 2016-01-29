@@ -21,12 +21,14 @@
     
     <% @f_tot = 0 %>
     <% @h_tot = 0 %>
+    <% @e_tot = 0 %>
     <% @f_dif = 0 %>
     <% @h_dif = 0 %>
     <% @f_dnv = 0 %>
     <% @h_dnv = 0 %>
     <% @f_sig = 0 %>
     <% @h_sig = 0 %>
+    <% @e_sig = 0 %>
     <% @f_sig_dnv = 0 %>
     <% @h_sig_dnv = 0 %>
     <% @villes.each do |ville| %>
@@ -57,10 +59,10 @@
 
     <tr>
       <td id="total">Total</td>
-      <td><%= "#{@h_tot + @f_tot} (#{@h_tot}/#{@f_tot})" %></td>
+      <td><%= "#{@h_tot + @f_tot} (#{@h_tot}/#{@f_tot}) et #{pluralize(@e_tot.to_i, 'enfant')}" %></td>
       <td><%= "#{@h_dif + @f_dif} (#{@h_dif}/#{@f_dif})" %></td>
       <td><%= "#{@h_dnv + @f_dnv} (#{@h_dnv}/#{@f_dnv})" %></td>
-      <td><%= "#{@h_sig + @f_sig} (#{@h_sig}/#{@f_sig})" %></td>
+      <td><%= "#{@h_sig + @f_sig} (#{@h_sig}/#{@f_sig}) et #{pluralize(@e_sig.to_i, 'enfant')}" %></td>
       <td><%= "#{@h_sig_dnv + @f_sig_dnv} (#{@h_sig_dnv}/#{@f_sig_dnv})" %></td>
   </table>
 
