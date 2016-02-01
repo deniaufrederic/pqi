@@ -142,7 +142,37 @@
 
 <span>Nombre de signalements : <%= Rencontre.where(usager_id: @usager.id, signale: true).count %></span><br>
 
-<span>Dont signalements déplacés sans voir la personne : <%= Rencontre.where(usager_id: @usager.id, signale: true, dnv: true).count %></span>
+<span>Dont signalements déplacés sans voir la personne : <%= Rencontre.where(usager_id: @usager.id, signale: true, dnv: true).count %></span><br>
+
+<% renc = Rencontre.where(usager_id: @usager.id, prev: false, dnv: false) %>
+<% a = 0 %>
+<% v = 0 %>
+<% d = 0 %>
+<% h = 0 %>
+<% renc.each do |r| %>
+  <% if r.prestas && !r.prestas.empty? %>
+    <% prestas = r.prestas.split(' #') %>
+    <% if prestas.include?("Prestation alimentaire") %>
+      <% a += 1 %>
+    <% end %>
+    <% if prestas.include?("Vestiaire") %>
+      <% v += 1 %>
+    <% end %>
+    <% if prestas.include?("Duvet") %>
+      <% d += 1 %>
+    <% end %>
+    <% if prestas.include?("Hygiène") %>
+      <% h += 1 %>
+    <% end %>
+  <% end %>
+<% end %>
+<span>
+  Prestations reçues : 
+  <%= pluralize(a, "prestation")%> <%= "alimentaire".pluralize(a) %> / 
+  <%= pluralize(v, "vestiaire") %> / 
+  <%= pluralize(d, "duvet") %> / 
+  <%= pluralize(h, "hygiène") %>
+</span>
 
 <h3>Informations complémentaires</h3>
 
