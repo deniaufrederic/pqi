@@ -12,6 +12,9 @@
   <% if r.signalement %>
     <% m_cr.last << " [#{r.signalement}]" %>
   <% end %>
+  <% if r.type_accomp %>
+    <% m_cr.last << " [#{r.type_accomp}]" %>
+  <% end %>
   <% if r.dnv %>
     <% m_cr.last << " [Maraude déplacée mais personne non vue]" %>
   <% end %>

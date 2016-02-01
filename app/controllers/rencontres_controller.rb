@@ -17,6 +17,9 @@ class RencontresController < ApplicationController
                 ["Vestiaire", "Vestiaire"],
                 ["Duvet", "Duvet"],
                 ["Hygiène", "Hygiène"]]
+    @accomps = [["Accompagnement 115", "Accompagnement 115"],
+                ["Accompagnement SIAO", "Accompagnement SIAO"],
+                ["Autre", "Autre"]]
     @usager = Usager.find_by(id: session[:stored_id])
     @nb_enf = []
     i = 0
@@ -50,6 +53,12 @@ class RencontresController < ApplicationController
         end
       end
       rencontre_u = "// #{@rencontre.type_renc} [#{@rencontre.date.strftime("%d/%m/%y")}] //"
+      if @rencontre.signale && !@rencontre.signalement.empty?
+        rencontre_u << "\n#{@rencontre.signalement}"
+      end
+      if @rencontre.accomp && !@rencontre.type_accomp.empty?
+        rencontre_u << "\n#{@rencontre.type_accomp}"
+      end
       rencontre_p = params[:rencontre][:prestas].reject{ |a| a == '0' }.join(' #')
       if rencontre_p && !rencontre_p.empty?
         rencontre_u << "\n#{rencontre_p.split(' #').join(' - ')}"
@@ -86,7 +95,28 @@ class RencontresController < ApplicationController
       else
         params[:rencontre][:signalement] = nil
       end
-      if !err && !errb
+      if @rencontre.accomp
+        if !@rencontre.type_accomp.empty?
+          if @rencontre.dnv
+            errc = true
+            if err || errb
+              flash[:danger] << " et accompagnement alors que la maraude s'est déplacée sans voir la personne"
+            else
+              flash[:danger] = "Erreur : accompagnement alors que la maraude s'est déplacée sans voir la personne"
+            end
+          end
+        else
+          errc = true
+          if err || errb
+            flash[:danger] << " et précisez le type d'accompagnement"
+          else
+            flash[:danger] = "Précisez le type d'accompagnement"
+          end
+        end
+      else
+        params[:rencontre][:type_accomp] = nil
+      end
+      if !err && !errb && !errc
         @usager.fiche = u_fiche if u_fiche
         @usager.save
         @rencontre.nb_enf = nil unless @rencontre.nb_enf
@@ -163,6 +193,9 @@ class RencontresController < ApplicationController
                 ["Vestiaire", "Vestiaire"],
                 ["Duvet", "Duvet"],
                 ["Hygiène", "Hygiène"]]
+    @accomps = [["Accompagnement 115", "Accompagnement 115"],
+                ["Accompagnement SIAO", "Accompagnement SIAO"],
+                ["Autre", "Autre"]]
     gon.renc = []
     if @usager.rencontres.any?
       @usager.rencontres.each do |r|
@@ -188,6 +221,12 @@ class RencontresController < ApplicationController
         end
       end
       rencontre_u = "// #{@rencontre.type_renc} [#{@rencontre.date.strftime("%d/%m/%y")}] //"
+      if @rencontre.signale && !@rencontre.signalement.empty?
+        rencontre_u << "\n#{@rencontre.signalement}"
+      end
+      if @rencontre.accomp && !@rencontre.type_accomp.empty?
+        rencontre_u << "\n#{@rencontre.type_accomp}"
+      end
       rencontre_p = params[:rencontre][:prestas].reject{ |a| a == '0' }.join(' #')
       if rencontre_p && !rencontre_p.empty?
         rencontre_u << "\n#{rencontre_p.split(' #').join(' - ')}"
@@ -227,7 +266,28 @@ class RencontresController < ApplicationController
       else
         params[:rencontre][:signalement] = nil
       end
-      if !err && !errb
+      if @rencontre.accomp
+        if !@rencontre.type_accomp.empty?
+          if @rencontre.dnv
+            errc = true
+            if err || errb
+              flash[:danger] << " et accompagnement alors que la maraude s'est déplacée sans voir la personne"
+            else
+              flash[:danger] = "Erreur : accompagnement alors que la maraude s'est déplacée sans voir la personne"
+            end
+          end
+        else
+          errc = true
+          if err || errb
+            flash[:danger] << " et précisez le type d'accompagnement"
+          else
+            flash[:danger] = "Précisez le type d'accompagnement"
+          end
+        end
+      else
+        params[:rencontre][:type_accomp] = nil
+      end
+      if !err && !errb && !errc
         @usager.fiche = u_fiche if u_fiche
         @usager.save
         @rencontre.update_attribute(:nb_enf, 0) unless params[:rencontre][:nb_enf]
@@ -254,6 +314,8 @@ class RencontresController < ApplicationController
                                         :signalement,
                                         :prev,
                                         :dnv,
-                                        :nb_enf)
+                                        :nb_enf,
+                                        :accomp,
+                                        :type_accomp)
     end
 end

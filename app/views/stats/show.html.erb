@@ -34,6 +34,9 @@
     <% @e_sig = 0 %>
     <% @f_sig_dnv = 0 %>
     <% @h_sig_dnv = 0 %>
+    <% @f_acc = 0 %>
+    <% @h_acc = 0 %>
+    <% @e_acc = 0 %>
     <% @pa_tot = 0 %>
     <% @pv_tot = 0 %>
     <% @pd_tot = 0 %>
@@ -63,6 +66,10 @@
         </td>
         <td>
           <% @usagers = Usager.where(ville: ville) %>
+          <%= render 'calc_accomps' %>
+        </td>
+        <td>
+          <% @usagers = Usager.where(ville: ville) %>
           <%= render 'calc_prestas' %>
         </td>
       </tr>
@@ -75,6 +82,7 @@
       <td><%= "#{@h_dnv + @f_dnv} (#{@h_dnv}/#{@f_dnv})" %></td>
       <td><%= "#{@h_sig + @f_sig} (#{@h_sig}/#{@f_sig}) et #{pluralize(@e_sig.to_i, 'enfant')}" %></td>
       <td><%= "#{@h_sig_dnv + @f_sig_dnv} (#{@h_sig_dnv}/#{@f_sig_dnv})" %></td>
+      <td><%= "#{@h_acc + @f_acc} (#{@h_acc}/#{@f_acc}) et #{pluralize(@e_acc.to_i, 'enfant')}" %></td>
       <td><%= "#{@pa_tot}/#{@pv_tot}/#{@pd_tot}/#{@ph_tot}" %></td>
   </table>
 
@@ -112,6 +120,10 @@
       <td>
         <% @usagers = Usager.where(ville: @ville) %>
         <%= render 'calc_sig_dnv' %>
+      </td>
+      <td>
+        <% @usagers = Usager.where(ville: @ville) %>
+        <%= render 'calc_accomps' %>
       </td>
       <td>
         <% @usagers = Usager.where(ville: @ville) %>

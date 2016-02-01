@@ -1,0 +1,28 @@
+<% h = 0 %>
+<% f = 0 %>
+<% e = 0 %>
+<% @usagers.each do |u| %>
+  <% u_renc = Rencontre.where(usager_id: u.id, date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), accomp: true) %>
+  <% if u.sexe == "Mr" %>
+  	<% h = h + u_renc.count %>
+  <% else %>
+  	<% f = f + u_renc.count %>
+  <% end %>
+  <% u_renc.each do |r| %>
+    <% if r.nb_enf %>
+      <% e = e + r.nb_enf %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% if f+h == 0 %>
+  0
+<% else %>
+  <%= "#{f+h} (#{h}/#{f}) et #{pluralize(e.to_i, 'enfant')}" %>
+<% end %>
+
+<% if @ville.nil? && !@dates.nil? %>
+  <% @f_acc = @f_acc + f %>
+  <% @h_acc = @h_acc + h %>
+  <% @e_acc = @e_acc + e %>
+<% end %>

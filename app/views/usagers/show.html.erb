@@ -22,7 +22,14 @@
     <% renc_prev.each do |r| %>
       <li>
         <%= link_to "#{r.type_renc}", edit_rencontre_path(r), "data-no-turbolink" => true %>
-        du <%= link_to "#{r.date.strftime("%d/%m/%y")}", edit_rencontre_path(r), "data-no-turbolink" => true %><br>
+        du <%= link_to "#{r.date.strftime("%d/%m/%y")}", edit_rencontre_path(r), "data-no-turbolink" => true %>
+        <% if r.signale %>
+          <%= " [#{r.signalement}]" %>
+        <% end %>
+        <% if r.accomp %>
+          <%= " [#{r.type_accomp}]" %>
+        <% end %>
+        <br>
         <pre><%= r.details %></pre>
       </li>
     <% end %>
@@ -84,7 +91,7 @@
   <% else %>
     <%= "#{@usager.sexe} #{@usager.nom} n'a jamais été sur le PQI." %>
   <% end %>
-</span><br>
+</span><br><br>
 
 <span>
   Observations :
@@ -98,9 +105,18 @@
       <%= " #{@usager.notes}" %>
     <% end %>
   <% end %>
-</span><br>
+</span><br><br>
 
-<span>Dates de signalement : 
+
+  <% dates_renc = [] %>
+  <% Rencontre.where(usager_id: @usager.id, prev: false, dnv: false).each do |r| %>
+    <% dates_renc << "#{r.date.strftime("%d/%m/%y")} [#{r.type_renc}]" %>
+    <% if @usager.enfants.any? %>
+      <% dates_renc.last << " [#{pluralize(r.nb_enf, "enfant")}]" %>
+    <% end %>
+  <% end %>
+
+
   <% dates_sig = [] %>
   <% Rencontre.where(usager_id: @usager.id, signale: true).each do |r| %>
     <% dates_sig << "#{r.date.strftime("%d/%m/%y")} [#{r.signalement}]" %>
@@ -111,19 +127,36 @@
       <% dates_sig.last << " [Maraude déplacée mais personne non vue]" %>
     <% end %>
   <% end %>
-  <%= dates_sig.join(' - ') %>
-</span><br>
 
-<span>Dates de rencontres : 
-  <% dates_renc = [] %>
-  <% Rencontre.where(usager_id: @usager.id, prev: false, dnv: false).each do |r| %>
-    <% dates_renc << "#{r.date.strftime("%d/%m/%y")} [#{r.type_renc}]" %>
+
+  <% dates_accomp = [] %>
+  <% Rencontre.where(usager_id: @usager.id, accomp: true).each do |r| %>
+    <% dates_accomp << "#{r.date.strftime("%d/%m/%y")} [#{r.type_accomp}]" %>
     <% if @usager.enfants.any? %>
-      <% dates_renc.last << " [#{pluralize(r.nb_enf, "enfant")}]" %>
+      <% dates_accomp.last << " [#{pluralize(r.nb_enf, "enfant")}]" %>
     <% end %>
   <% end %>
-  <%= dates_renc.join(' - ') %>
-</span><br>
+
+
+<table>
+  <tr class="table-head">
+    <th>Dates de rencontre</th>
+    <th>Dates de signalement</th>
+    <th>Dates d'accompagnement</th>
+  </tr>
+  <tr>
+    <td>
+      <pre class="maraude-list"><%= dates_renc.join("\n") %></pre>
+    </td>
+    <td>
+      <pre class="maraude-list"><%= dates_sig.join("\n") %></pre>
+    </td>
+    <td>
+      <pre class="maraude-list"><%= dates_accomp.join("\n") %></pre>
+    </td>
+  </tr>
+</table>
+
 
 <span><%= link_to "Ajouter une rencontre", id_rencontre_path(:id => @usager.id), id: 'ajout-rencontre', "data-no-turbolink" => true %></span>
 
@@ -134,15 +167,9 @@
   </span>
 <% end %>
 
+
 <h3>Statistiques</h3>
 
-<span>Nombre de rencontres : <%= Rencontre.where(usager_id: @usager.id, prev: false, dnv: false).count %></span><br>
-
-<span>Nombre de déplacements sans voir la personne : <%= Rencontre.where(usager_id: @usager.id, prev: false, dnv: true).count %></span><br>
-
-<span>Nombre de signalements : <%= Rencontre.where(usager_id: @usager.id, signale: true).count %></span><br>
-
-<span>Dont signalements déplacés sans voir la personne : <%= Rencontre.where(usager_id: @usager.id, signale: true, dnv: true).count %></span><br>
 
 <% renc = Rencontre.where(usager_id: @usager.id, prev: false, dnv: false) %>
 <% a = 0 %>
@@ -166,13 +193,30 @@
     <% end %>
   <% end %>
 <% end %>
-<span>
-  Prestations reçues : 
-  <%= pluralize(a, "prestation")%> <%= "alimentaire".pluralize(a) %> / 
-  <%= pluralize(v, "vestiaire") %> / 
-  <%= pluralize(d, "duvet") %> / 
-  <%= pluralize(h, "hygiène") %>
-</span>
+<% prestas = "#{pluralize(a, "prestation")} #{"alimentaire".pluralize(a)}\n#{pluralize(v, "vestiaire")}\n#{pluralize(d, "duvet")}\n#{pluralize(h, "hygiène")}" %>
+
+
+<table>
+  <tr class="table-head">
+    <th>Nombre de rencontres</th>
+    <th>Nombre de déplacements sans voir la personne</th>
+    <th>Nombre de signalements</th>
+    <th>Dont signalements déplacés sans voir la personne</th>
+    <th>Nombre d'accompagnements</th>
+    <th>Prestations reçues</th>
+  </tr>
+  <tr class="tr-center">
+    <td><%= Rencontre.where(usager_id: @usager.id, prev: false, dnv: false).count %></td>
+    <td><%= Rencontre.where(usager_id: @usager.id, prev: false, dnv: true).count %></td>
+    <td><%= Rencontre.where(usager_id: @usager.id, signale: true).count %></td>
+    <td><%= Rencontre.where(usager_id: @usager.id, signale: true, dnv: true).count %></td>
+    <td><%= Rencontre.where(usager_id: @usager.id, accomp: true).count %></td>
+    <td>
+      <pre class="maraude-list"><%= prestas %></pre>
+    </td>
+  </tr>
+</table>
+
 
 <h3>Informations complémentaires</h3>
 

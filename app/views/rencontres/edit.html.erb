@@ -32,6 +32,10 @@ $(document).ready(function(){
   </button>
 </h1>
 
+<h3>Date</h3>
+
+  <%= f.input :date, label: false, :as => :date_picker, input_html: {value: @rencontre.date.strftime("%F")}, class: 'form-control' %>
+
 <div class="form-inline">
   <%= f.label :signale, "Nouveau signalement ?" %>
   <%= f.check_box :signale, class: 'form-control' %><br>
@@ -43,9 +47,15 @@ $(document).ready(function(){
                       			class: 'form-control' %>
 </div>
 
-<h3>Date</h3>
+<h3>Accompagnement</h3>
 
-  <%= f.input :date, label: false, :as => :date_picker, input_html: {value: @rencontre.date.strftime("%F")}, class: 'form-control' %>
+<div class="form-inline">
+  <%= f.label :accomp, "Accompagnement" %>
+  <%= f.check_box :accomp, checked: false, class: 'form-control' %><br>
+
+  <%= f.label :type_accomp, "Si oui, type d'accompagnement ?" %>
+  <%= f.select :type_accomp, @accomps, prompt: "Quel type d'accompagnement ?", class: 'form-control' %>
+</div>
 
 <h3>Type</h3>
 

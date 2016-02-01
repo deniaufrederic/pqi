@@ -7,9 +7,6 @@
   <% if u.enfants.any? %>
     <% m_renc.last << " et #{pluralize(r.nb_enf, "enfant")}" %>
   <% end %>
-  <% if r.prestas && !r.prestas.empty? %>
-    <% m_renc.last << " {#{r.prestas.split(' #').join(' - ')}}" %>
-  <% end %>
 <% end %>
 <% arr = m_renc.sort %>
 <% liste_villes = [] %>
@@ -94,6 +91,35 @@
 <% end %>
 
 
+<% # Liste des accompagnements %>
+<% accomps = Rencontre.where(date: maraude.date, type_renc: maraude.type_maraude, accomp: true) %>
+<% m_accomp = [] %>
+<% accomps.each do |r| %>
+  <% u = Usager.find_by(id: r.usager_id) %>
+  <% m_accomp << "#{u.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
+  <% if u.enfants.any? %>
+    <% m_accomp.last << " et #{pluralize(r.nb_enf, "enfant")}" %>
+  <% end %>
+<% end %>
+<% arr = m_accomp.sort %>
+<% liste_villes = [] %>
+<% liste_usagers = [] %>
+<% (0..(arr.length-1)).each do |i| %>
+  <% ville = arr[i].split(' @').first %>
+  <% usager = arr[i].split(' @').last %>
+  <% if liste_villes.last == "#{ville}" %>
+    <% liste_usagers.last << "   - #{usager}\n" %>
+  <% else %>
+    <% liste_villes << "#{ville}" %>
+    <% liste_usagers << "   - #{usager}\n" %>
+  <% end %>
+<% end %>
+<% disp_accomp = "" %>
+<% (0..(liste_villes.length-1)).each do |n| %>
+  <% disp_accomp << "#{liste_villes[n].upcase} :\n#{liste_usagers[n]}\n" %>
+<% end %>
+
+
 <tr id="maraude">
   <td>
     <%= link_to "#{maraude.type_maraude}", maraude %><br>
@@ -129,6 +155,6 @@
     <pre class="maraude-list"><%= disp_sig %></pre>
   </td>
   <td>
-    <pre class="maraude-list"></pre>
+    <pre class="maraude-list"><%= disp_accomp %></pre>
   </td>
 </tr>

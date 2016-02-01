@@ -3,8 +3,14 @@
 <% if @usager.rencontres.empty? %>
   <h1>Renseigner la rencontre</h1>
 
+<h3>Date</h3>
+
+  <%= f.input :date, label: false, :as => :date_picker, input_html: {value: Date.today}, class: 'form-control' %>
+
+<h3>Signalement</h3>
+
 <div class="form-inline">
-  <%= f.label :signale, "Non connu(e) du service avant ?" %>
+  <%= f.label :signale, "Non connu(e) du service avant" %>
   <%= f.check_box :signale, checked: false, class: 'form-control' %><br>
 
   <%= f.label :signalement, "Si oui, type de signalement ?" %>
@@ -14,8 +20,14 @@
 <% else %>
   <h1>Ajouter une rencontre</h1>
 
+<h3>Date</h3>
+
+  <%= f.input :date, label: false, :as => :date_picker, input_html: {value: Date.today}, class: 'form-control' %>
+
+<h3>Signalement</h3>
+
 <div class="form-inline">
-  <%= f.label :signale, "Nouveau signalement ?" %>
+  <%= f.label :signale, "Nouveau signalement" %>
   <%= f.check_box :signale, class: 'form-control' %><br>
 
   <%= f.label :signalement, "Si oui, type de signalement ?" %>
@@ -27,9 +39,15 @@
 
 <% end %>
 
-<h3>Date</h3>
+<h3>Accompagnement</h3>
 
-  <%= f.input :date, label: false, :as => :date_picker, input_html: {value: Date.today}, class: 'form-control' %>
+<div class="form-inline">
+  <%= f.label :accomp, "Accompagnement" %>
+  <%= f.check_box :accomp, checked: false, class: 'form-control' %><br>
+
+  <%= f.label :type_accomp, "Si oui, type d'accompagnement ?" %>
+  <%= f.select :type_accomp, @accomps, prompt: "Quel type d'accompagnement ?", class: 'form-control' %>
+</div>
 
 <h3>Type</h3>
 
