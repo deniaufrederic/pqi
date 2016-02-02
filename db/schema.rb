@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160201143114) do
+ActiveRecord::Schema.define(version: 20160201164106) do
 
   create_table "enfants", force: :cascade do |t|
     t.integer  "usager_id"
@@ -24,6 +24,12 @@ ActiveRecord::Schema.define(version: 20160201143114) do
   end
 
   add_index "enfants", ["usager_id"], name: "index_enfants_on_usager_id"
+
+  create_table "groupes", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "nom"
+  end
 
   create_table "maraudes", force: :cascade do |t|
     t.date     "date"
@@ -72,8 +78,10 @@ ActiveRecord::Schema.define(version: 20160201143114) do
     t.boolean  "pqi"
     t.string   "pqi_histo"
     t.text     "fiche"
+    t.integer  "groupe_id"
   end
 
+  add_index "usagers", ["groupe_id"], name: "index_usagers_on_groupe_id"
   add_index "usagers", ["nom"], name: "index_usagers_on_nom"
   add_index "usagers", ["ville"], name: "index_usagers_on_ville"
 

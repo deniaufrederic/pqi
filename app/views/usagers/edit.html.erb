@@ -16,6 +16,7 @@
 
 </div>
 
+<div>
 <h3>Enfants</h3>
 <ul id="enfants">
    <%= f.simple_fields_for :enfants do |enf| %>
@@ -23,6 +24,13 @@
    <% end %>
    <%= link_to_add_association 'Ajouter un enfant', f, :enfants, class: 'links' %>
 </ul>
+</div>
+
+<div>
+   <h3>Groupe</h3>
+
+   <%= f.text_field :groupe_nom, data: {autocomplete_source: Groupe.order(:nom).map(&:nom)}, class: 'form-control' %>
+</div>
 
 <h3>Informations de base</h3>
 

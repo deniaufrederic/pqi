@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   post 'villes'       =>  'maraudes#post_villes'
   resources :maraudes, only: [:index, :show, :destroy, :new, :create]
   resources :rencontres, only: [:create, :edit, :update, :destroy]
+  post 'new_groupe'   =>  'rencontres#post_groupe'
   delete 'rencontres' =>  'rencontres#destroy_via_form'
 
   get	'pqi/:ville',
@@ -29,6 +30,11 @@ Rails.application.routes.draw do
     :controller => 'rencontres',
     :action     => 'destroy_form',
     :as         => :id_destroy
+
+  get 'rencontres/groupe/:id',
+    :controller => 'rencontres',
+    :action     => 'new_groupe',
+    :as         => :id_groupe
 
   get 'maraude-villes/:id',
     :controller => 'maraudes',

@@ -332,6 +332,9 @@ class UsagersController < ApplicationController
     session.delete(:stored_id)
   end
 
+  def autocomplete_groupe_nom
+    @groupes = Groupe.find(:all, :conditions => ['name LIKE?', "%#{params[:search]}"])
+  end
 
   private
     def usager_params
@@ -347,6 +350,7 @@ class UsagersController < ApplicationController
                                       :pqi,
                                       :pqi_histo,
                                       :fiche,
+                                      :groupe_nom,
                                       enfants_attributes: [ :id,
                                                             :nom,
                                                             :prenom,

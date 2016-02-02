@@ -29,6 +29,12 @@
    <%= f.text_field :adresse_précis, class: 'form-control' %>
 </div>
 
+<div>
+   <h3>Groupe</h3>
+
+   <%= f.text_field :groupe_nom, data: {autocomplete_source: Groupe.order(:nom).map(&:nom)}, class: 'form-control' %>
+</div>
+
 <div class="form-inline">
    <%= f.label :pqi, "PQI ?" %>
    <%= f.check_box :pqi, class: 'form-control' %>

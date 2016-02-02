@@ -1,6 +1,5 @@
 class RencontresController < ApplicationController
-  before_action :logged_in_user, only: [:new, :create, :destroy_form, :destroy_via_form, :destroy, :edit, :update]
-  before_action :admin_user, only: [:destroy]
+  before_action :logged_in_user, only: [:new, :create, :new_groupe, :post_groupe, :destroy_form, :destroy_via_form, :destroy, :edit, :update]
 
   def new
     store_id
@@ -39,6 +38,10 @@ class RencontresController < ApplicationController
   def create
     @usager = Usager.find_by(id: session[:stored_id])
     @rencontre = @usager.rencontres.build(rencontre_params)
+    if !!session[:usagers_ids]
+      @rencontre.date = session[:date]
+      @rencontre.type_renc = session[:type_renc]
+    end
     if @rencontre.valid?
       if @rencontre.type_renc.split(' ').first == "Maraude" && !@rencontre.prev
         mar = true
@@ -121,9 +124,32 @@ class RencontresController < ApplicationController
         @usager.save
         @rencontre.nb_enf = nil unless @rencontre.nb_enf
         @rencontre.prestas = rencontre_p
+        if !!session[:usagers_ids]
+          session[:groupe] = true
+          if session[:usagers_ids] == []
+            session.delete(:usagers_ids)
+          end
+        else
+          session.delete(:date)
+          session.delete(:type_renc)
+        end
         @rencontre.save
         flash[:success] = "Rencontre ajoutée avec #{@usager.sexe} #{@usager.nom} #{@usager.prenom}"
-        redirect_to usagers_path
+        if !session[:usagers_ids]
+          if @usager.groupe && @usager.groupe.usagers.count > 1 && !session[:groupe]
+            session[:type_renc] = @rencontre.type_renc
+            session[:date] = @rencontre.date
+            redirect_to id_groupe_path(:id => @usager.id)
+          else
+            redirect_to usagers_path
+          end
+          if session[:groupe]
+            session.delete(:groupe)
+          end
+        else
+          redirect_to id_rencontre_path(:id => session[:usagers_ids].pop)
+        end
+        session.delete(:stored_id)
       else
         redirect_to id_rencontre_path(:id => @usager.id)
       end
@@ -133,8 +159,24 @@ class RencontresController < ApplicationController
     elsif @rencontre.type_renc.empty?
       flash[:danger] = "Précisez un type de rencontre"
       redirect_to id_rencontre_path(:id => @usager.id)
+    elsif Rencontre.where(usager_id: @usager.id, date: @rencontre.date, type_renc: @rencontre.type_renc)
+      flash[:danger] = "Cette rencontre existe déjà"
+      redirect_to id_rencontre_path(:id => @usager.id)
     end
+  end
+
+  def new_groupe
+    store_id
+    u = Usager.find(session[:stored_id])
+    @groupe = u.groupe
+    @usagers = @groupe.usagers.reject{ u.id }
+  end
+
+  def post_groupe
+    session[:usagers_ids] = params[:rencontre][:usagers].reject{ |a| a == '0' }
     session.delete(:stored_id)
+    session[:groupe] = true
+    redirect_to id_rencontre_path(:id => session[:usagers_ids].pop)
   end
 
   def destroy

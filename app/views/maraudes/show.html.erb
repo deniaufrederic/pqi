@@ -45,12 +45,14 @@
 
 <h1>
   <%= @maraude.type_maraude %> [<%= @maraude.date.strftime("%d/%m/%y") %>]
-  <br><%= button_to "Supprimer la maraude", @maraude,
-                                            method: :delete,
-                                            data: { confirm: "Etes-vous sûr(e) ? Cette maraude ne sera pas récupérable." },
-                                            class: "btn btn-danger btn-lg" %>
+  <% if current_user.admin? %>
+    <br><%= button_to "Supprimer la maraude", @maraude,
+                                              method: :delete,
+                                              data: { confirm: "Etes-vous sûr(e) ? Cette maraude ne sera pas récupérable." },
+                                              class: "btn btn-danger btn-lg" %>
+  <% end %>
 </h1>
 
 <h3>Compte-rendu</h3>
 
-<pre class="pre-scrollable"><%= disp %></pre>
+<pre class="pre-scrollable text-justify"><%= disp %></pre>

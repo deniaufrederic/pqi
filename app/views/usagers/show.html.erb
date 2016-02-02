@@ -18,22 +18,24 @@
 <% if Rencontre.find_by(usager_id: @usager.id, prev: true) %>
   <% renc_prev = Rencontre.where(usager_id: @usager.id, prev: true) %>
   <h3><%= pluralize(renc_prev.count, "Rencontre") %> <%= "prévue".pluralize(renc_prev.count) %></h3>
-  <ul>
-    <% renc_prev.each do |r| %>
-      <li>
-        <%= link_to "#{r.type_renc}", edit_rencontre_path(r), "data-no-turbolink" => true %>
-        du <%= link_to "#{r.date.strftime("%d/%m/%y")}", edit_rencontre_path(r), "data-no-turbolink" => true %>
-        <% if r.signale %>
-          <%= " [#{r.signalement}]" %>
-        <% end %>
-        <% if r.accomp %>
-          <%= " [#{r.type_accomp}]" %>
-        <% end %>
-        <br>
-        <pre><%= r.details %></pre>
-      </li>
-    <% end %>
-  </ul>
+  <blockquote>
+    <ul>
+      <% renc_prev.each do |r| %>
+        <li>
+          <%= link_to "#{r.type_renc}", edit_rencontre_path(r), "data-no-turbolink" => true %>
+          du <%= link_to "#{r.date.strftime("%d/%m/%y")}", edit_rencontre_path(r), "data-no-turbolink" => true %>
+          <% if r.signale %>
+            <%= " [#{r.signalement}]" %>
+          <% end %>
+          <% if r.accomp %>
+            <%= " [#{r.type_accomp}]" %>
+          <% end %>
+          <br>
+          <pre><%= r.details %></pre>
+        </li>
+      <% end %>
+    </ul>
+  </blockquote>
 <% end %>
 
 
@@ -57,7 +59,14 @@
   </ul>
 <% end %>
 
-<h3>Informations de base</h3>
+<% if @usager.groupe %>
+  <h3>Groupe</h3>
+
+  <%= @usager.groupe.nom %>
+
+<% end %>
+
+<h3>Informations générales</h3>
 
 <table class="usager_show">
   <tr class="table_head">
@@ -94,7 +103,7 @@
 </span><br><br>
 
 <span>
-  Observations :
+  Observations PQI :
   <% if @usager.notes.nil? || @usager.notes.empty? %>
     Rien de notable.
   <% else %>
@@ -138,25 +147,32 @@
   <% end %>
 
 
-<table>
-  <tr class="table-head">
-    <th>Dates de rencontre</th>
-    <th>Dates de signalement</th>
-    <th>Dates d'accompagnement</th>
-  </tr>
-  <tr>
-    <td>
+<div class="row">
+  <div class="col-md-4">
+    <% if dates_renc.empty? %>
+      <p class="lead">Pas de dates de rencontre</p>
+    <% else %>
+      <p class="lead">Dates de rencontre</p>
       <pre class="maraude-list"><%= dates_renc.join("\n") %></pre>
-    </td>
-    <td>
+    <% end %>
+  </div>
+  <div class="col-md-4">
+    <% if dates_sig.empty? %>
+      <p class="lead">Pas de dates de signalement</p>
+    <% else %>
+      <p class="lead">Dates de signalement</p>
       <pre class="maraude-list"><%= dates_sig.join("\n") %></pre>
-    </td>
-    <td>
+    <% end %>
+  </div>
+  <div class="col-md-4">
+    <% if dates_accomp.empty? %>
+      <p class="lead">Pas de dates d'accompagnement</p>
+    <% else %>
+      <p class="lead">Dates d'accompagnement</p>
       <pre class="maraude-list"><%= dates_accomp.join("\n") %></pre>
-    </td>
-  </tr>
-</table>
-
+    <% end %>
+  </div>
+</div>
 
 <span><%= link_to "Ajouter une rencontre", id_rencontre_path(:id => @usager.id), id: 'ajout-rencontre', "data-no-turbolink" => true %></span>
 
@@ -234,4 +250,4 @@
                                 class: "btn btn-info btn-lg" %>
 </h3>
 
-<pre class="pre-scrollable"><%= @usager.fiche %></pre>
+<pre class="pre-scrollable text-justify"><%= @usager.fiche %></pre>

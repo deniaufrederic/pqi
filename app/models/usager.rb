@@ -1,6 +1,8 @@
 class Usager < ActiveRecord::Base
   has_many :rencontres
   has_many :enfants, :dependent => :destroy
+  belongs_to :groupe
+
   accepts_nested_attributes_for :enfants, reject_if: lambda { |a| a[:nom].blank? && a[:prenom].blank? },
                                           allow_destroy: true
 
@@ -15,6 +17,14 @@ class Usager < ActiveRecord::Base
   validates :user_id, presence: true
   validates :sexe, presence: true, allow_blank: true
   validates :ville, presence: true
+
+  def groupe_nom
+    groupe.try(:nom)
+  end
+
+  def groupe_nom=(nom)
+    self.groupe = Groupe.find_or_create_by(nom: nom) if nom.present?
+  end
 
     def self.search(search)
       if search
