@@ -27,7 +27,7 @@ class Usager < ActiveRecord::Base
     def self.search(search)
       if search
         if Rails.env.production?
-          where("nom ILIKE ? OR ville ILIKE? OR prenom ILIKE? OR adresse ILIKE? OR adresse_précis ILIKE? OR sexe ILIKE? OR date_naissance ILIKE? OR tel ILIKE?", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%") 
+          where("nom ILIKE ? OR ville ILIKE? OR prenom ILIKE? OR adresse ILIKE? OR adresse_précis ILIKE? OR sexe ILIKE? OR tel ILIKE?", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%") 
         else
           where("nom LIKE ? OR ville LIKE? OR prenom LIKE? OR adresse LIKE? OR adresse_précis LIKE? OR sexe LIKE? OR date_naissance LIKE? OR tel LIKE?", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%")
         end
