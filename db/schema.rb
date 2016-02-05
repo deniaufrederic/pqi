@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160201164106) do
+ActiveRecord::Schema.define(version: 20160205135246) do
 
   create_table "enfants", force: :cascade do |t|
     t.integer  "usager_id"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20160201164106) do
   end
 
   add_index "maraudes", ["date", "type_maraude"], name: "index_maraudes_on_date_and_type_maraude", unique: true
+  add_index "maraudes", ["id"], name: "index_maraudes_on_id", unique: true
 
   create_table "rencontres", force: :cascade do |t|
     t.integer  "usager_id"

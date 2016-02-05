@@ -12,7 +12,7 @@
     <% end %>
   </td>
   <td class="adresse">
-    <%= "#{usager.ville}" %>
+    <%= "#{usager.ville.upcase}" %>
     <% if usager.adresse %>
       <br><%= "#{usager.adresse}" %>
     <% end %>
