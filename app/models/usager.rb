@@ -27,7 +27,7 @@ class Usager < ActiveRecord::Base
     def self.search(search)
       if search
         if Rails.env.production?
-          joins(:groupe).where("nom ILIKE ? OR ville ILIKE? OR prenom ILIKE? OR adresse ILIKE? OR adresse_précis ILIKE? OR sexe ILIKE? OR to_char(date_naissance, 'DD/MM/YY') ILIKE? OR tel ILIKE? OR groupes.nom ILIKE?", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%")
+          joins(:groupe).where("usagers.nom ILIKE ? OR usagers.ville ILIKE? OR usagers.prenom ILIKE? OR usagers.adresse ILIKE? OR usagers.adresse_précis ILIKE? OR usagers.sexe ILIKE? OR to_char(usagers.date_naissance, 'DD/MM/YY') ILIKE? OR usagers.tel ILIKE? OR groupes.nom ILIKE?", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%")
         else
           joins(:groupe).where("usagers.nom LIKE ? OR ville LIKE? OR prenom LIKE? OR adresse LIKE? OR adresse_précis LIKE? OR sexe LIKE? OR date_naissance LIKE? OR tel LIKE? OR groupes.nom LIKE?", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%")
         end
