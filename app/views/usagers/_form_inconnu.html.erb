@@ -8,10 +8,14 @@
 
    <%= f.radio_button :sexe, "Mme", class: 'form-control' %>
    <%= f.label :sexe_f, "Mme" %>
+</div>
 
+<div class="form-inline">
    <%= f.label :date_naissance, "Date de naissance" %>
    <%= f.input :date_naissance, :as => :date_picker, label: false, class: 'form-control' %>
+</div>
 
+<div>
    <%= f.label :tel, "Téléphone" %>
    <%= f.text_field :tel, class: 'form-control' %>
 
