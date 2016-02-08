@@ -6,8 +6,9 @@
 <% unless session[:groupe] %>
   <h3>Date</h3>
 
-    <%= f.input :date, label: false, :as => :date_picker, input_html: {value: Date.today}, class: 'form-control' %>
+  <%= f.input :date, label: false, :as => :date_picker, input_html: {value: Date.today}, class: 'form-control' %>
 
+  <hr>
 <% end %>
 
 <h3>Signalement</h3>
@@ -18,6 +19,8 @@
 
   <%= f.label :signalement, "Si oui, type de signalement ?" %>
   <%= f.select :signalement, @signalements, prompt: "Quel type de signalement ?", class: 'form-control' %>
+
+  <hr>
 </div>
 
 <% else %>
@@ -26,8 +29,9 @@
 <% unless session[:groupe] %>
   <h3>Date</h3>
 
-    <%= f.input :date, label: false, :as => :date_picker, input_html: {value: Date.today}, class: 'form-control' %>
+  <%= f.input :date, label: false, :as => :date_picker, input_html: {value: Date.today}, class: 'form-control' %>
 
+  <hr>
 <% end %>
 
 <h3>Signalement</h3>
@@ -41,6 +45,8 @@
                       				  ["Signalement tiers", "Signalement tiers"]],
                       			prompt: "Quel type de signalement ?",
                       			class: 'form-control' %>
+
+  <hr>
 </div>
 
 <% end %>
@@ -53,6 +59,8 @@
 
   <%= f.label :type_accomp, "Si oui, type d'accompagnement ?" %>
   <%= f.select :type_accomp, @accomps, prompt: "Quel type d'accompagnement ?", class: 'form-control' %>
+
+  <hr>
 </div>
 
 <h3>Type</h3>
@@ -69,6 +77,8 @@
 <div class="form-inline">
   <%= f.label :prev, "Rencontre prévisionnelle" %>
   <%= f.check_box :prev, checked: false, class: 'form-control' %>
+
+  <hr>
 </div>
 
 <h3>Détails</h3>
@@ -80,6 +90,8 @@
   <%= f.select :nb_enf, @nb_enf, class: 'form-control' %><br>
 <% end %>
 
+  <hr>
+
 <h3>Prestations</h3>
 
 <div>
@@ -87,6 +99,8 @@
     <%= f.check_box :prestas, { :multiple => true }, "#{presta.first}" %>
     <%= presta.first %><br>
   <% end %>
+
+  <hr>
 </div>
 
 <div class="btn-group">

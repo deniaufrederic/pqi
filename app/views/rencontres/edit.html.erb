@@ -36,6 +36,8 @@ $(document).ready(function(){
 
   <%= f.input :date, label: false, :as => :date_picker, input_html: {value: @rencontre.date.strftime("%F")}, class: 'form-control' %>
 
+  <hr>
+
 <div class="form-inline">
   <%= f.label :signale, "Nouveau signalement ?" %>
   <%= f.check_box :signale, class: 'form-control' %><br>
@@ -45,6 +47,8 @@ $(document).ready(function(){
                       				  ["Signalement tiers", "Signalement tiers"]],
                       			prompt: "Quel type de signalement ?",
                       			class: 'form-control' %>
+
+  <hr>
 </div>
 
 <h3>Accompagnement</h3>
@@ -55,6 +59,8 @@ $(document).ready(function(){
 
   <%= f.label :type_accomp, "Si oui, type d'accompagnement ?" %>
   <%= f.select :type_accomp, @accomps, prompt: "Quel type d'accompagnement ?", class: 'form-control' %>
+
+  <hr>
 </div>
 
 <h3>Type</h3>
@@ -69,6 +75,8 @@ $(document).ready(function(){
 <div class="form-inline">
   <%= f.label :prev, "Toujours rencontre prévisionnelle" %>
   <%= f.check_box :prev, checked: false, class: 'form-control' %>
+
+  <hr>
 </div>
 
 <h3>Détails</h3>
@@ -78,6 +86,8 @@ $(document).ready(function(){
 <% if @usager.enfants.any? %>
   <br><%= f.select :nb_enf, @nb_enf, prompt: "Nb d'enfants vus", class: 'form-control' %><br>
 <% end %>
+
+<hr>
 
 <h3>Prestations</h3>
 
@@ -91,6 +101,8 @@ $(document).ready(function(){
       <%= presta.first %><br>
     <% end %>
   <% end %>
+
+  <hr>
 </div>
 
   <%= f.submit "Valider les modifications", class: 'btn btn-primary', id: 'submit' %>

@@ -9,29 +9,29 @@
   <% end %>
 <% end %>
 <% arr = m_renc.sort %>
-<% liste_villes = [] %>
+<% liste_villes_ok = [] %>
 <% liste_usagers = [] %>
 <% (0..(arr.length-1)).each do |i| %>
   <% ville = arr[i].split(' @').first %>
   <% usager = arr[i].split(' @').last %>
-  <% if liste_villes.last == "#{ville}" %>
+  <% if liste_villes_ok.last == "#{ville}" %>
     <% liste_usagers.last << "   - #{usager}\n" %>
   <% else %>
-    <% liste_villes << "#{ville}" %>
+    <% liste_villes_ok << "#{ville}" %>
     <% liste_usagers << "   - #{usager}\n" %>
   <% end %>
 <% end %>
 <% disp_renc = "" %>
-<% (0..(liste_villes.length-1)).each do |n| %>
-  <% disp_renc << "#{liste_villes[n].upcase} :\n#{liste_usagers[n]}\n" %>
+<% (0..(liste_villes_ok.length-1)).each do |n| %>
+  <% disp_renc << "#{liste_villes_ok[n].upcase} :\n#{liste_usagers[n]}\n" %>
 <% end %>
 
 
 <% # Liste des déroutages %>
 <% der = "" %>
-<% (0..(liste_villes.length-1)).each do |i| %>
-  <% if !maraude.villes.include?("#{liste_villes[i]}") %>
-    <% der << "#{liste_villes[i]}\n" %>
+<% (0..(liste_villes_ok.length-1)).each do |i| %>
+  <% if !maraude.villes.include?("#{liste_villes_ok[i]}") %>
+    <% der << "#{liste_villes_ok[i]}\n" %>
   <% end %>
 <% end %>
 
@@ -127,7 +127,7 @@
 
     <% villes = maraude.villes.split("\n") %>
     <% (0..(villes.length-1)).each do |i| %>
-      <% if liste_villes.include?("#{villes[i]}") %>
+      <% if liste_villes_ok.include?("#{villes[i]}") %>
         <% villes[i] << " ☑" %>
       <% else %>
         <% villes[i] << " ☐" %>
