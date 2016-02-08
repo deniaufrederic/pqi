@@ -7,7 +7,7 @@ class Maraude < ActiveRecord::Base
   	def self.search(search)
       if search
         if Rails.env.production?
-          where("to_char(usagers.date, 'DD/MM/YY') ILIKE ? OR type_maraude ILIKE? OR villes ILIKE?", "%#{search}%", "%#{search}%", "%#{search}%") 
+          where("to_char(maraudes.date, 'DD/MM/YY') ILIKE ? OR maraudes.type_maraude ILIKE? OR maraudes.villes ILIKE?", "%#{search}%", "%#{search}%", "%#{search}%") 
         else
           where("date LIKE ? OR type_maraude LIKE? OR villes LIKE?", "%#{search}%", "%#{search}%", "%#{search}%")
         end
