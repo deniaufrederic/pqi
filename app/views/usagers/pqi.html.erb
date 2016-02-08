@@ -38,6 +38,9 @@
         <% if usager.tel? %>
           <br><%= "#{usager.tel}" %>
         <% end %>
+        <% if usager.groupe %>
+          <br><%= "#{usager.groupe.nom}" %>
+        <% end %>
       </td>
       <td class="adresse-tot">
         <%= "#{usager.adresse}" %><br>

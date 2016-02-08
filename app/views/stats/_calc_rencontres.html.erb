@@ -18,7 +18,7 @@
 <% if f+h == 0 %>
   0
 <% else %>
-  <%= "#{f+h} (#{h}/#{f}) et #{pluralize(e.to_i, 'enfant')}" %>
+  <%= "#{f+h} (#{h}/#{f} ; #{e})" %>
 <% end %>
 
 <% if @ville.nil? && !@dates.nil? %>

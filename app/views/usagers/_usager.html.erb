@@ -4,11 +4,14 @@
     <% if usager.enfants.any? %>
       <br><%= pluralize(usager.enfants.count, 'enfant') %>
     <% end %>
-    <% if usager.date_naissance %>
+    <% if usager.date_naissance? %>
       <br><%= "#{usager.date_naissance.strftime("%d/%m/%Y")}" %>
     <% end %>
-    <% if usager.tel %>
+    <% if usager.tel? %>
       <br><%= "#{usager.tel}" %>
+    <% end %>
+    <% if usager.groupe %>
+      <br><%= "#{usager.groupe.nom}" %>
     <% end %>
   </td>
   <td class="adresse">

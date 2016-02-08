@@ -16,6 +16,8 @@
 
 </div>
 
+<hr>
+
 <div>
 <h3>Enfants</h3>
 <ul id="enfants">
@@ -26,11 +28,15 @@
 </ul>
 </div>
 
+<hr>
+
 <div>
    <h3>Groupe</h3>
 
    <%= f.text_field :groupe_nom, data: {autocomplete_source: Groupe.order(:nom).map(&:nom)}, class: 'form-control' %>
 </div>
+
+<hr>
 
 <h3>Informations de base</h3>
 
@@ -50,12 +56,16 @@
   </tr>
 </table>
 
+<hr>
+
 <h3>PQI</h3><br>
 
 <span>
   Observations
   <%= f.text_field :notes, class: 'form-control' %>
 </span>
+
+<hr>
 
 <h3>Informations complémentaires</h3>
 
@@ -67,6 +77,8 @@
     <th class="autre">Autres informations</th>
   </tr>
 </table>
+
+<hr>
 
 <%= f.submit "Enregistrer les modifications", class: "btn btn-primary" %>
 

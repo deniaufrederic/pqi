@@ -12,7 +12,7 @@
   </h3>
 
   <h5>
-    Entre parenthèses : (Nb d'hommes/Nb de femmes)<br>
+    Entre parenthèses : (Nb d'hommes/Nb de femmes ; Nb d'enfants)<br>
     Pour les prestations : Alimentaire/Vestiaire/Duvet/Hygiène
   </h5>
 
@@ -43,7 +43,7 @@
     <% @ph_tot = 0 %>
     <% @villes.each do |ville| %>
       <tr>
-        <td><%= "#{ville.first}" %></td>
+        <th><%= "#{ville.first}" %></th>
         <td>
           <% @usagers = Usager.where(ville: ville) %>
           <%= render 'calc_rencontres' %>
@@ -76,13 +76,13 @@
     <% end %>
 
     <tr>
-      <td id="total" class="lead">Total</td>
-      <td class="lead"><%= "#{@h_tot + @f_tot} (#{@h_tot}/#{@f_tot}) et #{pluralize(@e_tot.to_i, 'enfant')}" %></td>
+      <th id="total" class="lead">Total</th>
+      <td class="lead"><%= "#{@h_tot + @f_tot} (#{@h_tot}/#{@f_tot} ; #{@e_tot})" %></td>
       <td class="lead"><%= "#{@h_dif + @f_dif} (#{@h_dif}/#{@f_dif})" %></td>
       <td class="lead"><%= "#{@h_dnv + @f_dnv} (#{@h_dnv}/#{@f_dnv})" %></td>
-      <td class="lead"><%= "#{@h_sig + @f_sig} (#{@h_sig}/#{@f_sig}) et #{pluralize(@e_sig.to_i, 'enfant')}" %></td>
+      <td class="lead"><%= "#{@h_sig + @f_sig} (#{@h_sig}/#{@f_sig} ; #{@e_sig})" %></td>
       <td class="lead"><%= "#{@h_sig_dnv + @f_sig_dnv} (#{@h_sig_dnv}/#{@f_sig_dnv})" %></td>
-      <td class="lead"><%= "#{@h_acc + @f_acc} (#{@h_acc}/#{@f_acc}) et #{pluralize(@e_acc.to_i, 'enfant')}" %></td>
+      <td class="lead"><%= "#{@h_acc + @f_acc} (#{@h_acc}/#{@f_acc} ; #{@e_acc})" %></td>
       <td class="lead"><%= "#{@pa_tot}/#{@pv_tot}/#{@pd_tot}/#{@ph_tot}" %></td>
   </table>
 

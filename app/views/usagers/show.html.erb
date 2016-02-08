@@ -14,6 +14,13 @@
   <% end %>
   | <%= link_to "Editer", edit_usager_path(@usager) %>
 </h1>
+<h2 class="text-center">
+  <% if @usager.groupe %>
+    <br>Groupe "<%= @usager.groupe.nom %>"
+  <% end %>
+</h2>
+
+<hr>
 
 <% if Rencontre.find_by(usager_id: @usager.id, prev: true) %>
   <% renc_prev = Rencontre.where(usager_id: @usager.id, prev: true) %>
@@ -30,12 +37,16 @@
           <% if r.accomp %>
             <%= " [#{r.type_accomp}]" %>
           <% end %>
-          <br>
-          <pre><%= r.details %></pre>
+          <% if r.details.present? %>
+            <br>
+            <pre><%= r.details %></pre>
+          <% end %>
         </li>
       <% end %>
     </ul>
   </blockquote>
+
+  <hr>
 <% end %>
 
 
@@ -57,13 +68,8 @@
       </li>
     <% end %>
   </ul>
-<% end %>
 
-<% if @usager.groupe %>
-  <h3>Groupe</h3>
-
-  <%= @usager.groupe.nom %>
-
+  <hr>
 <% end %>
 
 <h3>Informations générales</h3>
@@ -87,6 +93,8 @@
     <td class="ajout"><%= "Ajouté par " %><%= link_to "#{user.identifiant}", user %><%= " (#{@usager.created_at})" %></td>
   </tr>
 </table>
+
+<hr>
 
 <h3>Interventions</h3>
 
@@ -115,6 +123,8 @@
     <% end %>
   <% end %>
 </span><br><br>
+
+<hr>
 
 
   <% dates_renc = [] %>
@@ -183,6 +193,8 @@
   </span>
 <% end %>
 
+<hr>
+
 
 <h3>Statistiques</h3>
 
@@ -233,6 +245,7 @@
   </tr>
 </table>
 
+<hr>
 
 <h3>Informations complémentaires</h3>
 
@@ -244,6 +257,8 @@
     <th class="autre">Autres informations</th>
   </tr>
 </table>
+
+<hr>
 
 <h3>
   <%= link_to "Fiche de suivi", id_fiche_path(:id => @usager.id),
