@@ -1,0 +1,50 @@
+<% provide(:title, "Recherche d'usagers") %>
+
+<h1>Rechercher des usagers</h1>
+
+<%= simple_form_for(@search) do |f| %>
+
+<div class="form-inline">
+   <h3>Identité</h3>
+
+   <%= f.label :nom %>
+   <%= f.text_field :nom, class: 'form-control' %>
+
+   <%= f.label :prenom, "Prénom" %>
+   <%= f.text_field :prenom, class: 'form-control' %>
+
+   <%= f.radio_button :sexe, "Mr", class: 'form-control' %>
+   <%= f.label :sexe_m, "Mr" %>
+
+   <%= f.radio_button :sexe, "Mme", class: 'form-control' %>
+   <%= f.label :sexe_f, "Mme" %>
+
+   <%= f.label :date_naissance, "Date de naissance" %>
+   <%= f.input :date_naissance, :as => :date_picker, label: false, class: 'form-control' %>
+
+   <%= f.label :tel, "Téléphone" %>
+   <%= f.text_field :tel, class: 'form-control' %>
+</div>
+
+<div>
+   <h3>Adresse</h3>
+
+   <%= f.label :ville %><br>
+   <%= f.select :ville, @villes, prompt: "Choisissez une ville", class: 'form-control' %><br>
+
+   <%= f.label :adresse %>
+   <%= f.text_field :adresse, class: 'form-control' %>
+
+   <%= f.label :adresse_précis, "Complément d'adresse" %>
+   <%= f.text_field :adresse_précis, class: 'form-control' %>
+</div>
+
+<div>
+   <h3>Groupe</h3>
+
+   <%= f.text_field :groupe_nom, data: {autocomplete_source: Groupe.order(:nom).map(&:nom)}, class: 'form-control' %>
+</div>
+
+<div><%= f.submit "Rechercher usager", class: "btn btn-primary" %></div>
+
+<% end %>

@@ -1,0 +1,52 @@
+<tr id="usager">
+  <td class="identité">
+    <%= link_to "#{usager.sexe} #{usager.nom} #{usager.prenom}", usager %>
+    <% if usager.enfants.any? %>
+      <br><%= pluralize(usager.enfants.count, 'enfant') %>
+    <% end %>
+    <% if usager.date_naissance %>
+      <br><%= "#{usager.date_naissance.strftime("%d/%m/%Y")}" %>
+    <% end %>
+    <% if usager.tel %>
+      <br><%= "#{usager.tel}" %>
+    <% end %>
+  </td>
+  <td class="adresse">
+    <%= "#{usager.ville.upcase}" %>
+    <% if usager.adresse %>
+      <br><%= "#{usager.adresse}" %>
+    <% end %>
+    <% if usager.adresse_précis %>
+      <br><%= "#{usager.adresse_précis}" %>
+    <% end %>
+  </td>
+  <td class="pqi">
+    <%= form_for(usager) do |f| %>
+      <%= f.check_box :pqi, class: 'form-control', disabled: true %>
+    <% end %>
+  </td>
+  <td class="rencontres">
+    <% dates_renc = [] %>
+    <% Rencontre.where(usager_id: usager.id, prev: false, dnv: false).each do |r| %>
+      <% dates_renc << "#{r.date.strftime("%d/%m/%y")}" %>
+    <% end %>
+    <%= dates_5(dates_renc.join(' - ')) %><br>
+    
+    <%= link_to "Ajouter une rencontre", id_rencontre_path(:id => usager.id), id: 'ajout-rencontre', "data-no-turbolink" => true %>
+
+    <% if Rencontre.find_by(usager_id: usager.id, prev: true) %>
+      <% n = Rencontre.where(usager_id: usager.id, prev: true).count %>
+      <br><%= pluralize(n, "rencontre") %> <%= "prévue".pluralize(n) %>
+    <% end %>
+
+  </td>
+  <% user = User.find(usager.user_id) %>
+  <td class="ajout"><%= "Ajouté par " %><%= link_to "#{user.identifiant}", user %><%= " (#{usager.created_at})" %></td>
+  <td>
+    <%= link_to "Modifier", edit_usager_path(usager) %><br>
+    <% if current_user.admin? %>
+      <%= link_to "Supprimer", usager, method: :delete,
+                                       data: { confirm: "Etes-vous sûr(e) ?" } %>
+    <% end %>
+  </td>
+</tr>
