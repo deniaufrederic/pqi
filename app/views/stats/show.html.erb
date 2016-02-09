@@ -7,13 +7,14 @@
 </div>
 
 <% if @ville.nil? && !@dates.nil? %>
-  <h3>
+  <h3 class="text-center">
     <%= "Statistiques sur le département du #{@dates.first.split('-').reverse.join('/')} au #{@dates.last.split('-').reverse.join('/')}" %>
   </h3>
 
   <h5>
     Entre parenthèses : (Nb d'hommes/Nb de femmes ; Nb d'enfants)<br>
-    Pour les prestations : Alimentaire/Vestiaire/Duvet/Hygiène
+    Pour les prestations : Alimentaire/Vestiaire/Duvet/Hygiène<br>
+    Le nombre total de maraudes n'est pas la somme des chiffres de la colonne ! Il s'agit bien du nombre total de maraudes effectuées sur la période.
   </h5>
 
   <table class="stats table table-responsive table-striped">
