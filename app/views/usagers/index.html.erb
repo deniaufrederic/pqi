@@ -3,10 +3,14 @@
 
 <%= will_paginate %>
 
+<div class="text-center">
   <%= form_tag(usagers_path, :method => "get", id: "search-form") do %>
     <%= text_field_tag :search, params[:search], placeholder: "Rechercher des usagers" %>
     <%= submit_tag "Rechercher", class: 'btn btn-primary' %>
   <% end %>
+</div>
+
+<h4 class="text-right"><%= pluralize(@usagers.count, "usager") %></h4>
 
 <table class="usagers table table-hover">
   <tr id="table_head">
@@ -19,7 +23,5 @@
     <p>Aucun usager correspondant au(x) terme(s) : "<%= params[:search] %>".</p>
   <% end %>
 </table>
-
-<h4 class="text-right"><%= pluralize(Usager.count, "usager") %> au total</h4>
 
 <%= will_paginate %>

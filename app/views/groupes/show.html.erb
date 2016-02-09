@@ -1,0 +1,20 @@
+<% provide(:title, @groupe.nom) %>
+
+<h1>Groupe "<%= @groupe.nom %>"</h1>
+
+<ul class="usagers">
+  <% @usagers.each do |u| %>
+  	<li>
+  	  <%= link_to "#{u.sexe} #{u.nom} #{u.prenom}", u, class: "lead" %>
+  	  <% if u.enfants.any? %>
+  	  	<ul class="enfants">
+      	  <% u.enfants.each do |e| %>
+      	  	<li>
+          	  <%= e.nom %> <%= e.prenom %>, <%= e.sexe.downcase %> 
+      	  	</li>
+      	  <% end %>
+  	  	</ul>
+  	  <% end %>
+  	</li>
+  <% end %>
+</ul>

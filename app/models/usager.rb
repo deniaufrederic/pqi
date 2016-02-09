@@ -29,7 +29,7 @@ class Usager < ActiveRecord::Base
         if Rails.env.production?
           where("usagers.nom ILIKE ? OR usagers.ville ILIKE? OR usagers.prenom ILIKE? OR usagers.adresse ILIKE? OR usagers.adresse_précis ILIKE? OR usagers.sexe ILIKE? OR to_char(usagers.date_naissance, 'DD/MM/YYYY') ILIKE? OR usagers.tel ILIKE?", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%")
         else
-          joins(:groupe).where("usagers.nom LIKE ? OR ville LIKE? OR prenom LIKE? OR adresse LIKE? OR adresse_précis LIKE? OR sexe LIKE? OR date_naissance LIKE? OR tel LIKE? OR groupes.nom LIKE?", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%")
+          where("nom LIKE ? OR ville LIKE? OR prenom LIKE? OR adresse LIKE? OR adresse_précis LIKE? OR sexe LIKE? OR date_naissance LIKE? OR tel LIKE?", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%")
         end
       else
         scoped

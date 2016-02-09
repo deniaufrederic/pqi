@@ -11,7 +11,7 @@
       <br><%= "#{usager.tel}" %>
     <% end %>
     <% if usager.groupe %>
-      <br><%= "#{usager.groupe.nom}" %>
+      <br><%= link_to "#{usager.groupe.nom}", usager.groupe %>
     <% end %>
   </td>
   <td class="adresse">

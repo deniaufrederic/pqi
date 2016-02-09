@@ -169,7 +169,7 @@ class RencontresController < ApplicationController
     store_id
     u = Usager.find(session[:stored_id])
     @groupe = u.groupe
-    @usagers = @groupe.usagers.reject{ u.id }
+    @usagers = @groupe.usagers.select{ |usager| usager.id != u.id }
   end
 
   def post_groupe

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'groupes/show'
+
   root					          'sessions#new'
   get 'signup'        =>  'users#new'
   post 'login' 		    =>  'sessions#create'
@@ -15,6 +17,7 @@ Rails.application.routes.draw do
   resources :rencontres, only: [:create, :edit, :update, :destroy]
   post 'new_groupe'   =>  'rencontres#post_groupe'
   delete 'rencontres' =>  'rencontres#destroy_via_form'
+  resources :groupes, only: :show
 
   get	'pqi/:ville',
   	:controller => 'usagers',

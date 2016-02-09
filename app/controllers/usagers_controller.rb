@@ -247,6 +247,9 @@ class UsagersController < ApplicationController
           @usager.pqi_histo << Date.today.strftime("%d/%m/%y") unless @usager.pqi_histo.nil?
         end
         @usager.update_attributes(usager_params)
+        if params[:usager][:groupe_nom] == ""
+          @usager.update_attribute(:groupe_id, nil)
+        end
         flash[:success] = "Usager édité"
         redirect_to @usager
       else
@@ -260,6 +263,9 @@ class UsagersController < ApplicationController
       flash[:success] = "Fiche de suivi usager éditée"
       redirect_to @usager
     elsif @usager.update_attributes(usager_params)
+      if params[:usager][:groupe_nom] == ""
+        @usager.update_attribute(:groupe_id, nil)
+      end
       flash[:success] = "Usager édité"
       redirect_to @usager
     else

@@ -16,7 +16,7 @@
 </h1>
 <h2 class="text-center">
   <% if @usager.groupe %>
-    <br>Groupe "<%= @usager.groupe.nom %>"
+    <br>Groupe "<%= link_to "#{@usager.groupe.nom}", @usager.groupe %>"
   <% end %>
 </h2>
 
@@ -56,7 +56,7 @@
   <ul class="enfants">
     <% @usager.enfants.each do |e| %>
       <li>
-        <%= e.nom %> <%= e.prenom %>, <%= e.sexe.downcase  %> 
+        <%= e.nom %> <%= e.prenom %>, <%= e.sexe.downcase %> 
         <% if e.date_naissance %>
           <% if e.sexe == "Fille" %>
             née 
