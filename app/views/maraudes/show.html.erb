@@ -9,10 +9,10 @@
   <% if u.enfants.any? %>
     <% m_cr.last << " et #{pluralize(r.nb_enf, "enfant")}" %>
   <% end %>
-  <% if r.signalement %>
+  <% if r.signalement.present? %>
     <% m_cr.last << " [#{r.signalement}]" %>
   <% end %>
-  <% if r.type_accomp %>
+  <% if r.type_accomp.present? %>
     <% m_cr.last << " [#{r.type_accomp}]" %>
   <% end %>
   <% if r.dnv %>

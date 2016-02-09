@@ -14,6 +14,14 @@
   <% end %>
   | <%= link_to "Editer", edit_usager_path(@usager) %>
 </h1>
+
+<h3 class="text-center">
+  <%= form_for(@usager, html: { class: 'form-inline' }) do |f| %>
+    <%= f.check_box :pqi, class: 'form-control', disabled: true %>
+    <%= f.label :pqi, "PQI" %>
+  <% end %>
+</h3>
+
 <h2 class="text-center">
   <% if @usager.groupe %>
     <br>Groupe "<%= link_to "#{@usager.groupe.nom}", @usager.groupe %>"
@@ -74,9 +82,13 @@
 
 <h3>Informations générales</h3>
 
-<table class="usager_show">
+<table class="usager_show table-responsive text-center">
   <tr class="table_head">
-    <%= render 'table_h' %>
+    <th class="ville">Ville</th>
+    <th class="adresse">Adresse</th>
+    <th class="comp_adr">Complément d'adresse</th>
+    <th class="date_naissance">Date de naissance</th>
+    <th class="tel">Téléphone</th>
   </tr>
   <tr id="usager-<%= @usager.id %>">
     <td class="ville"><%= "#{@usager.ville}" %></td>
@@ -84,13 +96,6 @@
     <td class="comp_adr"><%= "#{@usager.adresse_précis}" %></td>
     <td class="date_naissance"><%= "#{@usager.date_naissance.strftime("%d/%m/%y")}" unless @usager.date_naissance.nil? %></td>
     <td class="tel"><%= "#{@usager.tel}" %></td>
-    <td class="pqi">
-      <%= form_for(@usager) do |f| %>
-        <%= f.check_box :pqi, class: 'form-control', disabled: true %>
-      <% end %>
-    </td>
-    <% user = User.find(@usager.user_id) %>
-    <td class="ajout"><%= "Ajouté par " %><%= link_to "#{user.identifiant}", user %><%= " (#{@usager.created_at})" %></td>
   </tr>
 </table>
 
@@ -224,7 +229,7 @@
 <% prestas = "#{pluralize(a, "prestation")} #{"alimentaire".pluralize(a)}\n#{pluralize(v, "vestiaire")}\n#{pluralize(d, "duvet")}\n#{pluralize(h, "hygiène")}" %>
 
 
-<table>
+<table class="table-responsive">
   <tr class="table-head">
     <th>Nombre de rencontres</th>
     <th>Nombre de déplacements sans voir la personne</th>
@@ -249,7 +254,7 @@
 
 <h3>Informations complémentaires</h3>
 
-<table class="infos-supp">
+<table class="infos-supp table-responsive">
   <tr class="table_head">
     <th class="ressources">Ressources</th>
     <th class="social">Suivi social</th>
@@ -266,3 +271,8 @@
 </h3>
 
 <pre class="pre-scrollable text-justify"><%= @usager.fiche %></pre>
+
+<p class="text-right lead">
+  <% user = User.find(@usager.user_id) %>
+  <%= "Usager ajouté par " %><%= link_to "#{user.identifiant}", user %><%= " (#{@usager.created_at})" %>
+</p>

@@ -1,4 +1,10 @@
-<tr id="usager">
+<tr id="usager"
+<% if usager.pqi %>
+  class="pqi"
+<% else %>
+  class="no-pqi"
+<% end %>
+>
   <td class="identité">
     <%= link_to "#{usager.sexe} #{usager.nom} #{usager.prenom}", usager %>
     <% if usager.enfants.any? %>
@@ -23,11 +29,6 @@
       <br><%= "#{usager.adresse_précis}" %>
     <% end %>
   </td>
-  <td class="pqi">
-    <%= form_for(usager) do |f| %>
-      <%= f.check_box :pqi, class: 'form-control', disabled: true %>
-    <% end %>
-  </td>
   <td class="rencontres">
     <% dates_renc = [] %>
     <% Rencontre.where(usager_id: usager.id, prev: false, dnv: false).each do |r| %>
@@ -43,8 +44,6 @@
     <%= link_to "Ajouter une rencontre", id_rencontre_path(:id => usager.id), id: 'ajout-rencontre', "data-no-turbolink" => true %>
 
   </td>
-  <% user = User.find(usager.user_id) %>
-  <td class="ajout"><%= "Ajouté par " %><%= link_to "#{user.identifiant}", user %><%= " (#{usager.created_at})" %></td>
   <td>
     <%= link_to "Modifier", edit_usager_path(usager) %><br>
     <% if current_user.admin? %>

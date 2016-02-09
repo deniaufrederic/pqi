@@ -10,11 +10,15 @@
   <% end %>
 </div>
 
+<h4>Au passage de la souris, en vert les usagers sur PQI, en rouge ceux qui n'y sont pas.</h4>
+
 <h4 class="text-right"><%= pluralize(@usagers.count, "usager") %></h4>
 
-<table class="usagers table table-hover">
+<table class="usagers table table-responsive table-hover text-center">
   <tr id="table_head">
-    <%= render 'table_h_soft' %>
+    <th class="identité">Identité</th>
+    <th class="adresse">Adresse</th>
+    <th class="rencontres">Dernières rencontres</th>
     <th class="supp">Edition et Suppression (privilège admin)</th>
   </tr>
   <% if !@usagers.empty? %>
