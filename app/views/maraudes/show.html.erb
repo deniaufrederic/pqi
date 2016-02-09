@@ -18,10 +18,12 @@
   <% if r.dnv %>
     <% m_cr.last << " [Maraude déplacée mais personne non vue]" %>
   <% end %>
-  <% if r.prestas && !r.prestas.empty? %>
+  <% if r.prestas.present? %>
     <% m_cr.last << " {#{r.prestas.split(' #').join(' - ')}}" %>
   <% end %>
-  <% m_cr.last << " : #{r.details}" %>
+  <% if r.details.present? %>
+    <% m_cr.last << " : #{r.details}" %>
+  <% end %>
 <% end %>
 <% arr = m_cr.sort %>
 <% liste_villes = [] %>
