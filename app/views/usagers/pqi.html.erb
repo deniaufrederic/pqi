@@ -1,66 +1,71 @@
 <% provide(:title, 'PQI') %>
 
-<h1>PQI (<%= pluralize(Usager.where(pqi: true).count, "usager") %>)</h1>
+<div id="no-print">
+  <h1>PQI (<%= pluralize(Usager.where(pqi: true).count, "usager") %>)</h1>
 
-<div class="container" id="container-villes">
-  <ul class="villes">
-    <% @villes.each do |ville| %>
-      <li><%= link_to "#{ville.first}", choix_ville_path(:ville => ville.first) %></li>
-    <% end %>
-  </ul>
+  <div class="container" id="container-villes">
+    <ul class="villes">
+      <% @villes.each do |ville| %>
+        <li><%= link_to "#{ville.first}", choix_ville_path(:ville => ville.first) %></li>
+      <% end %>
+    </ul>
+  </div>
 </div>
+
 
 <% if @usagers %>
 
-<h3 id="ville-actuelle">
-  <%= "#{@ville_actuelle} (#{pluralize(Usager.where(pqi: true, ville: @ville_actuelle).count, "usager")})" %>
-  <%= link_to image_tag("print.png", alt: "Imprimer", width: 30, length: 30), '#', onclick: "printpage()", id: 'print-link', class: "btn" %>
-</h3>
+<div id="pqi-print">
+  <h3 id="ville-actuelle">
+    <%= "#{@ville_actuelle} (#{pluralize(Usager.where(pqi: true, ville: @ville_actuelle).count, "usager")})" %>
+    <%= link_to image_tag("print.png", alt: "Imprimer", width: 30, length: 30), '#', onclick: "printpage()", id: 'print-link', class: "btn" %>
+  </h3>
 
-<table class="usagers table table-striped">
-  <tr class="table_head">
-    <th class="identité">Identité</th>
-    <th class="adresse">Adresse</th>
-    <th class="rencontres">Dernières rencontres</th>
-    <th class="notes">Observations</th>
-    <th class="annotations">Annotations</th>
-  </tr>
-  <% @usagers.each do |usager| %>
-    <tr id="table-pqi">
-      <td class="identité-tot">
-        <%= link_to "#{usager.sexe} #{usager.nom} #{usager.prenom}", usager %>
-        <% if usager.enfants.any? %>
-          <br><%= pluralize(usager.enfants.count, 'enfant') %>
-        <% end %>
-        <% if usager.date_naissance? %>
-          <br><%= "#{usager.date_naissance.strftime("%d/%m/%y")}" %>
-        <% end %>
-        <% if usager.tel? %>
-          <br><%= "#{usager.tel}" %>
-        <% end %>
-        <% if usager.groupe %>
-          <br><%= "#{usager.groupe.nom}" %>
-        <% end %>
-      </td>
-      <td class="adresse-tot">
-        <%= "#{usager.adresse}" %><br>
-        <%= "#{usager.adresse_précis}" %>
-      </td>
-      <td class="rencontres">
-        <% dates_renc = [] %>
-        <% Rencontre.where(usager_id: usager.id, prev: false, dnv: false).each do |r| %>
-          <% dates_renc << "#{r.date.strftime("%d/%m/%y")}" %>
-        <% end %>
-        <%= dates_5(dates_renc.join(' - ')) %><br>
-        <%= link_to "Ajouter une rencontre", id_rencontre_path(:id => usager.id), id: 'ajout-rencontre', "data-no-turbolink" => true %>
-        <% if Rencontre.find_by(usager_id: usager.id, prev: true) %>
-          <% n = Rencontre.where(usager_id: usager.id, prev: true).count %>
-          <br><%= pluralize(n, "rencontre") %> <%= "prévue".pluralize(n) %>
-        <% end %>
-      </td>
-      <td><%= "#{usager.notes}" %></td>
-      <td></td>
+  <table class="usagers table table-striped">
+    <tr class="table_head">
+      <th class="identité">Identité</th>
+      <th class="adresse">Adresse</th>
+      <th class="rencontres">Dernières rencontres</th>
+      <th class="notes">Observations</th>
+      <th class="annotations">Annotations</th>
     </tr>
+    <% @usagers.each do |usager| %>
+      <tr id="table-pqi">
+        <td class="identité-tot">
+          <%= link_to "#{usager.sexe} #{usager.nom} #{usager.prenom}", usager %>
+          <% if usager.enfants.any? %>
+            <br><%= pluralize(usager.enfants.count, 'enfant') %>
+          <% end %>
+          <% if usager.date_naissance? %>
+            <br><%= "#{usager.date_naissance.strftime("%d/%m/%y")}" %>
+          <% end %>
+          <% if usager.tel? %>
+            <br><%= "#{usager.tel}" %>
+          <% end %>
+          <% if usager.groupe %>
+            <br><%= "#{usager.groupe.nom}" %>
+          <% end %>
+        </td>
+        <td class="adresse-tot">
+          <%= "#{usager.adresse}" %><br>
+          <%= "#{usager.adresse_précis}" %>
+        </td>
+        <td class="rencontres">
+          <% dates_renc = [] %>
+          <% Rencontre.where(usager_id: usager.id, prev: false, dnv: false).each do |r| %>
+            <% dates_renc << "#{r.date.strftime("%d/%m/%y")}" %>
+          <% end %>
+          <%= dates_5(dates_renc.join(' - ')) %><br>
+          <% if Rencontre.find_by(usager_id: usager.id, prev: true) %>
+            <% n = Rencontre.where(usager_id: usager.id, prev: true).count %>
+            <%= pluralize(n, "rencontre") %> <%= "prévue".pluralize(n) %><br>
+          <% end %>
+          <%= link_to "Ajouter une rencontre", id_rencontre_path(:id => usager.id), id: 'ajout-rencontre', "data-no-turbolink" => true %>
+        </td>
+        <td><%= "#{usager.notes}" %></td>
+        <td></td>
+      </tr>
+    <% end %>
   <% end %>
-<% end %>
-</table>
+  </table>
+</div>

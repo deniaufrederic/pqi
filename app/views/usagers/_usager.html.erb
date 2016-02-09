@@ -34,13 +34,13 @@
       <% dates_renc << "#{r.date.strftime("%d/%m/%y")}" %>
     <% end %>
     <%= dates_5(dates_renc.join(' - ')) %><br>
-    
-    <%= link_to "Ajouter une rencontre", id_rencontre_path(:id => usager.id), id: 'ajout-rencontre', "data-no-turbolink" => true %>
 
     <% if Rencontre.find_by(usager_id: usager.id, prev: true) %>
       <% n = Rencontre.where(usager_id: usager.id, prev: true).count %>
-      <br><%= pluralize(n, "rencontre") %> <%= "prévue".pluralize(n) %>
+      <%= pluralize(n, "rencontre") %> <%= "prévue".pluralize(n) %><br>
     <% end %>
+
+    <%= link_to "Ajouter une rencontre", id_rencontre_path(:id => usager.id), id: 'ajout-rencontre', "data-no-turbolink" => true %>
 
   </td>
   <% user = User.find(usager.user_id) %>
