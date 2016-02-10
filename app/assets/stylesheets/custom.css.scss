@@ -18,10 +18,76 @@ pre {
 
 /* header */
 
+ul.navtop li.navtop-icon {
+  display: none;
+}
+
+/* When the screen is less than 768 pixels wide, hide all list items, except for the first one and the icon. */
+@media screen and (max-width:768px) {
+  ul.navtop li:not(:first-child) {display: none;}
+  ul.navtop li:first-child {
+    float: left;
+    display: inline-block;
+  }
+  ul.navtop li.navtop-icon {
+    float: right;
+    display: inline-block;
+  }
+}
+
+/* The "responsive" class is added. */
+@media screen and (max-width:768px) {
+  ul.navtop.responsive {position: relative;}
+  ul.navtop.responsive li.navtop-icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  ul.navtop.responsive li {
+    float: none;
+    display: inline;
+  }
+  ul.navtop.responsive li a {
+    display: block;
+    text-align: left;
+  }
+}
+
 /* footer */
 
-footer {
-	background-color: blue;
+ul.navbot li.navbot-icon {
+  display: none;
+}
+
+/* When the screen is less than 768 pixels wide, hide all list items, except for the first one and the icon. */
+@media screen and (max-width:768px) {
+  ul.navbot li:not(:first-child) {display: none;}
+  ul.navbot li:first-child {
+    float: left;
+    display: inline-block;
+  }
+  ul.navbot li.navbot-icon {
+    float: right;
+    display: inline-block;
+  }
+}
+
+/* The "responsive" class is added. */
+@media screen and (max-width:768px) {
+  ul.navbot.responsive {position: relative;}
+  ul.navbot.responsive li.navbot-icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  ul.navbot.responsive li {
+    float: none;
+    display: inline;
+  }
+  ul.navbot.responsive li a {
+    display: block;
+    text-align: left;
+  }
 }
 
 /* typography */
@@ -92,4 +158,22 @@ ul.villes li {
     background-color: orange;
   }
   }
+}
+
+/* Style the buttons that are used to open and close the accordion panel */
+.ui-accordion .ui-accordion-header {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.ui-accordion .ui-accordion-header:hover {
+    background-color: #ccc;
 }

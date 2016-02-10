@@ -57,215 +57,221 @@
   <hr>
 <% end %>
 
+<div id="accordion">
 
-<% if @usager.enfants.any? %>
-  <h3>Enfants</h3>
+  <% if @usager.enfants.any? %>
+    <h3>Enfants</h3>
 
-  <ul class="enfants">
-    <% @usager.enfants.each do |e| %>
-      <li>
-        <%= e.nom %> <%= e.prenom %>, <%= e.sexe.downcase %> 
-        <% if e.date_naissance %>
-          <% if e.sexe == "Fille" %>
-            née 
-          <% else %>
-            né 
-          <% end %>
-          le <%= e.date_naissance.strftime("%d/%m/%y") %>
+    <div>
+      <ul class="enfants">
+        <% @usager.enfants.each do |e| %>
+          <li>
+            <%= e.nom %> <%= e.prenom %>, <%= e.sexe.downcase %> 
+            <% if e.date_naissance %>
+              <% if e.sexe == "Fille" %>
+                née 
+              <% else %>
+                né 
+              <% end %>
+              le <%= e.date_naissance.strftime("%d/%m/%y") %>
+            <% end %>
+          </li>
         <% end %>
-      </li>
-    <% end %>
-  </ul>
+      </ul>
+    </div>
 
-  <hr>
-<% end %>
-
-<h3>Informations générales</h3>
-
-<table class="usager_show table-responsive text-center">
-  <tr class="table_head">
-    <th class="ville">Ville</th>
-    <th class="adresse">Adresse</th>
-    <th class="comp_adr">Complément d'adresse</th>
-    <th class="date_naissance">Date de naissance</th>
-    <th class="tel">Téléphone</th>
-  </tr>
-  <tr id="usager-<%= @usager.id %>">
-    <td class="ville"><%= "#{@usager.ville}" %></td>
-    <td class="adresse"><%= "#{@usager.adresse}" %></td>
-    <td class="comp_adr"><%= "#{@usager.adresse_précis}" %></td>
-    <td class="date_naissance"><%= "#{@usager.date_naissance.strftime("%d/%m/%y")}" unless @usager.date_naissance.nil? %></td>
-    <td class="tel"><%= "#{@usager.tel}" %></td>
-  </tr>
-</table>
-
-<hr>
-
-<h3>Interventions</h3>
-
-<span>
-  Périodes sur PQI : 
-  <% if @usager.pqi_histo %>
-    <%= "#{@usager.pqi_histo}" %>
-    <% if @usager.pqi %>
-      <%= " - toujours sur le PQI." %>
-    <% end %>
-  <% else %>
-    <%= "#{@usager.sexe} #{@usager.nom} n'a jamais été sur le PQI." %>
-  <% end %>
-</span><br><br>
-
-<span>
-  Observations PQI :
-  <% if @usager.notes.nil? || @usager.notes.empty? %>
-    Rien de notable.
-  <% else %>
-    <% if @usager.pqi %>
-      <%= "#{@usager.notes}" %>
-    <% else %>
-      <%= "#{@usager.sexe} #{@usager.nom} n'est pas sur le PQI." %>
-      <%= " #{@usager.notes}" %>
-    <% end %>
-  <% end %>
-</span><br><br>
-
-<hr>
-
-
-  <% dates_renc = [] %>
-  <% Rencontre.where(usager_id: @usager.id, prev: false, dnv: false).each do |r| %>
-    <% dates_renc << "#{r.date.strftime("%d/%m/%y")} [#{r.type_renc}]" %>
-    <% if @usager.enfants.any? %>
-      <% dates_renc.last << " [#{pluralize(r.nb_enf, "enfant")}]" %>
-    <% end %>
   <% end %>
 
+    <h3>Informations générales</h3>
 
-  <% dates_sig = [] %>
-  <% Rencontre.where(usager_id: @usager.id, signale: true).each do |r| %>
-    <% dates_sig << "#{r.date.strftime("%d/%m/%y")} [#{r.signalement}]" %>
-    <% if @usager.enfants.any? %>
-      <% dates_sig.last << " [#{pluralize(r.nb_enf, "enfant")}]" %>
-    <% end %>
-    <% if r.dnv %>
-      <% dates_sig.last << " [Maraude déplacée mais personne non vue]" %>
-    <% end %>
-  <% end %>
+    <div>
+      <table class="panel table-responsive text-center">
+        <tr class="table_head">
+          <th class="ville">Ville</th>
+          <th class="adresse">Adresse</th>
+          <th class="comp_adr">Complément d'adresse</th>
+          <th class="date_naissance">Date de naissance</th>
+          <th class="tel">Téléphone</th>
+        </tr>
+        <tr id="usager-<%= @usager.id %>">
+          <td class="ville"><%= "#{@usager.ville}" %></td>
+          <td class="adresse"><%= "#{@usager.adresse}" %></td>
+          <td class="comp_adr"><%= "#{@usager.adresse_précis}" %></td>
+          <td class="date_naissance"><%= "#{@usager.date_naissance.strftime("%d/%m/%y")}" unless @usager.date_naissance.nil? %></td>
+          <td class="tel"><%= "#{@usager.tel}" %></td>
+        </tr>
+      </table>
+    </div>
+
+  <h3>Interventions</h3>
+
+  <div>
+    <span>
+      Périodes sur PQI : 
+      <% if @usager.pqi_histo %>
+        <%= "#{@usager.pqi_histo}" %>
+        <% if @usager.pqi %>
+          <%= " - toujours sur le PQI." %>
+        <% end %>
+      <% else %>
+        <%= "#{@usager.sexe} #{@usager.nom} n'a jamais été sur le PQI." %>
+      <% end %>
+    </span><br><br>
+
+    <span>
+      Observations PQI :
+      <% if @usager.notes.nil? || @usager.notes.empty? %>
+        Rien de notable.
+      <% else %>
+        <% if @usager.pqi %>
+          <%= "#{@usager.notes}" %>
+        <% else %>
+          <%= "#{@usager.sexe} #{@usager.nom} n'est pas sur le PQI." %>
+          <%= " #{@usager.notes}" %>
+        <% end %>
+      <% end %>
+    </span><br><br>
+
+    <hr>
 
 
-  <% dates_accomp = [] %>
-  <% Rencontre.where(usager_id: @usager.id, accomp: true).each do |r| %>
-    <% dates_accomp << "#{r.date.strftime("%d/%m/%y")} [#{r.type_accomp}]" %>
-    <% if @usager.enfants.any? %>
-      <% dates_accomp.last << " [#{pluralize(r.nb_enf, "enfant")}]" %>
-    <% end %>
-  <% end %>
+      <% dates_renc = [] %>
+      <% Rencontre.where(usager_id: @usager.id, prev: false, dnv: false).each do |r| %>
+        <% dates_renc << "#{r.date.strftime("%d/%m/%y")} [#{r.type_renc}]" %>
+        <% if @usager.enfants.any? %>
+          <% dates_renc.last << " [#{pluralize(r.nb_enf, "enfant")}]" %>
+        <% end %>
+      <% end %>
 
 
-<div class="row">
-  <div class="col-md-4">
-    <% if dates_renc.empty? %>
-      <p class="lead">Pas de dates de rencontre</p>
-    <% else %>
-      <p class="lead">Dates de rencontre</p>
-      <pre class="pre-scrollable maraude-list"><%= dates_renc.join("\n") %></pre>
+      <% dates_sig = [] %>
+      <% Rencontre.where(usager_id: @usager.id, signale: true).each do |r| %>
+        <% dates_sig << "#{r.date.strftime("%d/%m/%y")} [#{r.signalement}]" %>
+        <% if @usager.enfants.any? %>
+          <% dates_sig.last << " [#{pluralize(r.nb_enf, "enfant")}]" %>
+        <% end %>
+        <% if r.dnv %>
+          <% dates_sig.last << " [Maraude déplacée mais personne non vue]" %>
+        <% end %>
+      <% end %>
+
+
+      <% dates_accomp = [] %>
+      <% Rencontre.where(usager_id: @usager.id, accomp: true).each do |r| %>
+        <% dates_accomp << "#{r.date.strftime("%d/%m/%y")} [#{r.type_accomp}]" %>
+        <% if @usager.enfants.any? %>
+          <% dates_accomp.last << " [#{pluralize(r.nb_enf, "enfant")}]" %>
+        <% end %>
+      <% end %>
+
+
+    <div class="row">
+      <div class="col-md-4">
+        <% if dates_renc.empty? %>
+          <p class="lead">Pas de dates de rencontre</p>
+        <% else %>
+          <p class="lead">Dates de rencontre</p>
+          <pre class="pre-scrollable maraude-list"><%= dates_renc.join("\n") %></pre>
+        <% end %>
+      </div>
+      <div class="col-md-4">
+        <% if dates_sig.empty? %>
+          <p class="lead">Pas de dates de signalement</p>
+        <% else %>
+          <p class="lead">Dates de signalement</p>
+          <pre class="pre-scrollable maraude-list"><%= dates_sig.join("\n") %></pre>
+        <% end %>
+      </div>
+      <div class="col-md-4">
+        <% if dates_accomp.empty? %>
+          <p class="lead">Pas de dates d'accompagnement</p>
+        <% else %>
+          <p class="lead">Dates d'accompagnement</p>
+          <pre class="pre-scrollable maraude-list"><%= dates_accomp.join("\n") %></pre>
+        <% end %>
+      </div>
+    </div>
+
+    <span><%= link_to "Ajouter une rencontre", id_rencontre_path(:id => @usager.id), id: 'ajout-rencontre', "data-no-turbolink" => true %></span>
+
+    <% if @usager.rencontres.any? %>
+      <br><span>
+        <%= link_to "Supprimer une rencontre",  id_destroy_path(:id => @usager.id),
+                                                data: { confirm: "Etes-vous sûr(e) ?"} %>
+      </span>
     <% end %>
   </div>
-  <div class="col-md-4">
-    <% if dates_sig.empty? %>
-      <p class="lead">Pas de dates de signalement</p>
-    <% else %>
-      <p class="lead">Dates de signalement</p>
-      <pre class="pre-scrollable maraude-list"><%= dates_sig.join("\n") %></pre>
+
+
+  <h3>Statistiques</h3>
+
+  <div>
+    <% renc = Rencontre.where(usager_id: @usager.id, prev: false, dnv: false) %>
+    <% a = 0 %>
+    <% v = 0 %>
+    <% d = 0 %>
+    <% h = 0 %>
+    <% renc.each do |r| %>
+      <% if r.prestas && !r.prestas.empty? %>
+        <% prestas = r.prestas.split(' #') %>
+        <% if prestas.include?("Prestation alimentaire") %>
+          <% a += 1 %>
+        <% end %>
+        <% if prestas.include?("Vestiaire") %>
+          <% v += 1 %>
+        <% end %>
+        <% if prestas.include?("Duvet") %>
+          <% d += 1 %>
+        <% end %>
+        <% if prestas.include?("Hygiène") %>
+          <% h += 1 %>
+        <% end %>
+      <% end %>
     <% end %>
+    <% prestas = "#{pluralize(a, "prestation")} #{"alimentaire".pluralize(a)}\n#{pluralize(v, "vestiaire")}\n#{pluralize(d, "duvet")}\n#{pluralize(h, "hygiène")}" %>
+
+
+    <table class="table-responsive">
+      <tr class="table-head">
+        <th>Nombre de rencontres</th>
+        <th>Nombre de déplacements sans voir la personne</th>
+        <th>Nombre de signalements</th>
+        <th>Dont signalements déplacés sans voir la personne</th>
+        <th>Nombre d'accompagnements</th>
+        <th>Prestations reçues</th>
+      </tr>
+      <tr class="tr-center">
+        <td><%= Rencontre.where(usager_id: @usager.id, prev: false, dnv: false).count %></td>
+        <td><%= Rencontre.where(usager_id: @usager.id, prev: false, dnv: true).count %></td>
+        <td><%= Rencontre.where(usager_id: @usager.id, signale: true).count %></td>
+        <td><%= Rencontre.where(usager_id: @usager.id, signale: true, dnv: true).count %></td>
+        <td><%= Rencontre.where(usager_id: @usager.id, accomp: true).count %></td>
+        <td>
+          <pre class="maraude-list"><%= prestas %></pre>
+        </td>
+      </tr>
+    </table>
   </div>
-  <div class="col-md-4">
-    <% if dates_accomp.empty? %>
-      <p class="lead">Pas de dates d'accompagnement</p>
-    <% else %>
-      <p class="lead">Dates d'accompagnement</p>
-      <pre class="pre-scrollable maraude-list"><%= dates_accomp.join("\n") %></pre>
-    <% end %>
+
+
+  <h3>Informations complémentaires</h3>
+
+  <div>
+    <table class="infos-supp table-responsive">
+      <tr class="table_head">
+        <th class="ressources">Ressources</th>
+        <th class="social">Suivi social</th>
+        <th class="médical">Suivi médical</th>
+        <th class="autre">Autres informations</th>
+      </tr>
+    </table>
   </div>
+
 </div>
 
-<span><%= link_to "Ajouter une rencontre", id_rencontre_path(:id => @usager.id), id: 'ajout-rencontre', "data-no-turbolink" => true %></span>
-
-<% if @usager.rencontres.any? %>
-  <br><span>
-    <%= link_to "Supprimer une rencontre",  id_destroy_path(:id => @usager.id),
-                                            data: { confirm: "Etes-vous sûr(e) ?"} %>
-  </span>
-<% end %>
-
 <hr>
 
-
-<h3>Statistiques</h3>
-
-
-<% renc = Rencontre.where(usager_id: @usager.id, prev: false, dnv: false) %>
-<% a = 0 %>
-<% v = 0 %>
-<% d = 0 %>
-<% h = 0 %>
-<% renc.each do |r| %>
-  <% if r.prestas && !r.prestas.empty? %>
-    <% prestas = r.prestas.split(' #') %>
-    <% if prestas.include?("Prestation alimentaire") %>
-      <% a += 1 %>
-    <% end %>
-    <% if prestas.include?("Vestiaire") %>
-      <% v += 1 %>
-    <% end %>
-    <% if prestas.include?("Duvet") %>
-      <% d += 1 %>
-    <% end %>
-    <% if prestas.include?("Hygiène") %>
-      <% h += 1 %>
-    <% end %>
-  <% end %>
-<% end %>
-<% prestas = "#{pluralize(a, "prestation")} #{"alimentaire".pluralize(a)}\n#{pluralize(v, "vestiaire")}\n#{pluralize(d, "duvet")}\n#{pluralize(h, "hygiène")}" %>
-
-
-<table class="table-responsive">
-  <tr class="table-head">
-    <th>Nombre de rencontres</th>
-    <th>Nombre de déplacements sans voir la personne</th>
-    <th>Nombre de signalements</th>
-    <th>Dont signalements déplacés sans voir la personne</th>
-    <th>Nombre d'accompagnements</th>
-    <th>Prestations reçues</th>
-  </tr>
-  <tr class="tr-center">
-    <td><%= Rencontre.where(usager_id: @usager.id, prev: false, dnv: false).count %></td>
-    <td><%= Rencontre.where(usager_id: @usager.id, prev: false, dnv: true).count %></td>
-    <td><%= Rencontre.where(usager_id: @usager.id, signale: true).count %></td>
-    <td><%= Rencontre.where(usager_id: @usager.id, signale: true, dnv: true).count %></td>
-    <td><%= Rencontre.where(usager_id: @usager.id, accomp: true).count %></td>
-    <td>
-      <pre class="maraude-list"><%= prestas %></pre>
-    </td>
-  </tr>
-</table>
-
-<hr>
-
-<h3>Informations complémentaires</h3>
-
-<table class="infos-supp table-responsive">
-  <tr class="table_head">
-    <th class="ressources">Ressources</th>
-    <th class="social">Suivi social</th>
-    <th class="médical">Suivi médical</th>
-    <th class="autre">Autres informations</th>
-  </tr>
-</table>
-
-<hr>
-
-<h3>
+<h3 class="text-center">
   <%= link_to "Fiche de suivi", id_fiche_path(:id => @usager.id),
                                 class: "btn btn-info btn-lg" %>
 </h3>

@@ -1,11 +1,14 @@
 <footer class="navbar navbar-fixed-bottom navbar-inverse">
   <div class="container">
     <nav>
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav navbar-right navbot">
         <% if logged_in? %>
           <li><%= link_to "Editer profil", edit_user_path(current_user) %></li>
           <li><%= link_to "Utilisateurs", users_path %></li>
           <li><%= link_to "Déconnexion", logout_path, method: "delete" %></li>
+          <li class="navbot-icon">
+            <%= link_to '☰', "javascript:void(0);", id: "navbot-icon" %>
+          </li>
         <% end %>
       </ul>
     </nav>

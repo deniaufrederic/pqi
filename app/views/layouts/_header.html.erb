@@ -1,13 +1,16 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
   <div class="container">
     <nav>
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav navbar-right navtop">
         <li><%= link_to "Accueil",   root_path %></li>
         <% if logged_in? %>
           <li><%= link_to "Ajouter usager", new_usager_path %></li>
           <li><%= link_to "PQI", pqi_path %></li>
           <li><%= link_to "Maraudes", maraudes_path %></li>
           <li><%= link_to "Statistiques", stats_path %></li>
+          <li class="navtop-icon">
+            <%= link_to '☰', "javascript:void(0);", id: "navtop-icon" %>
+          </li>
         <% end %>
       </ul>
     </nav>

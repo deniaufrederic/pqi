@@ -1,50 +1,5 @@
 <% provide(:title, @maraude.type_maraude) %>
 
-<% # Listes villes parcourues et usagers rencontrés avec détails %>
-<% rencontres = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, prev: false) %>
-<% m_cr = [] %>
-<% rencontres.each do |r| %>
-  <% u = Usager.find_by(id: r.usager_id) %>
-  <% m_cr << "#{u.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
-  <% if u.enfants.any? %>
-    <% m_cr.last << " et #{pluralize(r.nb_enf, "enfant")}" %>
-  <% end %>
-  <% if r.signalement.present? %>
-    <% m_cr.last << " [#{r.signalement}]" %>
-  <% end %>
-  <% if r.type_accomp.present? %>
-    <% m_cr.last << " [#{r.type_accomp}]" %>
-  <% end %>
-  <% if r.dnv %>
-    <% m_cr.last << " [Maraude déplacée mais personne non vue]" %>
-  <% end %>
-  <% if r.prestas.present? %>
-    <% m_cr.last << " {#{r.prestas.split(' #').join(' - ')}}" %>
-  <% end %>
-  <% if r.details.present? %>
-    <% m_cr.last << " : #{r.details}" %>
-  <% end %>
-<% end %>
-<% arr = m_cr.sort %>
-<% liste_villes = [] %>
-<% liste_usagers = [] %>
-<% (0..(arr.length-1)).each do |i| %>
-  <% ville = arr[i].split(' @').first %>
-  <% usager = arr[i].split(' @').last %>
-  <% if liste_villes.last == "#{ville}" %>
-    <% liste_usagers.last << "   - #{usager}\n" %>
-  <% else %>
-    <% liste_villes << "#{ville}" %>
-    <% liste_usagers << "   - #{usager}\n" %>
-  <% end %>
-<% end %>
-<% disp = "COMPTE-RENDU DE MARAUDE\n" %>
-<% disp << "#{@maraude.type_maraude} [#{@maraude.date.strftime("%d/%m/%y")}]\n\n\n" %>
-<% (0..(liste_villes.length-1)).each do |n| %>
-  <% disp << "#{liste_villes[n].upcase} :\n#{liste_usagers[n]}\n\n" %>
-<% end %>
-
-
 <h1>
   <%= @maraude.type_maraude %> [<%= @maraude.date.strftime("%d/%m/%y") %>]
   <% if current_user.admin? %>
@@ -55,11 +10,6 @@
   <% end %>
 </h1>
 
-<h2>Compte-rendu</h2>
-
-<pre class="pre-scrollable text-justify"><%= disp %></pre>
-
-<hr>
 
 
 <% # Listes villes parcourues et usagers rencontrés %>
@@ -184,222 +134,282 @@
   <% disp_accomp << "#{liste_villes[n].upcase} :\n#{liste_usagers[n]}\n" %>
 <% end %>
 
-<div class="row">
-  <h2>Villes</h2>
-  <div class="col-md-6">
-    <% if !@maraude.villes.empty? %>
-      <% villes = @maraude.villes.split("\n") %>
-      <% (0..(villes.length-1)).each do |i| %>
-        <% if liste_villes_ok.include?("#{villes[i]}") %>
-          <% villes[i] << " ☑" %>
-        <% else %>
-          <% villes[i] << " ☐" %>
+
+<div id="accordion">
+
+  <h3>Villes</h3>
+
+  <div class="row">
+    <div class="col-md-6">
+      <% if !@maraude.villes.empty? %>
+        <% villes = @maraude.villes.split("\n") %>
+        <% (0..(villes.length-1)).each do |i| %>
+          <% if liste_villes_ok.include?("#{villes[i]}") %>
+            <% villes[i] << " ☑" %>
+          <% else %>
+            <% villes[i] << " ☐" %>
+          <% end %>
         <% end %>
+        <p class="lead">Villes parcourues</p>
+        <pre class="maraude-list"><%= villes.join("\n") %></pre>
+      <% else %>
+        <p class="lead">Pas de villes renseignées</p>
       <% end %>
-      <p class="lead">Villes parcourues</p>
-      <pre class="maraude-list"><%= villes.join("\n") %></pre>
-    <% else %>
-      <p class="lead">Pas de villes renseignées</p>
-    <% end %>
+    </div>
+    <div class="col-md-6">
+      <% if !der.empty? && !@maraude.villes.empty? %>
+        <p class="lead">Déroutages</p>
+        <pre class="maraude-list"><%= der %></pre>
+      <% else %>
+        <p class="lead">Pas de déroutages</p>
+      <% end %>
+    </div>
   </div>
-  <div class="col-md-6">
-    <% if !der.empty? && !@maraude.villes.empty? %>
-      <p class="lead">Déroutages</p>
-      <pre class="maraude-list"><%= der %></pre>
-    <% else %>
-      <p class="lead">Pas de déroutages</p>
-    <% end %>
+
+
+
+  <h3>Interventions</h3>
+
+  <div class="row">
+    <div class="col-md-3">
+      <% if disp_renc.empty? %>
+        <p class="lead">Pas de rencontres</p>
+      <% else %>
+        <p class="lead">Rencontres</p>
+        <pre class="pre-scrollable maraude-list text-justify"><%= disp_renc %></pre>
+      <% end %>
+    </div>
+    <div class="col-md-3">
+      <% if disp_dnv.empty? %>
+        <p class="lead">Pas de personnes non vues sur déplacement</p>
+      <% else %>
+        <p class="lead">Personnes non vues sur déplacement</p>
+        <pre class="pre-scrollable maraude-list text-justify"><%= disp_dnv %></pre>
+      <% end %>
+    </div>
+    <div class="col-md-3">
+      <% if disp_sig.empty? %>
+        <p class="lead">Pas de signalements</p>
+      <% else %>
+        <p class="lead">Signalements</p>
+        <pre class="pre-scrollable maraude-list text-justify"><%= disp_sig %></pre>
+      <% end %>
+    </div>
+    <div class="col-md-3">
+      <% if disp_accomp.empty? %>
+        <p class="lead">Pas d'accompagnements</p>
+      <% else %>
+        <p class="lead">Accompagnements</p>
+        <pre class="pre-scrollable maraude-list text-justify"><%= disp_accomp %></pre>
+      <% end %>
+    </div>
   </div>
+
+
+  <h3>Statistiques</h3>
+
+  <div>
+    <h5>
+      Entre parenthèses : (Nb d'hommes/Nb de femmes ; Nb d'enfants)<br>
+      Pour les prestations : Alimentaire/Vestiaire/Duvet/Hygiène
+    </h5>
+
+    <table class="table table-responsive text-center">
+      <tr>
+        <th>Nb villes parcourues/prévues</th>
+        <th>Nb déroutages</th>
+        <th>Nb usagers rencontrés</th>
+        <th>Nb non vus sur déplacement</th>
+        <th>Nb signalements</th>
+        <th>Nb signalements non vus</th>
+        <th>Nb accompagnements</th>
+        <th>Nb prestations</th>
+      </tr>
+      <tr>
+        <td><%= @maraude.villes.split("☑").length %> / <%= @maraude.villes.split("\n").length %></td>
+        
+        <td><%= der.split("\n").length %></td>
+        
+        <td>
+          <% h = 0 %>
+          <% f = 0 %>
+          <% e = 0 %>
+          <% renc = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, prev: false, dnv: false) %>
+          <% renc.each do |r| %>
+            <% u = Usager.find(r.usager_id) %>
+            <% if u.sexe == "Mr" %>
+              <% h += 1 %>
+            <% else %>
+              <% f += 1 %>
+            <% end %>
+            <% if r.nb_enf %>
+              <% e = e + r.nb_enf %>
+            <% end %>
+          <% end %>
+
+          <% if f+h == 0 %>
+            0
+          <% else %>
+            <%= "#{f+h} (#{h}/#{f} ; #{e})" %>
+          <% end %>
+        </td>
+        
+        <td>
+          <%= Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, prev: false, dnv: true).count %>
+        </td>
+        
+        <td>
+          <% h = 0 %>
+          <% f = 0 %>
+          <% e = 0 %>
+          <% renc = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, signale: true) %>
+          <% renc.each do |r| %>
+            <% u = Usager.find(r.usager_id) %>
+            <% if u.sexe == "Mr" %>
+              <% h += 1 %>
+            <% else %>
+              <% f += 1 %>
+            <% end %>
+            <% if r.nb_enf %>
+              <% e = e + r.nb_enf %>
+            <% end %>
+          <% end %>
+
+          <% if f+h == 0 %>
+            0
+          <% else %>
+            <%= "#{f+h} (#{h}/#{f} ; #{e})" %>
+          <% end %>
+        </td>
+
+        <td>
+          <% h = 0 %>
+          <% f = 0 %>
+          <% renc = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, signale: true, dnv: true) %>
+          <% renc.each do |r| %>
+            <% u = Usager.find(r.usager_id) %>
+            <% if u.sexe == "Mr" %>
+              <% h += 1 %>
+            <% else %>
+              <% f += 1 %>
+            <% end %>
+          <% end %>
+
+          <% if f+h == 0 %>
+            0
+          <% else %>
+            <%= "#{f+h} (#{h}/#{f})" %>
+          <% end %>
+        </td>
+        
+        <td>
+          <% h = 0 %>
+          <% f = 0 %>
+          <% e = 0 %>
+          <% renc = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, accomp: true) %>
+          <% renc.each do |r| %>
+            <% u = Usager.find(r.usager_id) %>
+            <% if u.sexe == "Mr" %>
+              <% h += 1 %>
+            <% else %>
+              <% f += 1 %>
+            <% end %>
+            <% if r.nb_enf %>
+              <% e = e + r.nb_enf %>
+            <% end %>
+          <% end %>
+
+          <% if f+h == 0 %>
+            0
+          <% else %>
+            <%= "#{f+h} (#{h}/#{f} ; #{e})" %>
+          <% end %>
+        </td>
+
+        <td>
+          <% a = 0 %>
+          <% v = 0 %>
+          <% d = 0 %>
+          <% h = 0 %>
+          <% renc = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, prev: false, dnv: false) %>
+          <% renc.each do |r| %>
+            <% if r.prestas && !r.prestas.empty? %>
+              <% prestas = r.prestas.split(' #') %>
+              <% if prestas.include?("Prestation alimentaire") %>
+                <% a += 1 %>
+              <% end %>
+              <% if prestas.include?("Vestiaire") %>
+                <% v += 1 %>
+              <% end %>
+              <% if prestas.include?("Duvet") %>
+                <% d += 1 %>
+              <% end %>
+              <% if prestas.include?("Hygiène") %>
+                <% h += 1 %>
+              <% end %>
+            <% end %>
+          <% end %>
+         
+          <% if a+v+d+h == 0 %>
+            0
+          <% else %>
+            <%= "#{a}/#{v}/#{d}/#{h}" %>
+          <% end %>
+        </td>
+      </tr>
+    </table>
+  </div>
+
 </div>
 
 <hr>
 
-<div class="row">
-  <h2>Interventions</h2>
-  <div class="col-md-3">
-    <% if disp_renc.empty? %>
-      <p class="lead">Pas de rencontres</p>
-    <% else %>
-      <p class="lead">Rencontres</p>
-      <pre class="pre-scrollable maraude-list text-justify"><%= disp_renc %></pre>
-    <% end %>
-  </div>
-  <div class="col-md-3">
-    <% if disp_dnv.empty? %>
-      <p class="lead">Pas de personnes non vues sur déplacement</p>
-    <% else %>
-      <p class="lead">Personnes non vues sur déplacement</p>
-      <pre class="pre-scrollable maraude-list text-justify"><%= disp_dnv %></pre>
-    <% end %>
-  </div>
-  <div class="col-md-3">
-    <% if disp_sig.empty? %>
-      <p class="lead">Pas de signalements</p>
-    <% else %>
-      <p class="lead">Signalements</p>
-      <pre class="pre-scrollable maraude-list text-justify"><%= disp_sig %></pre>
-    <% end %>
-  </div>
-  <div class="col-md-3">
-    <% if disp_accomp.empty? %>
-      <p class="lead">Pas d'accompagnements</p>
-    <% else %>
-      <p class="lead">Accompagnements</p>
-      <pre class="pre-scrollable maraude-list text-justify"><%= disp_accomp %></pre>
-    <% end %>
-  </div>
-</div>
 
-<hr>
 
-<h2>Statistiques</h2>
+<% # Listes villes parcourues et usagers rencontrés avec détails %>
+<% rencontres = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, prev: false) %>
+<% m_cr = [] %>
+<% rencontres.each do |r| %>
+  <% u = Usager.find_by(id: r.usager_id) %>
+  <% m_cr << "#{u.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
+  <% if u.enfants.any? %>
+    <% m_cr.last << " et #{pluralize(r.nb_enf, "enfant")}" %>
+  <% end %>
+  <% if r.signalement.present? %>
+    <% m_cr.last << " [#{r.signalement}]" %>
+  <% end %>
+  <% if r.type_accomp.present? %>
+    <% m_cr.last << " [#{r.type_accomp}]" %>
+  <% end %>
+  <% if r.dnv %>
+    <% m_cr.last << " [Maraude déplacée mais personne non vue]" %>
+  <% end %>
+  <% if r.prestas.present? %>
+    <% m_cr.last << " {#{r.prestas.split(' #').join(' - ')}}" %>
+  <% end %>
+  <% if r.details.present? %>
+    <% m_cr.last << " : #{r.details}" %>
+  <% end %>
+<% end %>
+<% arr = m_cr.sort %>
+<% liste_villes = [] %>
+<% liste_usagers = [] %>
+<% (0..(arr.length-1)).each do |i| %>
+  <% ville = arr[i].split(' @').first %>
+  <% usager = arr[i].split(' @').last %>
+  <% if liste_villes.last == "#{ville}" %>
+    <% liste_usagers.last << "   - #{usager}\n" %>
+  <% else %>
+    <% liste_villes << "#{ville}" %>
+    <% liste_usagers << "   - #{usager}\n" %>
+  <% end %>
+<% end %>
+<% disp = "COMPTE-RENDU DE MARAUDE\n" %>
+<% disp << "#{@maraude.type_maraude} [#{@maraude.date.strftime("%d/%m/%y")}]\n\n\n" %>
+<% (0..(liste_villes.length-1)).each do |n| %>
+  <% disp << "#{liste_villes[n].upcase} :\n#{liste_usagers[n]}\n\n" %>
+<% end %>
 
-<h5>
-  Entre parenthèses : (Nb d'hommes/Nb de femmes ; Nb d'enfants)<br>
-  Pour les prestations : Alimentaire/Vestiaire/Duvet/Hygiène
-</h5>
+<h3>Compte-rendu</h3>
 
-<table class="table table-responsive text-center">
-  <tr>
-    <th>Nb villes parcourues/prévues</th>
-    <th>Nb déroutages</th>
-    <th>Nb usagers rencontrés</th>
-    <th>Nb non vus sur déplacement</th>
-    <th>Nb signalements</th>
-    <th>Nb signalements non vus</th>
-    <th>Nb accompagnements</th>
-    <th>Nb prestations</th>
-  </tr>
-  <tr>
-    <td><%= @maraude.villes.split("☑").length %> / <%= @maraude.villes.split("\n").length %></td>
-    
-    <td><%= der.split("\n").length %></td>
-    
-    <td>
-      <% h = 0 %>
-      <% f = 0 %>
-      <% e = 0 %>
-      <% renc = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, prev: false, dnv: false) %>
-      <% renc.each do |r| %>
-        <% u = Usager.find(r.usager_id) %>
-        <% if u.sexe == "Mr" %>
-          <% h += 1 %>
-        <% else %>
-          <% f += 1 %>
-        <% end %>
-        <% if r.nb_enf %>
-          <% e = e + r.nb_enf %>
-        <% end %>
-      <% end %>
-
-      <% if f+h == 0 %>
-        0
-      <% else %>
-        <%= "#{f+h} (#{h}/#{f} ; #{e})" %>
-      <% end %>
-    </td>
-    
-    <td>
-      <%= Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, prev: false, dnv: true).count %>
-    </td>
-    
-    <td>
-      <% h = 0 %>
-      <% f = 0 %>
-      <% e = 0 %>
-      <% renc = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, signale: true) %>
-      <% renc.each do |r| %>
-        <% u = Usager.find(r.usager_id) %>
-        <% if u.sexe == "Mr" %>
-          <% h += 1 %>
-        <% else %>
-          <% f += 1 %>
-        <% end %>
-        <% if r.nb_enf %>
-          <% e = e + r.nb_enf %>
-        <% end %>
-      <% end %>
-
-      <% if f+h == 0 %>
-        0
-      <% else %>
-        <%= "#{f+h} (#{h}/#{f} ; #{e})" %>
-      <% end %>
-    </td>
-
-    <td>
-      <% h = 0 %>
-      <% f = 0 %>
-      <% renc = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, signale: true, dnv: true) %>
-      <% renc.each do |r| %>
-        <% u = Usager.find(r.usager_id) %>
-        <% if u.sexe == "Mr" %>
-          <% h += 1 %>
-        <% else %>
-          <% f += 1 %>
-        <% end %>
-      <% end %>
-
-      <% if f+h == 0 %>
-        0
-      <% else %>
-        <%= "#{f+h} (#{h}/#{f})" %>
-      <% end %>
-    </td>
-    
-    <td>
-      <% h = 0 %>
-      <% f = 0 %>
-      <% e = 0 %>
-      <% renc = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, accomp: true) %>
-      <% renc.each do |r| %>
-        <% u = Usager.find(r.usager_id) %>
-        <% if u.sexe == "Mr" %>
-          <% h += 1 %>
-        <% else %>
-          <% f += 1 %>
-        <% end %>
-        <% if r.nb_enf %>
-          <% e = e + r.nb_enf %>
-        <% end %>
-      <% end %>
-
-      <% if f+h == 0 %>
-        0
-      <% else %>
-        <%= "#{f+h} (#{h}/#{f} ; #{e})" %>
-      <% end %>
-    </td>
-
-    <td>
-      <% a = 0 %>
-      <% v = 0 %>
-      <% d = 0 %>
-      <% h = 0 %>
-      <% renc = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, prev: false, dnv: false) %>
-      <% renc.each do |r| %>
-        <% if r.prestas && !r.prestas.empty? %>
-          <% prestas = r.prestas.split(' #') %>
-          <% if prestas.include?("Prestation alimentaire") %>
-            <% a += 1 %>
-          <% end %>
-          <% if prestas.include?("Vestiaire") %>
-            <% v += 1 %>
-          <% end %>
-          <% if prestas.include?("Duvet") %>
-            <% d += 1 %>
-          <% end %>
-          <% if prestas.include?("Hygiène") %>
-            <% h += 1 %>
-          <% end %>
-        <% end %>
-      <% end %>
-     
-      <% if a+v+d+h == 0 %>
-        0
-      <% else %>
-        <%= "#{a}/#{v}/#{d}/#{h}" %>
-      <% end %>
-    </td>
-  </tr>
-</table>
+<pre class="pre-scrollable text-justify"><%= disp %></pre>
