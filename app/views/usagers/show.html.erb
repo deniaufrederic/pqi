@@ -15,13 +15,12 @@
   | <%= link_to "Editer", edit_usager_path(@usager) %>
 </h1>
 
-<h3 class="text-center">
+<h2 class="text-center">
   <%= form_for(@usager, html: { class: 'form-inline' }) do |f| %>
     <%= f.check_box :pqi, class: 'form-control', disabled: true %>
     <%= f.label :pqi, "PQI" %>
   <% end %>
-</h3>
-
+</h2>
 <h2 class="text-center">
   <% if @usager.groupe %>
     <br>Groupe "<%= link_to "#{@usager.groupe.nom}", @usager.groupe %>"
@@ -57,6 +56,27 @@
   <hr>
 <% end %>
 
+<h3>Informations générales</h3>
+
+<div>
+  <table class="table-responsive text-center"> 
+    <tr class="table_head">
+      <th class="ville">Ville</th>
+      <th class="adresse">Adresse</th>
+      <th class="comp_adr">Complément d'adresse</th>
+      <th class="date_naissance">Date de naissance</th>
+      <th class="tel">Téléphone</th>
+    </tr>
+    <tr id="usager-<%= @usager.id %>">
+      <td class="ville"><%= "#{@usager.ville}" %></td>
+      <td class="adresse"><%= "#{@usager.adresse}" %></td>
+      <td class="comp_adr"><%= "#{@usager.adresse_précis}" %></td>
+      <td class="date_naissance"><%= "#{@usager.date_naissance.strftime("%d/%m/%y")}" unless @usager.date_naissance.nil? %></td>
+      <td class="tel"><%= "#{@usager.tel}" %></td>
+    </tr>
+  </table>
+</div>
+
 <div id="accordion">
 
   <% if @usager.enfants.any? %>
@@ -82,28 +102,7 @@
 
   <% end %>
 
-    <h3>Informations générales</h3>
-
-    <div>
-      <table class="panel table-responsive text-center">
-        <tr class="table_head">
-          <th class="ville">Ville</th>
-          <th class="adresse">Adresse</th>
-          <th class="comp_adr">Complément d'adresse</th>
-          <th class="date_naissance">Date de naissance</th>
-          <th class="tel">Téléphone</th>
-        </tr>
-        <tr id="usager-<%= @usager.id %>">
-          <td class="ville"><%= "#{@usager.ville}" %></td>
-          <td class="adresse"><%= "#{@usager.adresse}" %></td>
-          <td class="comp_adr"><%= "#{@usager.adresse_précis}" %></td>
-          <td class="date_naissance"><%= "#{@usager.date_naissance.strftime("%d/%m/%y")}" unless @usager.date_naissance.nil? %></td>
-          <td class="tel"><%= "#{@usager.tel}" %></td>
-        </tr>
-      </table>
-    </div>
-
-  <h3>Interventions</h3>
+  <h3>PQI et interventions</h3>
 
   <div>
     <span>

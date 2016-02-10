@@ -38,10 +38,12 @@ $(function() {
     });
 });
 
+$( document ).tooltip();
+
 $(function() {
 	$('#accordion').accordion({
 	    collapsible: true,
-	    active: 1,
+	    active: false,
 	    heightStyle: "content",
 
 	    beforeActivate: function(event, ui) {
