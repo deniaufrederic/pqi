@@ -58,3 +58,192 @@
 <h3>Compte-rendu</h3>
 
 <pre class="pre-scrollable text-justify"><%= disp %></pre>
+
+<hr>
+
+
+<% # Listes villes parcourues et usagers rencontrés %>
+<% rencontres = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, prev: false, dnv: false) %>
+<% m_renc = [] %>
+<% rencontres.each do |r| %>
+  <% u = Usager.find_by(id: r.usager_id) %>
+  <% m_renc << "#{u.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
+  <% if u.enfants.any? %>
+    <% m_renc.last << " et #{pluralize(r.nb_enf, "enfant")}" %>
+  <% end %>
+<% end %>
+<% arr = m_renc.sort %>
+<% liste_villes_ok = [] %>
+<% liste_usagers = [] %>
+<% (0..(arr.length-1)).each do |i| %>
+  <% ville = arr[i].split(' @').first %>
+  <% usager = arr[i].split(' @').last %>
+  <% if liste_villes_ok.last == "#{ville}" %>
+    <% liste_usagers.last << "   - #{usager}\n" %>
+  <% else %>
+    <% liste_villes_ok << "#{ville}" %>
+    <% liste_usagers << "   - #{usager}\n" %>
+  <% end %>
+<% end %>
+<% disp_renc = "" %>
+<% (0..(liste_villes_ok.length-1)).each do |n| %>
+  <% disp_renc << "#{liste_villes_ok[n].upcase} :\n#{liste_usagers[n]}\n" %>
+<% end %>
+
+
+<% # Liste des déroutages %>
+<% der = "" %>
+<% (0..(liste_villes_ok.length-1)).each do |i| %>
+  <% if !@maraude.villes.include?("#{liste_villes_ok[i]}") %>
+    <% der << "#{liste_villes_ok[i]}\n" %>
+  <% end %>
+<% end %>
+
+
+<% # Listes des dnv %>
+<% dnv = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, prev: false, dnv: true) %>
+<% m_dnv = [] %>
+<% dnv.each do |r| %>
+  <% u = Usager.find_by(id: r.usager_id) %>
+  <% m_dnv << "#{u.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
+<% end %>
+<% arr = m_dnv.sort %>
+<% liste_villes = [] %>
+<% liste_usagers = [] %>
+<% (0..(arr.length-1)).each do |i| %>
+  <% ville = arr[i].split(' @').first %>
+  <% usager = arr[i].split(' @').last %>
+  <% if liste_villes.last == "#{ville}" %>
+    <% liste_usagers.last << "   - #{usager}\n" %>
+  <% else %>
+    <% liste_villes << "#{ville}" %>
+    <% liste_usagers << "   - #{usager}\n" %>
+  <% end %>
+<% end %>
+<% disp_dnv = "" %>
+<% (0..(liste_villes.length-1)).each do |n| %>
+  <% disp_dnv << "#{liste_villes[n].upcase} :\n#{liste_usagers[n]}\n" %>
+<% end %>
+
+
+
+<% # Liste des signalements %>
+<% sigs = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, signale: true) %>
+<% m_sig = [] %>
+<% sigs.each do |r| %>
+  <% u = Usager.find_by(id: r.usager_id) %>
+  <% m_sig << "#{u.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
+  <% if u.enfants.any? %>
+    <% m_sig.last << " et #{pluralize(r.nb_enf, "enfant")}" %>
+  <% end %>
+<% end %>
+<% arr = m_sig.sort %>
+<% liste_villes = [] %>
+<% liste_usagers = [] %>
+<% (0..(arr.length-1)).each do |i| %>
+  <% ville = arr[i].split(' @').first %>
+  <% usager = arr[i].split(' @').last %>
+  <% if liste_villes.last == "#{ville}" %>
+    <% liste_usagers.last << "   - #{usager}\n" %>
+  <% else %>
+    <% liste_villes << "#{ville}" %>
+    <% liste_usagers << "   - #{usager}\n" %>
+  <% end %>
+<% end %>
+<% disp_sig = "" %>
+<% (0..(liste_villes.length-1)).each do |n| %>
+  <% disp_sig << "#{liste_villes[n].upcase} :\n#{liste_usagers[n]}\n" %>
+<% end %>
+
+
+<% # Liste des accompagnements %>
+<% accomps = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, accomp: true) %>
+<% m_accomp = [] %>
+<% accomps.each do |r| %>
+  <% u = Usager.find_by(id: r.usager_id) %>
+  <% m_accomp << "#{u.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
+  <% if u.enfants.any? %>
+    <% m_accomp.last << " et #{pluralize(r.nb_enf, "enfant")}" %>
+  <% end %>
+<% end %>
+<% arr = m_accomp.sort %>
+<% liste_villes = [] %>
+<% liste_usagers = [] %>
+<% (0..(arr.length-1)).each do |i| %>
+  <% ville = arr[i].split(' @').first %>
+  <% usager = arr[i].split(' @').last %>
+  <% if liste_villes.last == "#{ville}" %>
+    <% liste_usagers.last << "   - #{usager}\n" %>
+  <% else %>
+    <% liste_villes << "#{ville}" %>
+    <% liste_usagers << "   - #{usager}\n" %>
+  <% end %>
+<% end %>
+<% disp_accomp = "" %>
+<% (0..(liste_villes.length-1)).each do |n| %>
+  <% disp_accomp << "#{liste_villes[n].upcase} :\n#{liste_usagers[n]}\n" %>
+<% end %>
+
+<div class="row">
+  <div class="col-md-6">
+    <% if !@maraude.villes.empty? %>
+      <% villes = @maraude.villes.split("\n") %>
+      <% (0..(villes.length-1)).each do |i| %>
+        <% if liste_villes_ok.include?("#{villes[i]}") %>
+          <% villes[i] << " ☑" %>
+        <% else %>
+          <% villes[i] << " ☐" %>
+        <% end %>
+      <% end %>
+      <p class="lead">Villes parcourues</p>
+      <pre class="maraude-list"><%= villes.join("\n") %></pre>
+    <% else %>
+      <p class="lead">Pas de villes renseignées</p>
+    <% end %>
+  </div>
+  <div class="col-md-6">
+    <% if !der.empty? && !@maraude.villes.empty? %>
+      <p class="lead">Déroutages</p>
+      <pre class="maraude-list"><%= der %></pre>
+    <% else %>
+      <p class="lead">Pas de déroutages</p>
+    <% end %>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-md-3">
+    <% if disp_renc.empty? %>
+      <p class="lead">Pas de rencontres</p>
+    <% else %>
+      <p class="lead">Rencontres</p>
+      <pre class="pre-scrollable maraude-list text-justify"><%= disp_renc %></pre>
+    <% end %>
+  </div>
+  <div class="col-md-3">
+    <% if disp_dnv.empty? %>
+      <p class="lead">Pas de personnes non vues sur déplacement</p>
+    <% else %>
+      <p class="lead">Personnes non vues sur déplacement</p>
+      <pre class="pre-scrollable maraude-list text-justify"><%= disp_dnv %></pre>
+    <% end %>
+  </div>
+  <div class="col-md-3">
+    <% if disp_sig.empty? %>
+      <p class="lead">Pas de signalements</p>
+    <% else %>
+      <p class="lead">Signalements</p>
+      <pre class="pre-scrollable maraude-list text-justify"><%= disp_sig %></pre>
+    <% end %>
+  </div>
+  <div class="col-md-3">
+    <% if disp_accomp.empty? %>
+      <p class="lead">Pas d'accompagnements</p>
+    <% else %>
+      <p class="lead">Accompagnements</p>
+      <pre class="pre-scrollable maraude-list text-justify"><%= disp_accomp %></pre>
+    <% end %>
+  </div>
+</div>
