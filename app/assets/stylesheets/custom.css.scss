@@ -261,6 +261,9 @@ span.ui-helper-hidden-accessible {
         }
       }
     }
+    .ui-tabs-active a {
+      background-color: #ccc;
+    }
   }
   .ui-tabs-panel {
     border: 1px solid inherit;
