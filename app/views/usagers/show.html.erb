@@ -195,8 +195,7 @@
 
     <% if @usager.rencontres.any? %>
       <br><span>
-        <%= link_to "Supprimer une rencontre",  id_destroy_path(:id => @usager.id),
-                                                data: { confirm: "Etes-vous sûr(e) ?"} %>
+        <%= link_to "Editer ou supprimer une rencontre",  id_rencontre_edit_path(:id => @usager.id) %>
       </span>
     <% end %>
   </div>

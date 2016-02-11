@@ -1,5 +1,5 @@
 class RencontresController < ApplicationController
-  before_action :logged_in_user, only: [:new, :create, :new_groupe, :post_groupe, :destroy_form, :destroy_via_form, :destroy, :edit, :update]
+  before_action :logged_in_user, only: [:new, :create, :new_groupe, :post_groupe, :edit_form, :post_form, :destroy, :edit, :update]
 
   def new
     store_id
@@ -68,6 +68,9 @@ class RencontresController < ApplicationController
       end
       if @rencontre.dnv
         rencontre_u << "\nMaraude déplacée mais personne non vue."
+      end
+      if @usager.enfants.any? && !@rencontre.dnv
+        rencontre_u << "\nAvec #{@rencontre.nb_enf} #{"enfant".pluralize(@rencontre.nb_enf)}."
       end
       if !@rencontre.details.empty?
         rencontre_u << "\n#{@rencontre.details}"
@@ -180,13 +183,26 @@ class RencontresController < ApplicationController
   end
 
   def destroy
-    @usager = Usager.find(Rencontre.find(params[:id]).usager_id)
-    Rencontre.find(params[:id]).destroy
-    flash[:success] = "Rencontre supprimée (N'oubliez pas de retirer la rencontre de la fiche de suivi de l'usager si besoin est)"
+    r = Rencontre.find(params[:id])
+    @usager = Usager.find(r.usager_id)
+    if @usager.fiche.present?
+      u_del = @usager.fiche.split("//")
+      rank = u_del.index(" #{r.type_renc} [#{r.date.strftime("%d/%m/%y")}] ")
+      if rank
+        while rank != nil
+          u_del = u_del[0..(rank-1)].concat(u_del[(rank+2)..(u_del.length-1)])
+          rank = u_del.index(" #{r.type_renc} [#{r.date.strftime("%d/%m/%y")}] ")
+        end
+      end
+      @usager.fiche = "#{u_del.join("//")}"
+      @usager.save
+    end
+    r.destroy
+    flash[:success] = "Rencontre supprimée (Vérifiez que la rencontre a bien été retirée dans la fiche suivi de l'usager)"
     redirect_to @usager
   end
 
-  def destroy_form
+  def edit_form
     store_id
     @types =  [ ["Maraude salariés 1", "Maraude salariés 1"],
                 ["Maraude salariés 2", "Maraude salariés 2"],
@@ -195,23 +211,47 @@ class RencontresController < ApplicationController
                 ["Rencontre pôle jour", "Rencontre pôle jour"],
                 ["Autre", "Autre"]]
     @usager = Usager.find_by(id: session[:stored_id])
+    session.delete(:stored_id)
   end
 
-  def destroy_via_form
-    @usager = Usager.find_by(id: session[:stored_id])
+  def post_form
+    store_id
+    @usager = Usager.find(session[:stored_id])
     r = Rencontre.find_by(usager_id: @usager.id,
-                          date: params[:rencontre][:date],
-                          type_renc: params[:rencontre][:type_renc])
-    if r.nil?
-      flash[:danger] = "Cette rencontre n'a pas été trouvée"
-      redirect_to id_destroy_path(:id => @usager.id)
-    else
-      r.destroy
-      flash[:success] = "Rencontre supprimée (N'oubliez pas de retirer la rencontre de la fiche de suivi de l'usager si besoin est)"
-      redirect_to @usager
-      session.delete(:stored_id)
+                          date: params[:rencontres][:date],
+                          type_renc: params[:rencontres][:type_renc])
+    if params[:suppr_renc]
+      if r.nil?
+        flash[:danger] = "Cette rencontre n'a pas été trouvée"
+        redirect_to id_rencontre_edit_path(id: @usager.id)
+      else
+        r.destroy
+        if @usager.fiche.present?
+          u_del = @usager.fiche.split("//")
+          rank = u_del.index(" #{r.type_renc} [#{r.date.strftime("%d/%m/%y")}] ")
+          if rank
+            while rank != nil
+              u_del = u_del[0..(rank-1)].concat(u_del[(rank+2)..(u_del.length-1)])
+              rank = u_del.index(" #{r.type_renc} [#{r.date.strftime("%d/%m/%y")}] ")
+            end
+          end
+          @usager.fiche = "#{u_del.join("//")}"
+          @usager.save
+        end
+        flash[:success] = "Rencontre supprimée (Vérifiez que la rencontre a bien été retirée dans la fiche suivi de l'usager)"
+        redirect_to @usager
+      end
+    elsif params[:edit_renc]
+      if r.nil?
+        flash[:danger] = "Cette rencontre n'a pas été trouvée"
+        redirect_to id_rencontre_edit_path(id: @usager.id)
+      else
+        redirect_to edit_rencontre_path(r)
+      end
     end
+    session.delete(:stored_id)
   end
+
 
   def edit
     @rencontre = Rencontre.find(params[:id])
@@ -277,7 +317,7 @@ class RencontresController < ApplicationController
         rencontre_u << "\nMaraude déplacée mais personne non vue"
       end
       if @usager.enfants.any? && !@rencontre.dnv
-        rencontre_u << "\nAvec #{pluralize(@rencontre.nb_enf, "enfant")}."
+        rencontre_u << "\nAvec #{@rencontre.nb_enf} #{"enfant".pluralize(@rencontre.nb_enf)}."
       end
       if !@rencontre.details.empty?
         rencontre_u << "\n#{@rencontre.details}"
@@ -285,8 +325,6 @@ class RencontresController < ApplicationController
         rencontre_u << "\nRencontre sans détails."
       end
       rencontre_u << "\n\n\n" unless !@usager.fiche
-      rencontre_u << "#{@usager.fiche}"
-      u_fiche = rencontre_u
       if @rencontre.signale
         if !@rencontre.signalement.empty?
           if !mar && !@rencontre.prev
@@ -330,12 +368,23 @@ class RencontresController < ApplicationController
         params[:rencontre][:type_accomp] = nil
       end
       if !err && !errb && !errc
-        @usager.fiche = u_fiche if u_fiche
+        if @usager.fiche.present?
+          u_del = @usager.fiche.split("//")
+          rank = u_del.index(" #{@rencontre.type_renc} [#{@rencontre.date.strftime("%d/%m/%y")}] ")
+          if rank
+            while rank != nil
+              u_del = u_del[0..(rank-1)].concat(u_del[(rank+2)..(u_del.length-1)])
+              rank = u_del.index(" #{@rencontre.type_renc} [#{@rencontre.date.strftime("%d/%m/%y")}] ")
+            end
+          end
+          rencontre_u << "#{u_del.join("//")}"
+        end
+        @usager.fiche = rencontre_u if rencontre_u
         @usager.save
         @rencontre.update_attribute(:nb_enf, 0) unless params[:rencontre][:nb_enf]
         @rencontre.update_attribute(:prestas, params[:rencontre][:prestas].reject{ |a| a == '0' }.join(' #'))
         @rencontre.update_attributes(rencontre_params)
-        flash[:success] = "Rencontre mise à jour"
+        flash[:success] = "Rencontre mise à jour (Vérifiez que la rencontre avant mise à jour dans la fiche de suivi de l'usager a bien été retirée)"
         redirect_to @usager
       else
         redirect_to id_rencontre_path(:id => @usager.id)

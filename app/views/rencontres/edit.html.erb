@@ -10,7 +10,7 @@ $(document).ready(function(){
         if (val_stock != val) {
             val_stock = val;
             if (gon.renc.indexOf(val) > -1) {
-                alert("Etes-vous sûr(e) ? Cette personne a déjà été rencontrée le " + val_affiche + ".");
+                alert("Etes-vous sûr(e) ? Cette personne a déjà été rencontrée le " + val_affiche + ". S'il s'agit d'une simple édition de rencontre dont on n'a pas changé la date, ne pas prendre ce message en compte.");
             };
         };
     });
@@ -84,7 +84,8 @@ $(document).ready(function(){
   <%= f.text_area :details, class: 'form-control', html: {style: 'text-align:center'} %>
 
 <% if @usager.enfants.any? %>
-  <br><%= f.select :nb_enf, @nb_enf, prompt: "Nb d'enfants vus", class: 'form-control' %><br>
+  <br><%= f.label :nb_enf, "Nombre d'enfants vus" %>
+  <%= f.select :nb_enf, @nb_enf, prompt: "Nb d'enfants vus", class: 'form-control' %><br>
 <% end %>
 
 <hr>
@@ -93,7 +94,7 @@ $(document).ready(function(){
 
 <div>
   <% for presta in @prestas do %>
-    <% if @rencontre.prestas.split(" #").include?("#{presta.first}") %>
+    <% if @rencontre.prestas.present? && @rencontre.prestas.split(" #").include?("#{presta.first}") %>
       <%= f.check_box :prestas, { :multiple => true, :checked => true }, "#{presta.first}" %>
       <%= presta.first %><br>
     <% else %>

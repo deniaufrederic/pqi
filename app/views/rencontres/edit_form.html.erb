@@ -1,0 +1,31 @@
+<% provide(:title, "Editer ou supprimer une rencontre") %>
+
+<h1>Editer ou supprimer une rencontre avec <%= @usager.sexe %> <%= @usager.nom %> <% @usager.prenom %></h1>
+
+<%= simple_form_for(:rencontres, url: id_rencontre_post_path(id: @usager.id), html: { class: "form-inline text-center" }) do |f| %>
+
+	<div>
+		<h3>Date</h3>
+
+	  <%= f.input :date, label: false, :as => :date_picker, input_html: {value: Date.today}, class: 'form-control' %>
+	</div>
+
+	<div>
+		<h3>Type</h3>
+
+	  <%= f.select :type_renc, @types, prompt: "Quel type de rencontre ?", class: 'form-control' %><br>
+	</div>
+
+	<hr>
+
+	<div class="btn-group">
+		<%= f.submit "Editer", 	class: 'btn btn-info',
+	  												id: 'submit',
+	  												name: "edit_renc" %>
+
+	  <%= f.submit "Supprimer", class: 'btn btn-danger',
+	  													id: 'submit',
+	  													name: "suppr_renc",
+	  													data: { confirm: "Etes-vous sûr(e) ?"} %>
+	</div>
+<% end %>
