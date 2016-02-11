@@ -187,3 +187,36 @@ ul#enfants li {
 blockquote#enfants {
   font-size: 14px;
 }
+
+/* Tooltip text */
+.ui-tooltip .ui-tooltip-content {
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    margin-top: -10px;
+}
+
+/* Tooltip arrow */
+.ui-tooltip .ui-tooltip-content::after {
+    content: "";
+    position: absolute;
+    top: -35%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #555 transparent;
+}
+
+/* Hide autocomplete span */
+span.ui-helper-hidden-accessible {
+  display: none;
+}
