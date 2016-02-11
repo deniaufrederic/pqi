@@ -145,18 +145,26 @@ tr.tr-center {
   text-align: center;
 }
 
-ul.villes li {
-  display: inline;
-  a {
-    background-color: gray;
-    color: black;
-    padding: 10px 10px;
-    line-height: 3;
-    text-decoration: none;
-    border-radius: 4px 4px 0 0;
-  &:hover {
-    background-color: orange;
-  }
+div#container-villes {
+  width: 100%;
+  overflow: auto;
+  ul.villes {
+    padding: 0;
+    margin: 0;
+    li {
+      display: inline-block;
+      a {
+        background-color: gray;
+        color: black;
+        padding: 10px 10px;
+        line-height: 3;
+        text-decoration: none;
+        border-radius: 4px 4px 0 0;
+        &:hover {
+          background-color: orange;
+        }
+      }
+    }
   }
 }
 
@@ -173,7 +181,7 @@ ul.villes li {
     transition: 0.4s;
 }
 
-/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+/* Add a background color to the button when hover */
 .ui-accordion .ui-accordion-header:hover {
     background-color: #ccc;
 }
@@ -219,4 +227,43 @@ blockquote#enfants {
 /* Hide autocomplete span */
 span.ui-helper-hidden-accessible {
   display: none;
+}
+
+/* Tabs */
+
+.ui-tabs {
+  width: 100%;
+  overflow: auto;
+  .ui-tabs-nav {
+    padding: 0;
+    margin: 0;
+    white-space: nowrap;
+    li {
+      display: inline-block;
+      a {
+        width: 100%;
+        background-color: #eee;
+        border-radius: 6px 0 0 0;
+        padding: 10px 10px;
+        line-height: 3;
+        text-decoration: none;
+        color: inherit;
+        transition: 0.4s;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-family: inherit;
+        font-weight: 500;
+        &:hover {
+          background-color: #ccc;
+        }
+      }
+    }
+  }
+  .ui-tabs-panel {
+    border: 1px solid inherit;
+    border-radius: 0 0 6px 0;
+  }
 }

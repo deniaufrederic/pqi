@@ -41,6 +41,13 @@ $(function() {
 $( document ).tooltip();
 
 $(function() {
+    $( "#tabs" ).tabs({
+    	collapsible: true,
+    	heightStyle: "content"
+    });
+  });
+
+$(function() {
 	$('#accordion').accordion({
 	    collapsible: true,
 	    active: false,
