@@ -1,0 +1,24 @@
+<% provide(:title, "Informations complémentaires") %>
+
+<h1>Edition des informations complémentaires de <%= "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %></h1>
+
+<%= simple_form_for(:usager, url: id_post_comp_path(id: @usager.id), method: :post) do |f| %>
+
+<h3>Ressources</h3>
+
+	<% for ress in @ressources do %>
+		<% if @usager.ressources.split("\n").include?("#{ress.first}") %>
+    	<%= f.check_box :ressources, { :multiple => true, :checked => true }, "#{ress.first}" %>
+    	<%= ress.first %><br>
+    <% else %>
+      <%= f.check_box :ressources, { :multiple => true, :checked => false }, "#{ress.first}" %>
+      <%= ress.first %><br>
+    <% end %>
+  <% end %>
+
+  <%= f.label :montant, "Montant (en €)" %>
+  <%= f.number_field :montant, step: '0.01' %><br>
+
+	<%= f.submit "Enregistrer les modifications", class: "btn btn-primary" %>
+
+<% end %>

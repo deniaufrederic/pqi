@@ -83,15 +83,22 @@ class MaraudesController < ApplicationController
                 ["Villemomble", "Villemomble"],
                 ["Villepinte", "Villepinte"],
                 ["Villetaneuse", "Villetaneuse"]]
-    @maraude = Maraude.find_by(id: session[:stored_id])
+    @maraude = Maraude.find(session[:stored_id])
+    session.delete(:stored_id)
   end
 
   def post_villes
+    store_id
     villes = params[:maraude][:villes].reject{ |a| a == '0' }.join("\n")
-    @maraude = Maraude.find_by(id: session[:stored_id])
-    @maraude.update_attribute(:villes, villes)
+    @maraude = Maraude.find(session[:stored_id])
+    if @maraude.update_attribute(:villes, villes)
+      flash[:success] = "Villes ajoutées"
+      redirect_to maraudes_path
+    else
+      flash[:danger] = "Problème inconnu, veuillez réessayer"
+      redirect_to id_m_villes_path(id: @maraude.id)
+    end
     session.delete(:stored_id)
-    redirect_to maraudes_path
   end
 
   def destroy

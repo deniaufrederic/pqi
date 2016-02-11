@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160208131525) do
+ActiveRecord::Schema.define(version: 20160211131643) do
 
   create_table "enfants", force: :cascade do |t|
     t.integer  "usager_id"
@@ -80,6 +80,8 @@ ActiveRecord::Schema.define(version: 20160208131525) do
     t.string   "pqi_histo"
     t.text     "fiche"
     t.integer  "groupe_id"
+    t.text     "ressources"
+    t.float    "montant"
   end
 
   add_index "usagers", ["groupe_id"], name: "index_usagers_on_groupe_id"

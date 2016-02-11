@@ -256,12 +256,21 @@
   <h3>Informations complémentaires</h3>
 
   <div>
-    <table class="infos-supp table-responsive">
+
+    <%= link_to "Editer", id_edit_comp_path(id: @usager.id), class: "btn btn-info btn-lg" %>
+
+    <table class="infos-supp table-responsive text-center">
       <tr class="table_head">
         <th class="ressources">Ressources</th>
         <th class="social">Suivi social</th>
         <th class="médical">Suivi médical</th>
         <th class="autre">Autres informations</th>
+      </tr>
+      <tr>
+        <td>
+        <pre class="maraude-list lead"><%= @usager.ressources %></pre>
+        <p class="lead">Montant : <%= @usager.montant %> €</p>
+        </td>
       </tr>
     </table>
   </div>

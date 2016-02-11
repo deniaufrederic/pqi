@@ -1,5 +1,5 @@
 class UsagersController < ApplicationController
-  before_action :logged_in_user,  only: [:new, :new_inconnu, :show, :index, :create, :edit, :update, :destroy, :pqi, :fiche]
+  before_action :logged_in_user,  only: [:new, :new_inconnu, :show, :index, :create, :edit, :update, :destroy, :pqi, :fiche, :edit_comp]
   before_action :admin_user,      only: :destroy
 
   def new
@@ -331,12 +331,40 @@ class UsagersController < ApplicationController
   def fiche
     store_last
     store_id
-    @usager = Usager.find_by(id: session[:stored_id])
+    @usager = Usager.find(session[:stored_id])
     session.delete(:stored_id)
   end
 
-  def autocomplete_groupe_nom
-    @groupes = Groupe.find(:all, :conditions => ['name LIKE?', "%#{params[:search]}"])
+  def edit_comp
+    store_id
+    session[:stored] = "edit_comp"
+    @usager = Usager.find(session[:stored_id])
+    @ressources = [ ["Salaire", "Salaire"],
+                    ["Retraite", "Retraite"],
+                    ["RSA", "RSA"],
+                    ["AAH", "AAH"],
+                    ["Prestation(s) familiale(s)", "Prestation(s) familiale(s)"],
+                    ["ATA", "ATA"],
+                    ["ASS", "ASS"],
+                    ["ARE", "ARE"],
+                    ["Rémunération de formation", "Rémunération de formation"],
+                    ["Pension d'invalidité", "Pension d'invalidité"],
+                    ["Autre", "Autre"]]
+    session.delete(:stored_id)
+  end
+
+  def post_comp
+    store_id
+    ressources = params[:usager][:ressources].reject{ |a| a == '0' }.join("\n")
+    @usager = Usager.find(session[:stored_id])
+    if @usager.update_attributes(ressources: ressources, montant: params[:usager][:montant])
+      flash[:success] = "Informations complémentaires éditées"
+      redirect_to @usager
+    else
+      flash[:danger] = "Problème inconnu, veuillez réessayer"
+      redirect_to id_edit_comp_path(id: @usager.id)
+    end
+    session.delete(:stored_id)
   end
 
   private
@@ -354,6 +382,8 @@ class UsagersController < ApplicationController
                                       :pqi_histo,
                                       :fiche,
                                       :groupe_nom,
+                                      :ressources,
+                                      :montant,
                                       enfants_attributes: [ :id,
                                                             :nom,
                                                             :prenom,

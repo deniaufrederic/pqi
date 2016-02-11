@@ -26,7 +26,7 @@ module SessionsHelper
   end
 
   def store_id
-    session[:stored_id] = request.url if request.get?
+    session[:stored_id] = request.url if request.get? || request.post?
     session[:stored_id] = session[:stored_id].split('/').last
   end
 

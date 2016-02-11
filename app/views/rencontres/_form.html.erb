@@ -83,7 +83,7 @@
 
 <h3>Détails</h3>
 
-  <%= f.text_area :details, class: 'form-control', html: {style: 'text-align:center'} %>
+  <%= f.text_area :details, class: 'form-control', html: {style: 'text-align:center'}, rows: 10 %>
 
 <% if @usager.enfants.any? %>
   <br><%= f.label :nb_enf, "Nombre d'enfants vus" %>

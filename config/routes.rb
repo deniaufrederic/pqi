@@ -12,7 +12,6 @@ Rails.application.routes.draw do
   resources :usagers
   get 'stats'         =>  'stats#show'
   post 'stats'        =>  'stats#create'
-  post 'villes'       =>  'maraudes#post_villes'
   resources :maraudes, only: [:index, :show, :destroy, :new, :create]
   resources :rencontres, only: [:create, :edit, :update, :destroy]
   post 'new_groupe'   =>  'rencontres#post_groupe'
@@ -44,10 +43,25 @@ Rails.application.routes.draw do
     :action     => 'villes',
     :as         => :id_m_villes
 
+  post 'maraude-villes/:id',
+    :controller => 'maraudes',
+    :action     => 'post_villes',
+    :as         => :id_post_villes
+
   get 'fiche/:id',
     :controller => 'usagers',
     :action     => 'fiche',
     :as         => :id_fiche
+
+  get 'edit_comp/:id',
+    :controller => 'usagers',
+    :action     => 'edit_comp',
+    :as         => :id_edit_comp
+
+  post 'edit_comp/:id',
+    :controller => 'usagers',
+    :action     => 'post_comp',
+    :as         => :id_post_comp
 
   get 'stats/:date_deb/:date_fin',
     :controller => 'stats',
