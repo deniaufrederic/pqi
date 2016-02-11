@@ -1,5 +1,5 @@
 class Usager < ActiveRecord::Base
-  has_many :rencontres
+  has_many :rencontres, :dependent => :destroy
   has_many :enfants, :dependent => :destroy
   belongs_to :groupe
 
