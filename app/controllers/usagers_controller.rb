@@ -1,5 +1,5 @@
 class UsagersController < ApplicationController
-  before_action :logged_in_user,  only: [:new, :new_inconnu, :show, :index, :create, :edit, :update, :destroy, :pqi, :fiche, :edit_comp]
+  before_action :logged_in_user,  only: [:new, :new_inconnu, :show, :index, :create, :edit, :update, :destroy, :pqi, :fiche, :fiche_jour, :edit_comp, :post_comp]
   before_action :admin_user,      only: :destroy
 
   def new
@@ -260,7 +260,12 @@ class UsagersController < ApplicationController
     elsif session[:stored] == "fiche"
       @usager.update_attribute(:fiche, params[:usager][:fiche])
       @usager.update_attribute(:pqi, stored_pqi)
-      flash[:success] = "Fiche de suivi usager éditée"
+      flash[:success] = "Fiche de rencontres usager éditée"
+      redirect_to @usager
+    elsif session[:stored] == "fiche_jour"
+      @usager.update_attribute(:fiche_jour, params[:usager][:fiche_jour])
+      @usager.update_attribute(:pqi, stored_pqi)
+      flash[:success] = "Fiche de suivi jour usager éditée"
       redirect_to @usager
     elsif @usager.update_attributes(usager_params)
       if params[:usager][:groupe_nom] == ""
@@ -329,6 +334,13 @@ class UsagersController < ApplicationController
   end
 
   def fiche
+    store_last
+    store_id
+    @usager = Usager.find(session[:stored_id])
+    session.delete(:stored_id)
+  end
+
+  def fiche_jour
     store_last
     store_id
     @usager = Usager.find(session[:stored_id])

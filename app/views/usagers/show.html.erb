@@ -278,18 +278,31 @@
     </div>
   </div>
 
+  <h3>Suivi</h3>
+
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="text-center">
+        <%= link_to "Fiche de rencontres",  id_fiche_path(:id => @usager.id),
+                                            class: "btn btn-info btn-lg" %>
+      </h3>
+
+      <pre class="pre-scrollable text-justify"><%= @usager.fiche %></pre>
+    </div>
+
+    <div class="col-md-6">
+      <h3 class="text-center">
+        <%= link_to "Fiche de suivi jour",  id_fiche_jour_path(:id => @usager.id),
+                                            class: "btn btn-info btn-lg" %>
+      </h3>
+
+      <pre class="pre-scrollable text-justify"><%= @usager.fiche_jour %></pre>
+    </div>
+  </div>
+
 </div>
 
-<hr>
-
-<h3 class="text-center">
-  <%= link_to "Fiche de suivi", id_fiche_path(:id => @usager.id),
-                                class: "btn btn-info btn-lg" %>
-</h3>
-
-<pre class="pre-scrollable text-justify"><%= @usager.fiche %></pre>
-
-<p class="text-right lead">
+<div class="text-right lead">
   <% user = User.find(@usager.user_id) %>
   <%= "Usager ajouté par " %><%= link_to "#{user.identifiant}", user %><%= " (#{@usager.created_at})" %>
-</p>
+</div>

@@ -57,6 +57,11 @@ Rails.application.routes.draw do
     :action     => 'fiche',
     :as         => :id_fiche
 
+  get 'fiche_jour/:id',
+    :controller => 'usagers',
+    :action     => 'fiche_jour',
+    :as         => :id_fiche_jour
+
   get 'edit_comp/:id',
     :controller => 'usagers',
     :action     => 'edit_comp',
