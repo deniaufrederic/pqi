@@ -235,7 +235,14 @@
         <th>Nb prestations</th>
       </tr>
       <tr>
-        <td><%= villes.join("\n").split("☑").length - 1 %> / <%= @maraude.villes.split("\n").length %></td>
+        <td>
+          <% if villes.present? %>
+            <%= villes.join("\n").split("☑").length - 1 %>
+          <% else %>
+            0
+          <% end %>
+           / <%= @maraude.villes.split("\n").length %>
+        </td>
         
         <td><%= der.split("\n").length %></td>
         
