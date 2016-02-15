@@ -379,6 +379,7 @@ class UsagersController < ApplicationController
                                       :suivi_org,
                                       :sejour,
                                       :cfr,
-                                      :carte_date)
+                                      :carte_date,
+                                      :autres_infos)
     end
 end
