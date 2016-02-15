@@ -1,8 +1,9 @@
 <% provide(:title, @groupe.nom) %>
 
-<h1>Groupe "<%= @groupe.nom %>"</h1>
-
-<h3>Membres</h3>
+<h1>
+  Groupe "<%= @groupe.nom %>"<br>
+  <small>Membres</small>
+</h1>
 
 <% c = (@usagers.count / 4).floor %>
 <% r = @usagers.count % 4 %>
@@ -45,5 +46,3 @@
     <% end %>
   </div>
 <% end %>
-
-<h3>Statistiques</h3>

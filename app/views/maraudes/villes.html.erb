@@ -4,15 +4,41 @@
 
 <%= form_for(:maraude, url: id_post_villes_path(id: @maraude.id), method: :post) do |f| %>
 
-  <% for ville in @villes do %>
-    <% if @maraude.villes.split("\n").include?("#{ville.first}") %>
-      <%= f.check_box :villes, { :multiple => true, :checked => true }, "#{ville.first}" %>
-      <%= ville.first %><br>
-    <% else %>
-      <%= f.check_box :villes, { :multiple => true, :checked => false }, "#{ville.first}" %>
-      <%= ville.first %><br>
-    <% end %>
-  <% end %>
+  <div class="row">
+    <div class="col-md-4">
+      <% for ville in @villes[0..((@villes.length/3).floor)] do %>
+        <% if @maraude.villes.split("\n").include?("#{ville.first}") %>
+          <%= f.check_box :villes, { :multiple => true, :checked => true }, "#{ville.first}" %>
+          <%= ville.first %><br>
+        <% else %>
+          <%= f.check_box :villes, { :multiple => true, :checked => false }, "#{ville.first}" %>
+          <%= ville.first %><br>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="col-md-4">
+      <% for ville in @villes[((@villes.length/3).floor + 1)..(((@villes.length/3)*2).floor + 1)] do %>
+        <% if @maraude.villes.split("\n").include?("#{ville.first}") %>
+          <%= f.check_box :villes, { :multiple => true, :checked => true }, "#{ville.first}" %>
+          <%= ville.first %><br>
+        <% else %>
+          <%= f.check_box :villes, { :multiple => true, :checked => false }, "#{ville.first}" %>
+          <%= ville.first %><br>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="col-md-4">
+      <% for ville in @villes[(((@villes.length/3).floor)*2 + 2)..(@villes.length - 1)] do %>
+        <% if @maraude.villes.split("\n").include?("#{ville.first}") %>
+          <%= f.check_box :villes, { :multiple => true, :checked => true }, "#{ville.first}" %>
+          <%= ville.first %><br>
+        <% else %>
+          <%= f.check_box :villes, { :multiple => true, :checked => false }, "#{ville.first}" %>
+          <%= ville.first %><br>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
 
   <%= f.submit "Valider", class: "btn btn-primary" %>
 <% end %>
