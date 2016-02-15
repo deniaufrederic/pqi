@@ -14,7 +14,7 @@
     </ul>
     <div id="tab-1">
       <% for ress in @ressources do %>
-      	<% if @usager.ressources.split("\n").include?("#{ress.first}") %>
+      	<% if @usager.ressources.present? && @usager.ressources.split("\n").include?("#{ress.first}") %>
 			    <%= f.check_box :ressources, { :multiple => true, :checked => true }, "#{ress.first}" %>
 			   	<%= ress.first %><br>
 			  <% else %>

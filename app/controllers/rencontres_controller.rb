@@ -144,7 +144,7 @@ class RencontresController < ApplicationController
             session[:date] = @rencontre.date
             redirect_to id_groupe_path(:id => @usager.id)
           else
-            redirect_to usagers_path
+            redirect_to @usager
           end
           if session[:groupe]
             session.delete(:groupe)

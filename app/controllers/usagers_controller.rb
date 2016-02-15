@@ -123,7 +123,7 @@ class UsagersController < ApplicationController
         @usager.save
       end
       flash[:success] = "Nouvel usager ajouté !"
-      redirect_to id_rencontre_path(:id => @usager.id)
+      redirect_to id_edit_comp_path(id: @usager.id)
     else
       if session[:stored] == "new_inconnu"
         flash[:danger] = "Renseignez la ville où se trouve l'usager inconnu."
@@ -371,7 +371,11 @@ class UsagersController < ApplicationController
     @usager = Usager.find(session[:stored_id])
     if @usager.update_attributes(ressources: ressources, montant: params[:usager][:montant])
       flash[:success] = "Informations complémentaires éditées"
-      redirect_to @usager
+      if Usager.maximum("id") == @usager.id
+        redirect_to id_rencontre_path(id: @usager.id)
+      else
+        redirect_to @usager
+      end
     else
       flash[:danger] = "Problème inconnu, veuillez réessayer"
       redirect_to id_edit_comp_path(id: @usager.id)

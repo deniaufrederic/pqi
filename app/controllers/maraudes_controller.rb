@@ -92,8 +92,8 @@ class MaraudesController < ApplicationController
     villes = params[:maraude][:villes].reject{ |a| a == '0' }.join("\n")
     @maraude = Maraude.find(session[:stored_id])
     if @maraude.update_attribute(:villes, villes)
-      flash[:success] = "Villes ajoutées"
-      redirect_to maraudes_path
+      flash[:success] = "Villes modifiées"
+      redirect_to @maraude
     else
       flash[:danger] = "Problème inconnu, veuillez réessayer"
       redirect_to id_m_villes_path(id: @maraude.id)

@@ -139,29 +139,38 @@
 
   <h3>Villes</h3>
 
-  <div class="row">
-    <div class="col-md-6">
-      <% if !@maraude.villes.empty? %>
-        <% villes = @maraude.villes.split("\n") %>
-        <% (0..(villes.length-1)).each do |i| %>
-          <% if liste_villes_ok.include?("#{villes[i]}") %>
-            <% villes[i] << " ☑" %>
-          <% else %>
-            <% villes[i] << " ☐" %>
+  <div>
+    <div class="row">
+      <div class="col-md-6">
+        <% if @maraude.villes.present? %>
+          <% villes = @maraude.villes.split("\n") %>
+          <% (0..(villes.length-1)).each do |i| %>
+            <% if liste_villes_ok.include?("#{villes[i]}") %>
+              <% villes[i] << " ☑ " %>
+            <% else %>
+              <% villes[i] << " ☐ " %>
+            <% end %>
           <% end %>
+          <p class="lead">Villes parcourues</p>
+          <pre class="maraude-list"><%= villes.join("\n") %></pre>
+        <% else %>
+          <p class="lead">Pas de villes renseignées</p>
         <% end %>
-        <p class="lead">Villes parcourues</p>
-        <pre class="maraude-list"><%= villes.join("\n") %></pre>
-      <% else %>
-        <p class="lead">Pas de villes renseignées</p>
-      <% end %>
+      </div>
+      <div class="col-md-6">
+        <% if !der.empty? && !@maraude.villes.empty? %>
+          <p class="lead">Déroutages</p>
+          <pre class="maraude-list"><%= der %></pre>
+        <% else %>
+          <p class="lead">Pas de déroutages</p>
+        <% end %>
+      </div>
     </div>
-    <div class="col-md-6">
-      <% if !der.empty? && !@maraude.villes.empty? %>
-        <p class="lead">Déroutages</p>
-        <pre class="maraude-list"><%= der %></pre>
+    <div class="text-right lead">
+      <% if @maraude.villes.present? %>
+        <%= link_to "Modifier les villes", id_m_villes_path(:id => @maraude.id) %>
       <% else %>
-        <p class="lead">Pas de déroutages</p>
+        <%= link_to "Ajouter les villes théoriquement parcourues", id_m_villes_path(:id => @maraude.id) %>
       <% end %>
     </div>
   </div>
@@ -226,7 +235,7 @@
         <th>Nb prestations</th>
       </tr>
       <tr>
-        <td><%= @maraude.villes.split("☑").length %> / <%= @maraude.villes.split("\n").length %></td>
+        <td><%= villes.join("\n").split("☑").length - 1 %> / <%= @maraude.villes.split("\n").length %></td>
         
         <td><%= der.split("\n").length %></td>
         
