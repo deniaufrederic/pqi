@@ -141,7 +141,7 @@
 
   <div>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-6 col-sm-6 col-xs-6">
         <% if @maraude.villes.present? %>
           <% villes = @maraude.villes.split("\n") %>
           <% (0..(villes.length-1)).each do |i| %>
@@ -157,7 +157,7 @@
           <p class="lead">Pas de villes renseignées</p>
         <% end %>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-6 col-sm-6 col-xs-6">
         <% if !der.empty? && !@maraude.villes.empty? %>
           <p class="lead">Déroutages</p>
           <pre class="maraude-list"><%= der %></pre>
@@ -180,7 +180,7 @@
   <h3>Interventions</h3>
 
   <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-3 col-sm-3 col-xs-3">
       <% if disp_renc.empty? %>
         <p class="lead">Pas de rencontres</p>
       <% else %>
@@ -188,7 +188,7 @@
         <pre class="pre-scrollable maraude-list text-justify"><%= disp_renc %></pre>
       <% end %>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 col-sm-3 col-xs-3">
       <% if disp_dnv.empty? %>
         <p class="lead">Pas de personnes non vues sur déplacement</p>
       <% else %>
@@ -196,7 +196,7 @@
         <pre class="pre-scrollable maraude-list text-justify"><%= disp_dnv %></pre>
       <% end %>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 col-sm-3 col-xs-3">
       <% if disp_sig.empty? %>
         <p class="lead">Pas de signalements</p>
       <% else %>
@@ -204,7 +204,7 @@
         <pre class="pre-scrollable maraude-list text-justify"><%= disp_sig %></pre>
       <% end %>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 col-sm-3 col-xs-3">
       <% if disp_accomp.empty? %>
         <p class="lead">Pas d'accompagnements</p>
       <% else %>

@@ -34,9 +34,13 @@ $(document).ready(function(){
 
 <h3>Date</h3>
 
+<div class="form-inline">
   <%= f.input :date, label: false, :as => :date_picker, input_html: {value: @rencontre.date.strftime("%F")}, class: 'form-control' %>
 
   <hr>
+</div>
+
+<h3>Signalement</h3>
 
 <div class="form-inline">
   <%= f.label :signale, "Nouveau signalement ?" %>

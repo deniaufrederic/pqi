@@ -165,7 +165,7 @@
 
 
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-4 col-sm-4 col-xs-4">
         <% if dates_renc.empty? %>
           <p class="lead">Pas de dates de rencontre</p>
         <% else %>
@@ -173,7 +173,7 @@
           <pre class="pre-scrollable maraude-list"><%= dates_renc.join("\n") %></pre>
         <% end %>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4 col-sm-4 col-xs-4">
         <% if dates_sig.empty? %>
           <p class="lead">Pas de dates de signalement</p>
         <% else %>
@@ -181,7 +181,7 @@
           <pre class="pre-scrollable maraude-list"><%= dates_sig.join("\n") %></pre>
         <% end %>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4 col-sm-4 col-xs-4">
         <% if dates_accomp.empty? %>
           <p class="lead">Pas de dates d'accompagnement</p>
         <% else %>
@@ -281,7 +281,7 @@
   <h3>Suivi</h3>
 
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-6 col-sm-6 col-xs-6">
       <h3 class="text-center">
         <%= link_to "Fiche de rencontres",  id_fiche_path(:id => @usager.id),
                                             class: "btn btn-info btn-lg" %>
@@ -290,7 +290,7 @@
       <pre class="pre-scrollable text-justify"><%= @usager.fiche %></pre>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-6 col-sm-6 col-xs-6">
       <h3 class="text-center">
         <%= link_to "Fiche de suivi jour",  id_fiche_jour_path(:id => @usager.id),
                                             class: "btn btn-info btn-lg" %>

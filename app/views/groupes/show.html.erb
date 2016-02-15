@@ -11,7 +11,7 @@
 <% while i != c %>
   <div class="row usagers">
     <% @usagers[(4*i)..(4*(i+1) - 1)].each do |u| %>
-      <div class="col-md-3">
+      <div class="col-md-3 col-sm-3 col-xs-3">
 	      <%= link_to "#{u.sexe} #{u.nom} #{u.prenom}", u, class: "lead" %>
   	    <% if u.enfants.any? %>
   	      <ul class="enfants">
@@ -31,7 +31,7 @@
 <% if r != 0 %>
   <div class="row usagers">
     <% @usagers[(4*c)..(4*c + r)].each do |u| %>
-      <div class="col-md-3">
+      <div class="col-md-3 col-sm-3 col-xs-3">
         <%= link_to "#{u.sexe} #{u.nom} #{u.prenom}", u, class: "lead" %>
         <% if u.enfants.any? %>
           <ul class="enfants">

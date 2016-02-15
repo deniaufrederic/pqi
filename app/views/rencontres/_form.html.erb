@@ -4,11 +4,14 @@
   <h1>Renseigner la rencontre avec <%= "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %></h1>
 
 <% unless session[:groupe] %>
+
   <h3>Date</h3>
 
+<div class="form-inline">
   <%= f.input :date, label: false, :as => :date_picker, input_html: {value: Date.today}, class: 'form-control' %>
 
   <hr>
+</div>
 <% end %>
 
 <h3>Signalement</h3>
@@ -27,11 +30,14 @@
   <h1>Ajouter une rencontre avec <%= "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %></h1>
 
 <% unless session[:groupe] %>
+
   <h3>Date</h3>
 
+<div class="form-inline">
   <%= f.input :date, label: false, :as => :date_picker, input_html: {value: Date.today}, class: 'form-control' %>
 
   <hr>
+</div>
 <% end %>
 
 <h3>Signalement</h3>
