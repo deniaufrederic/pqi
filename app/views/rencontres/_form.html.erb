@@ -2,78 +2,73 @@
 
 <% if @usager.rencontres.empty? %>
   <h1>Renseigner la rencontre avec <%= "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %></h1>
-
-<% unless session[:groupe] %>
-
-  <h3>Date</h3>
-
-<div class="form-inline">
-  <%= f.input :date, label: false, :as => :date_picker, input_html: {value: Date.today}, class: 'form-control' %>
-
-  <hr>
-</div>
-<% end %>
-
-<h3>Signalement</h3>
-
-<div class="form-inline">
-  <%= f.label :signale, "Non connu(e) du service avant" %>
-  <%= f.check_box :signale, checked: false, class: 'form-control' %><br>
-
-  <%= f.label :signalement, "Si oui, type de signalement ?" %>
-  <%= f.select :signalement, @signalements, prompt: "Quel type de signalement ?", class: 'form-control' %>
-
-  <hr>
-</div>
-
 <% else %>
   <h1>Ajouter une rencontre avec <%= "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %></h1>
+<% end %>
 
 <% unless session[:groupe] %>
-
-  <h3>Date</h3>
-
-<div class="form-inline">
-  <%= f.input :date, label: false, :as => :date_picker, input_html: {value: Date.today}, class: 'form-control' %>
+  <div class="row">
+    <div class="form-inline col-md-6 col-sm-6 col-xs-6">
+      <h3>Date</h3>
+      <%= f.input :date, label: false, :as => :date_picker, input_html: {value: Date.today}, class: 'form-control' %>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-6">
+      <h3>Type</h3>
+      <%= f.select :type_renc, @types, prompt: "Quel type de rencontre ?", class: 'form-control' %>
+    </div>
+  </div>
 
   <hr>
-</div>
 <% end %>
 
 <h3>Signalement</h3>
 
-<div class="form-inline">
-  <%= f.label :signale, "Nouveau signalement" %>
-  <%= f.check_box :signale, class: 'form-control' %><br>
+<div class="row form-inline">
+  <div class="col-md-6 col-sm-6 col-xs-6">
+    <% if @usager.rencontres.empty? %>
+      <%= f.label :signale, "Non connu(e) du service avant" %>
+    <% else %>  
+      <%= f.label :signale, "Nouveau signalement" %>
+    <% end %>
 
-  <%= f.label :signalement, "Si oui, type de signalement ?" %>
-  <%= f.select :signalement,	[	["Signalement 115", "Signalement 115"],
-                      				  ["Signalement tiers", "Signalement tiers"]],
-                      			prompt: "Quel type de signalement ?",
-                      			class: 'form-control' %>
+    <%= f.check_box :signale, class: 'form-control check' %>
+  </div>
 
-  <hr>
+  <div class="col-md-6 col-sm-6 col-xs-6 appear">
+    <%= f.label :signalement, "Type" %>
+
+    <% if @usager.rencontres.empty? %>
+      <%= f.select :signalement,  @signalements,
+                                  prompt: "Quel type de signalement ?",
+                                  class: 'form-control' %>
+    <% else %>
+      <%= f.select :signalement,	[	["Signalement 115", "Signalement 115"],
+                        				  ["Signalement tiers", "Signalement tiers"]],
+                        			    prompt: "Quel type de signalement ?",
+                        			    class: 'form-control' %>
+    <% end %>
+  </div>
 </div>
 
-<% end %>
+<hr>
 
 <h3>Accompagnement</h3>
 
-<div class="form-inline">
-  <%= f.label :accomp, "Accompagnement" %>
-  <%= f.check_box :accomp, checked: false, class: 'form-control' %><br>
+<div class="row form-inline">
+  <div class="col-md-6 col-sm-6 col-xs-6">
+    <%= f.label :accomp, "Accompagnement" %>
+    <%= f.check_box :accomp, checked: false, class: 'form-control check' %>
+  </div>
 
-  <%= f.label :type_accomp, "Si oui, type d'accompagnement ?" %>
-  <%= f.select :type_accomp, @accomps, prompt: "Quel type d'accompagnement ?", class: 'form-control' %>
-
-  <hr>
+  <div class="col-md-6 col-sm-6 col-xs-6 appear">
+    <%= f.label :type_accomp, "Type" %>
+    <%= f.select :type_accomp, @accomps, prompt: "Quel type d'accompagnement ?", class: 'form-control' %>
+  </div>
 </div>
 
-<h3>Type</h3>
+<hr>
 
-<% unless session[:groupe] %>
-  <%= f.select :type_renc, @types, prompt: "Quel type de rencontre ?", class: 'form-control' %><br>
-<% end %>
+<h3>Options</h3>
 
 <div class="form-inline">
   <%= f.label :dnv, "Maraude déplacée mais personne non vue" %>

@@ -27,6 +27,20 @@ function printpage()
 }
 
 $(function() {
+	$( ".check" ).click(function() {
+		if($(this).is(":checked")) {
+			$(this).parent().children("input:not(:checked)").addClass("no-disp");
+			$(this).parent().children("input:not(:checked) + span").addClass("no-disp");
+       		$(this).parent().next().addClass("disp");
+     	} else {
+     		$(this).parent().children("input:not(:checked)").removeClass("no-disp");
+     		$(this).parent().children("input:not(:checked) + span").removeClass("no-disp");
+       		$(this).parent().next().removeClass("disp");
+     	}
+	});
+});
+
+$(function() {
     $( "#navtop-icon" ).click(function() {
       	$( ".navtop" ).toggleClass( "responsive" );
     });

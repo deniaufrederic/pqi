@@ -1,0 +1,89 @@
+<%= simple_form_for(:usager, url: id_post_comp_path(id: @usager.id), method: :post) do |f| %>
+
+	<div id="tabs">
+    <ul>
+      <li><a href="#tab-1">Ressources</a></li>
+      <li><a href="#tab-2">Suivi social</a></li>
+      <li><a href="#tab-3">Suivi médical</a></li>
+      <li><a href="#tab-4">Autres informations</a></li>
+    </ul>
+    <div id="tab-1">
+      <% for ress in @ressources do %>
+      	<% if @usager.ressources.present? && @usager.ressources.split("\n").include?("#{ress.first}") %>
+			    <%= f.check_box :ressources, { :multiple => true, :checked => true }, "#{ress.first}" %>
+			   	<%= ress.first %><br>
+			  <% else %>
+			    <%= f.check_box :ressources, { :multiple => true, :checked => false }, "#{ress.first}" %>
+			    <%= ress.first %><br>
+			  <% end %>
+		  <% end %>
+
+		  <%= f.label :montant, "Montant (en €)" %>
+		  <%= f.number_field :montant, step: '0.01' %>
+    </div>
+
+    <div id="tab-2">
+      <div class="form-inline">
+        <div>
+          <%= f.check_box :sejour, class: 'form-control check' %><span> Carte de séjour</span>
+
+          <%= f.check_box :cfr, class: 'form-control check' %><span> CNI/Passeport</span>
+        </div>
+
+        <div class="appear">
+          <%= f.label :carte_date, "Validité" %>
+          <%= f.input :carte_date, label: false, :as => :date_picker, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div>
+        <div class="form-inline">
+          <%= f.check_box :dom, class: 'form-control check' %><span> Domiciliation</span>
+        </div>
+
+        <div class="appear">
+          <%= f.label :dom_org, "Organisme" %>
+          <%= f.text_field :dom_org, class: 'form-control' %><br>
+
+          <%= f.label :dom_adr, "Adresse" %>
+          <%= f.text_field :dom_adr, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div>
+        <div class="form-inline">
+          <%= f.check_box :tut, class: 'form-control check' %><span> Tutelle</span>
+
+          <%= f.check_box :cur, class: 'form-control check' %><span> Curatelle</span>
+        </div>
+
+        <div class="appear">
+          <%= f.label :tutcur_org, "Organisme" %>
+          <%= f.text_field :tutcur_org, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div>
+        <div class="form-inline">
+          <%= f.check_box :suivi, class: 'form-control check' %><span> Service social de suivi</span>
+        </div>
+
+        <div class="appear">
+          <%= f.label :suivi_org, "Organisme" %>
+          <%= f.text_field :suivi_org, class: 'form-control' %>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-3">
+    </div>
+
+    <div id="tab-4">
+    </div>
+  </div>
+
+  <div class="text-center">
+	  <br><%= f.submit "Enregistrer les modifications", class: "btn btn-primary" %>
+  </div>
+
+<% end %>

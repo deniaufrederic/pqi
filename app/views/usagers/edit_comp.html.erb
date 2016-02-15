@@ -2,39 +2,8 @@
 
 <h1>Edition des informations complémentaires de <%= "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %></h1>
 
-<%= simple_form_for(:usager, url: id_post_comp_path(id: @usager.id), method: :post) do |f| %>
-
 <div class="row">
-	<div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-3" id="tabs">
-    <ul>
-      <li><a href="#tab-1">Ressources</a></li>
-      <li><a href="#tab-2">Suivi social</a></li>
-      <li><a href="#tab-3">Suivi médical</a></li>
-      <li><a href="#tab-4">Autres informations</a></li>
-    </ul>
-    <div id="tab-1">
-      <% for ress in @ressources do %>
-      	<% if @usager.ressources.present? && @usager.ressources.split("\n").include?("#{ress.first}") %>
-			    <%= f.check_box :ressources, { :multiple => true, :checked => true }, "#{ress.first}" %>
-			   	<%= ress.first %><br>
-			  <% else %>
-			    <%= f.check_box :ressources, { :multiple => true, :checked => false }, "#{ress.first}" %>
-			    <%= ress.first %><br>
-			  <% end %>
-		  <% end %>
-
-		  <%= f.label :montant, "Montant (en €)" %>
-		  <%= f.number_field :montant, step: '0.01' %><br>
-    </div>
-    <div id="tab-2">
-    </div>
-    <div id="tab-3">
-    </div>
-    <div id="tab-4">
-    </div>
+  <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-3">
+    <%= render "edit_comp_form" %>
   </div>
 </div>
-
-	<%= f.submit "Enregistrer les modifications", class: "btn btn-primary" %>
-
-<% end %>

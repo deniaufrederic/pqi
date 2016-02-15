@@ -182,47 +182,6 @@ class UsagersController < ApplicationController
   end
 
   def update
-    @villes = [ ["Aubervilliers", "Aubervilliers"],
-                ["Aulnay-sous-Bois", "Aulnay-sous-Bois"],
-                ["Bagnolet", "Bagnolet"],
-                ["Bobigny", "Bobigny"],
-                ["Bondy", "Bondy"],
-                ["Clichy-sous-Bois", "Clichy-sous-Bois"],
-                ["Coubron", "Coubron"],
-                ["Drancy", "Drancy"],
-                ["Dugny", "Dugny"],
-                ["Epinay-sur-Seine", "Epinay-sur-Seine"],
-                ["Gagny", "Gagny"],
-                ["Gournay-sur-Marne", "Gournay-sur-Marne"],
-                ["L'Ile-Saint-Denis", "L'Ile-Saint-Denis"],
-                ["La Courneuve", "La Courneuve"],
-                ["La Plaine Saint-Denis", "La Plaine Saint-Denis"],
-                ["Le Blanc-Mesnil", "Le Blanc-Mesnil"],
-                ["Le Bourget", "Le Bourget"],
-                ["Le Pré-Saint-Gervais", "Le Pré-Saint-Gervais"],
-                ["Le Raincy", "Le Raincy"],
-                ["Les Lilas", "Les Lilas"],
-                ["Les Pavillons-sous-Bois", "Les Pavillons-sous-Bois"],
-                ["Livry-Gargan", "Livry-Gargan"],
-                ["Montfermeil", "Montfermeil"],
-                ["Montreuil", "Montreuil"],
-                ["Neuilly-Plaisance", "Neuilly-Plaisance"],
-                ["Neuilly-sur-Marne", "Neuilly-sur-Marne"],
-                ["Noisy-le-Grand", "Noisy-le-Grand"],
-                ["Noisy-le-Sec", "Noisy-le-Sec"],
-                ["Pantin", "Pantin"],
-                ["Pierrefitte", "Pierrefitte"],
-                ["Romainville", "Romainville"],
-                ["Rosny-sous-Bois", "Rosny-sous-Bois"],
-                ["Saint-Denis", "Saint-Denis"],
-                ["Saint-Ouen", "Saint-Ouen"],
-                ["Sevran", "Sevran"],
-                ["Stains", "Stains"],
-                ["Tremblay-en-France", "Tremblay-en-France"],
-                ["Vaujours", "Vaujours"],
-                ["Villemomble", "Villemomble"],
-                ["Villepinte", "Villepinte"],
-                ["Villetaneuse", "Villetaneuse"]]
   	@usager = Usager.find(params[:id])
     stored_pqi = @usager.pqi
     if @usager.update_attribute(:pqi, params[:usager][:pqi]) && session[:stored] == "edit" && @usager.pqi != stored_pqi
@@ -369,7 +328,7 @@ class UsagersController < ApplicationController
     store_id
     ressources = params[:usager][:ressources].reject{ |a| a == '0' }.join("\n")
     @usager = Usager.find(session[:stored_id])
-    if @usager.update_attributes(ressources: ressources, montant: params[:usager][:montant])
+    if @usager.update_attribute(:ressources, ressources) && @usager.update_attributes(comp_params)
       flash[:success] = "Informations complémentaires éditées"
       if Usager.maximum("id") == @usager.id
         redirect_to id_rencontre_path(id: @usager.id)
@@ -406,5 +365,20 @@ class UsagersController < ApplicationController
                                                             :sexe,
                                                             :date_naissance,
                                                             :_destroy ])
+    end
+
+    def comp_params
+      params.require(:usager).permit( :montant,
+                                      :dom,
+                                      :dom_org,
+                                      :dom_adr,
+                                      :tut,
+                                      :cur,
+                                      :tutcur_org,
+                                      :suivi,
+                                      :suivi_org,
+                                      :sejour,
+                                      :cfr,
+                                      :carte_date)
     end
 end

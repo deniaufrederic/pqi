@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160211174328) do
+ActiveRecord::Schema.define(version: 20160215131842) do
 
   create_table "enfants", force: :cascade do |t|
     t.integer  "usager_id"
@@ -83,6 +83,19 @@ ActiveRecord::Schema.define(version: 20160211174328) do
     t.text     "ressources"
     t.float    "montant"
     t.text     "fiche_jour"
+    t.date     "sejour_date"
+    t.date     "cfr_date"
+    t.boolean  "dom"
+    t.string   "dom_org"
+    t.string   "dom_adr"
+    t.boolean  "tut"
+    t.boolean  "cur"
+    t.string   "tutcur_org"
+    t.boolean  "suivi"
+    t.string   "suivi_org"
+    t.boolean  "sejour"
+    t.boolean  "cfr"
+    t.date     "carte_date"
   end
 
   add_index "usagers", ["groupe_id"], name: "index_usagers_on_groupe_id"
