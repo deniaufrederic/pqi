@@ -109,10 +109,13 @@ h1 {
   text-align: center;
 }
 
-pre.maraude-list {
-  font-family: Helvetica;
-  background-color: transparent;
-  border-style: none;
+pre {
+  background-color: #eee;
+  &.maraude-list {
+    font-family: Helvetica;
+    background-color: transparent;
+    border-style: none;
+  }
 }
 
 tr.tr-center {
@@ -299,4 +302,10 @@ div.appear {
     opacity: 1;
     max-height: 300px;
   }
+}
+
+/* buttons */
+
+.btn.btn-lg {
+  letter-spacing: 0px;
 }

@@ -21,7 +21,7 @@
     		  <% end %>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-6">
-          <% for ress in @ressources[6..10] do %>
+          <% for ress in @ressources[6..11] do %>
             <% if @usager.ressources.present? && @usager.ressources.split("\n").include?("#{ress.first}") %>
               <%= f.check_box :ressources, { :multiple => true, :checked => true }, "#{ress.first}" %>
               <%= ress.first %><br>

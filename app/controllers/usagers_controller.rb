@@ -320,7 +320,8 @@ class UsagersController < ApplicationController
                     ["ARE", "ARE"],
                     ["Rémunération de formation", "Rémunération de formation"],
                     ["Pension d'invalidité", "Pension d'invalidité"],
-                    ["Autre", "Autre"]]
+                    ["Autre", "Autre"],
+                    ["Sans ressources", "Sans ressources"]]
     session.delete(:stored_id)
   end
 

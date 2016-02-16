@@ -1,4 +1,4 @@
-<li>
+<li class="lead">
   <%= link_to "#{user.nom} #{user.prenom}", user %>
   <% if current_user.admin? %>
     | <%= link_to "Editer", edit_user_path(user) %>
