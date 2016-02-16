@@ -10,6 +10,7 @@ class RencontresController < ApplicationController
                 ["Maraude salariés 2", "Maraude salariés 2"],
                 ["Maraude bénévoles", "Maraude bénévoles"],
                 ["Maraude jour", "Maraude jour"],
+                ["Maraude médicale", "Maraude médicale"],
                 ["Rencontre pôle jour", "Rencontre pôle jour"],
                 ["Autre", "Autre"]]
     @prestas = [["Prestation alimentaire", "Prestation alimentaire"],
@@ -208,6 +209,7 @@ class RencontresController < ApplicationController
                 ["Maraude salariés 2", "Maraude salariés 2"],
                 ["Maraude bénévoles", "Maraude bénévoles"],
                 ["Maraude jour", "Maraude jour"],
+                ["Maraude médicale", "Maraude médicale"],
                 ["Rencontre pôle jour", "Rencontre pôle jour"],
                 ["Autre", "Autre"]]
     @usager = Usager.find_by(id: session[:stored_id])
@@ -269,6 +271,7 @@ class RencontresController < ApplicationController
                 ["Maraude salariés 2", "Maraude salariés 2"],
                 ["Maraude bénévoles", "Maraude bénévoles"],
                 ["Maraude jour", "Maraude jour"],
+                ["Maraude médicale", "Maraude médicale"],
                 ["Rencontre pôle jour", "Rencontre pôle jour"],
                 ["Autre", "Autre"]]
     @prestas = [["Prestation alimentaire", "Prestation alimentaire"],

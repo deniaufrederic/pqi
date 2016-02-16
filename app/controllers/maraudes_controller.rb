@@ -22,7 +22,8 @@ class MaraudesController < ApplicationController
     @types =  [ ["Maraude salariés 1", "Maraude salariés 1"],
                 ["Maraude salariés 2", "Maraude salariés 2"],
                 ["Maraude bénévoles", "Maraude bénévoles"],
-                ["Maraude jour", "Maraude jour"]]
+                ["Maraude jour", "Maraude jour"],
+                ["Maraude médicale", "Maraude médicale"]]
   end
 
   def create
