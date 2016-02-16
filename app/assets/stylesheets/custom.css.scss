@@ -59,7 +59,7 @@ ul.navbot li.navbot-icon {
   display: none;
 }
 
-/* When the screen is less than 768 pixels wide, hide all list items, except for the first one and the icon. */
+  /* When the screen is less than 768 pixels wide, hide all list items, except for the first one and the icon. */
 @media screen and (max-width:768px) {
   ul.navbot li:not(:first-child) {display: none;}
   ul.navbot li:first-child {
@@ -72,7 +72,7 @@ ul.navbot li.navbot-icon {
   }
 }
 
-/* The "responsive" class is added. */
+  /* The "responsive" class is added. */
 @media screen and (max-width:768px) {
   ul.navbot.responsive {position: relative;}
   ul.navbot.responsive li.navbot-icon {
@@ -234,40 +234,47 @@ span.ui-helper-hidden-accessible {
 .ui-tabs {
   width: 100%;
   overflow: auto;
+  border: 1px solid #eee;
+  border-radius: 6px;
   .ui-tabs-nav {
     padding: 0;
     margin: 0;
     white-space: nowrap;
+    border-bottom: 1px solid #eee;
+    border-radius: 6px 6px 0 0;
+    padding: 10px 10px 0 10px;
+    background-color: #ccc;
     li {
       display: inline-block;
       a {
         width: 100%;
         background-color: #eee;
-        border-radius: 6px 0 0 0;
+        border-radius: 6px 6px 0 0;
         padding: 10px 10px;
         line-height: 3;
         text-decoration: none;
-        color: inherit;
+        color: gray;
         transition: 0.4s;
         border: none;
         outline: none;
         font-size: 14px;
         margin-top: 20px;
-        margin-bottom: 10px;
         font-family: inherit;
         font-weight: 500;
         &:hover {
           background-color: #ccc;
+          color: inherit;
         }
       }
     }
     .ui-tabs-active a {
       background-color: #ccc;
+      color: inherit;
     }
   }
   .ui-tabs-panel {
-    border: 1px solid inherit;
-    border-radius: 0 0 6px 0;
+    padding: 10px;
+    background-color: #eee;
   }
 }
 

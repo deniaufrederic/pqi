@@ -8,18 +8,35 @@
       <li><a href="#tab-4">Autres informations</a></li>
     </ul>
     <div id="tab-1">
-      <% for ress in @ressources do %>
-      	<% if @usager.ressources.present? && @usager.ressources.split("\n").include?("#{ress.first}") %>
-			    <%= f.check_box :ressources, { :multiple => true, :checked => true }, "#{ress.first}" %>
-			   	<%= ress.first %><br>
-			  <% else %>
-			    <%= f.check_box :ressources, { :multiple => true, :checked => false }, "#{ress.first}" %>
-			    <%= ress.first %><br>
-			  <% end %>
-		  <% end %>
-
-		  <%= f.label :montant, "Montant (en €)" %>
-		  <%= f.number_field :montant, step: '0.01' %>
+      <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-6">
+          <% for ress in @ressources[0..5] do %>
+          	<% if @usager.ressources.present? && @usager.ressources.split("\n").include?("#{ress.first}") %>
+    			    <%= f.check_box :ressources, { :multiple => true, :checked => true }, "#{ress.first}" %>
+    			   	<%= ress.first %><br>
+    			  <% else %>
+    			    <%= f.check_box :ressources, { :multiple => true, :checked => false }, "#{ress.first}" %>
+    			    <%= ress.first %><br>
+    			  <% end %>
+    		  <% end %>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+          <% for ress in @ressources[6..10] do %>
+            <% if @usager.ressources.present? && @usager.ressources.split("\n").include?("#{ress.first}") %>
+              <%= f.check_box :ressources, { :multiple => true, :checked => true }, "#{ress.first}" %>
+              <%= ress.first %><br>
+            <% else %>
+              <%= f.check_box :ressources, { :multiple => true, :checked => false }, "#{ress.first}" %>
+              <%= ress.first %><br>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <br>
+      <div class="text-center">
+		    <%= f.label :montant, "Montant (en €)" %>
+		    <%= f.number_field :montant, step: '0.01' %>
+      </div>
     </div>
 
     <div id="tab-2">
@@ -78,6 +95,8 @@
     </div>
   </div>
 	
-  <br><%= f.submit "Enregistrer les modifications", class: "btn btn-primary" %>
+  <div class="text-center">
+    <br><%= f.submit "Enregistrer les modifications", class: "btn btn-primary" %>
+  </div>
 
 <% end %>
