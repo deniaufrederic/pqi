@@ -294,7 +294,7 @@
             Curatelle
           <% end %>
           <% if @usager.tutcur_org.present? %>
-            <%= " : #{@usager.tutcur_org}" %>
+            <%= " : #{@usager.tutcur_org}" if @usager.tutcur_org.present? %>
           <% end %>
         </p>
 
@@ -306,7 +306,10 @@
       <div id="tab-3">
         <pre class="maraude-list lead"><%= @usager.prestas_med %></pre>
         <% if @usager.medecin %>
-          <p class="lead">Médecin traitant</p>
+          <p class="lead">
+            Médecin traitant
+            <%= " : #{@usager.medecin_infos}" if @usager.medecin_infos.present? %>
+          </p>
         <% else %>
           <p class="lead">Pas de médecin traitant connu</p>
         <% end %>
