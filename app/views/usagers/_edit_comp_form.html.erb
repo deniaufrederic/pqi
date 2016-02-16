@@ -43,7 +43,7 @@
       <div class="form-inline">
         <div>
           <%= f.check_box :sejour, class: 'form-control check' %><span> Carte de séjour</span>
-          
+
           <%= f.check_box :cfr, class: 'form-control check' %><span> CNI/Passeport</span>
         </div>
       </div>
@@ -88,6 +88,43 @@
     </div>
 
     <div id="tab-3">
+      <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-6">
+          <h4>Prestations médicales</h4>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+          <% for presta in @prestas_med do %>
+            <% if @usager.prestas_med.present? && @usager.prestas_med.split("\n").include?("#{presta.first}") %>
+              <%= f.check_box :prestas_med, { :multiple => true, :checked => true }, "#{presta.first}" %>
+              <%= presta.first %><br>
+            <% else %>
+              <%= f.check_box :prestas_med, { :multiple => true, :checked => false }, "#{presta.first}" %>
+              <%= presta.first %><br>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <hr style="border-top:1px solid #ddd;">
+
+      <div>
+        <div class="form-inline">
+          <%= f.check_box :medecin, class: 'form-control check' %><span> Médecin traitant</span>
+        </div>
+
+        <div class="appear">
+          <%= f.label :medecin_infos, "Nom, coordonnées, informations" %>
+          <%= f.text_area :medecin_infos, rows: 2, class: 'form-control' %>
+        </div>
+      </div>
+      <hr style="border-top:1px solid #ddd;">
+
+      <div class="form-inline">
+        <%= f.check_box :pb_sante, class: 'form-control check' %><span> Problématique de santé</span>
+      </div>
+      <hr style="border-top:1px solid #ddd;">
+
+      <h4 class="text-center">Informations complémentaires</h4>
+      <%= f.text_area :autres_infos, rows: 5, class: 'form-control' %>
     </div>
 
     <div id="tab-4">

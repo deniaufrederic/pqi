@@ -322,14 +322,18 @@ class UsagersController < ApplicationController
                     ["Pension d'invalidité", "Pension d'invalidité"],
                     ["Autre", "Autre"],
                     ["Sans ressources", "Sans ressources"]]
+    @prestas_med = [["CMU", "CMU"],
+                    ["CMUC", "CMUC"],
+                    ["AME", "AME"]]
     session.delete(:stored_id)
   end
 
   def post_comp
     store_id
     ressources = params[:usager][:ressources].reject{ |a| a == '0' }.join("\n")
+    prestas_med = params[:usager][:prestas_med].reject{ |a| a == '0' }.join("\n")
     @usager = Usager.find(session[:stored_id])
-    if @usager.update_attribute(:ressources, ressources) && @usager.update_attributes(comp_params)
+    if @usager.update_attributes(ressources: ressources, prestas_med: prestas_med) && @usager.update_attributes(comp_params)
       flash[:success] = "Informations complémentaires éditées"
       if Usager.maximum("id") == @usager.id
         redirect_to id_rencontre_path(id: @usager.id)
@@ -381,6 +385,10 @@ class UsagersController < ApplicationController
                                       :sejour,
                                       :cfr,
                                       :carte_date,
+                                      :medecin,
+                                      :medecin_infos,
+                                      :pb_sante,
+                                      :infos_sante,
                                       :autres_infos)
     end
 end

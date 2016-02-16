@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160215174421) do
+ActiveRecord::Schema.define(version: 20160216163328) do
 
   create_table "enfants", force: :cascade do |t|
     t.integer  "usager_id"
@@ -97,6 +97,11 @@ ActiveRecord::Schema.define(version: 20160215174421) do
     t.boolean  "cfr"
     t.date     "carte_date"
     t.text     "autres_infos"
+    t.string   "prestas_med"
+    t.string   "medecin"
+    t.text     "medecin_infos"
+    t.string   "pb_sante"
+    t.text     "infos_sante"
   end
 
   add_index "usagers", ["groupe_id"], name: "index_usagers_on_groupe_id"

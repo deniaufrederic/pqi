@@ -304,6 +304,20 @@
         <% end %>
       </div>
       <div id="tab-3">
+        <pre class="maraude-list lead"><%= @usager.prestas_med %></pre>
+        <% if @usager.medecin %>
+          <p class="lead">Médecin traitant</p>
+        <% else %>
+          <p class="lead">Pas de médecin traitant connu</p>
+        <% end %>
+        <% if @usager.pb_sante %>
+          <p class="lead">Problématique de santé</p>
+        <% else %>
+          <p class="lead">Pas de problèmes de santé connus</p>
+        <% end %>
+        <% if @usager.infos_sante.present? %>
+          <pre class="maraude-list lead"><%= @usager.infos_sante %></pre>
+        <% end %>
       </div>
       <div id="tab-4">
         <% if @usager.autres_infos.present? %>
