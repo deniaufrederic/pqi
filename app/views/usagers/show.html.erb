@@ -255,15 +255,13 @@
   <h3>Informations complémentaires</h3>
 
   <div>
-
-    <%= link_to "Editer", id_edit_comp_path(id: @usager.id), class: "btn btn-info btn-lg" %>
-
     <div id="tabs">
       <ul>
         <li><a href="#tab-1">Ressources</a></li>
         <li><a href="#tab-2">Suivi social</a></li>
         <li><a href="#tab-3">Suivi médical</a></li>
         <li><a href="#tab-4">Autres informations</a></li>
+        <%= link_to "Editer", id_edit_comp_path(id: @usager.id), class: "btn btn-info", id: "edit-comp-link" %>
       </ul>
       <div id="tab-1">
         <pre class="maraude-list lead"><%= @usager.ressources %></pre>
@@ -308,7 +306,11 @@
       <div id="tab-3">
       </div>
       <div id="tab-4">
-        <pre class="maraude-list"><%= @usager.autres_infos if @usager.autres_infos.present? %></pre>
+        <% if @usager.autres_infos.present? %>
+          <pre class="maraude-list lead"><%= @usager.autres_infos %></pre>
+        <% else %>
+          <pre class="maraude-list lead">Pas d'autres informations.</pre>
+        <% end %>
       </div>
     </div>
   </div>
