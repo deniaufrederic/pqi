@@ -151,9 +151,14 @@
     <pre class="maraude-list text-justify"><%= disp_renc %></pre>
   </td>
   <td>
-    <pre class="maraude-list text-justify"><%= disp_sig %></pre>
-  </td>
-  <td>
-    <pre class="maraude-list text-justify"><%= disp_accomp %></pre>
+    <% if disp_sig.present? %>
+      <p class="lead">Signalements</p>
+      <pre class="maraude-list text-justify"><%= disp_sig %></pre>
+    <% end %>
+
+    <% if disp_accomp.present? %>
+      <p class="lead">Accompagnements</p>
+      <pre class="maraude-list text-justify"><%= disp_accomp %></pre>
+    <% end %>
   </td>
 </tr>
