@@ -6,6 +6,7 @@
           <li id="left-li"><%= link_to "#{current_user.identifiant}", current_user %></li>
           <li><%= link_to "Editer profil", edit_user_path(current_user) %></li>
           <li><%= link_to "Utilisateurs", users_path %></li>
+          <li><%= link_to "Guide d'utilisation", guide_path %></li>
           <li><%= link_to "Déconnexion", logout_path, method: "delete" %></li>
           <li class="navbot-icon">
             <%= link_to '☰', "javascript:void(0);", id: "navbot-icon" %>

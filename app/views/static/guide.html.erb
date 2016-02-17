@@ -1,0 +1,99 @@
+<% provide(:title, "Guide") %>
+
+<h1>Guide d'utilisation</h1>
+
+<div class="row">
+	<div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+		<h2>
+			Utilisateurs
+			<br><small>Menu inférieur</small>
+		</h2>
+
+		<blockquote style="font-size:14px"><p class="text-justify">
+		On peut y consulter son propre profil, éditer ses informations (nom, prénom, identifiant, mot de passe), voir l'index des utilisateurs, voir le présent guide et se déconnecter.
+		</p></blockquote>
+
+		<h2>
+			Usagers
+			<br><small>Menu supérieur</small>
+		</h2>
+
+		<div id="accordion">
+
+			<h3>Accueil</h3>
+
+			<div><blockquote style="font-size:14px"><p class="text-justify">
+			Il s'agit de l'index de tous les usagers regroupés par 50 dans un tableau précisant leurs identité, adresse, 5 dernières rencontres, et enfin une case avec des liens rapides pour modifier et supprimer (seulement pour les administrateurs) un usager.
+			</p></blockquote></div>
+
+			<h3>Recherche d'un usager et fiche</h3>
+
+			<div><blockquote style="font-size:14px"><p class="text-justify">
+			Sur l'accueil, il est possible de chercher un usager à partir de l'une de ses informations : nom, prénom, sexe, ville, adresse, complément d'adresse, date de naissance, téléphone... Il faut cependant rechercher une information à la fois. En cliquant sur le nom de l'usager recherché, on accède à sa fiche.</p>
+			<p class="text-justify">On y trouve toutes les informations sur un usager :</p>
+			<ul>
+				<li>Informations générales (identité, adresse...)</li>
+				<li>Appartenance au PQI</li>
+				<li>Appartenance à un groupe</li>
+				<li>Enfants</li>
+				<li>Informations PQI et rencontres : périodes sur PQI, observations PQI, dates de rencontres, signalements et accompagnements</li>
+				<li>Statistiques : des chiffres concernant les rencontres avec l'usager</li>
+				<li>Informations complémentaires : ressources, suivi social, suivi médical, autres informations</li>
+				<li>Fiches de suivi : fiches d'historique des rencontres et fiche de suivi jour, modifiables en cliquant sur leur bouton respectif</li>
+				<li>Informations de création : en bas à droite, identifiant de l'utilisateur qui a créé le profil de l'usager ainsi que la date et l'heure de création</li>
+			</ul>
+			</div>
+
+			<h3>PQI</h3>
+
+			<div><blockquote style="font-size:14px"><p class="text-justify">
+			Ville par ville, on peut voir l'ensemble des usagers sur PQI au sein d'un tableau précisant leurs identité, adresse, 5 dernières rencontres, observations PQI et enfin une case pour écrire des notes si besoin est en version papier. Un bouton à côté du nom de la ville au-dessus du tableau permet d'imprimer rapidement ce dernier.
+			</p></blockquote></div>
+
+			<h3>Rencontre</h3>
+
+			<div><blockquote style="font-size:14px"><p class="text-justify">
+			Le logiciel permet d'ajouter des rencontres avec un usager, en cliquant sur le lien "Ajouter une rencontre" que l'on trouve dans la case "Dernières rencontres" sur l'accueil et dans le PQI, ou sur la fiche usager dans l'onglet "PQI et interventions". On renseigne la date et le type de rencontre obligatoirement, puis des informations supplémentaires le cas échéant : signalement, accompagnement, détails de rencontre, prestation(s) délivrée(s), et options (personne non vue, rencontre prévisionnelle : voir plus bas).</p>
+			<p class="text-justify">Il est possible de modifier ou de supprimer une rencontre ajoutée avec un usager à partir de la fiche de celui-ci, dans l'onglet "PQI et interventions", en cliquant sur le lien "Editer ou supprimer une rencontre" puis en renseignant la date et le type de la rencontre.</p>
+			
+			<p class="text-justify">Automatiquement, la rencontre s'ajoute à la fiche d'historique des rencontres de l'usager, et le cas échéant aux informations de la maraude sur laquelle l'usager a été vu (s'il s'agit bien d'une maraude).
+			</p></blockquote></div>
+
+			<h3>Maraude</h3>
+
+			<div><blockquote style="font-size:14px"><p class="text-justify">
+			Sur l'onglet Maraudes, on trouve un index des maraudes par 5 regroupées au sein d'un tableau précisant le type, la date et les villes parcourues, prévues et parcourues en déroutage (villes modifiables en cliquant sur "Ajouter les villes théoriquement parcourues" ou "Modifier les villes" si elles ont déjà été ajoutées), les rencontres faites sur chaque ville et les signalements et accompagnements sur chaque ville.</p>
+			<p class="text-justify">Il est possible de créer une maraude, mais en ajoutant simplement les rencontres avec chaque usager les maraudes se créent automatiquement.</p>
+			
+			<p class="text-justify">En cliquant sur la maraude (lien en bleu dans la première case), on accède à la fiche de la maraude. On y trouve toutes les informations sur la maraude :</p>
+			
+			<ul>
+				<li>Villes : villes parcourues et prévues, déroutages</li>
+				<li>Interventions : rencontres, personnes non vues sur déplacement, signalements, accompagnements</li>
+				<li>Statistiques : quelques chiffres concernant les interventions et les déplacements</li>
+				<li>Compte-rendu : le compte-rendu de la maraude qui se génère automatiquement à partir des informations rentrées sur les rencontres</li>
+			</ul></blockquote></div>
+
+			<h3>Ajout d'un inconnu</h3>
+
+			<div><blockquote style="font-size:14px"><p class="text-justify">
+			Cette option devient utile lorsque par exemple un usager a été signalé par un tiers qui ne connaît pas son identité, ou lorsqu'un usager rencontré ne veut pas donner d'identité. On ajoute alors la personne en tant qu'inconnue et on peut ajouter une rencontre prévue avec celle-ci. Si l'on apprend son identité lors d'une maraude, on pourra ensuite accéder à la fiche usager de l'inconnu pour la modifier et renseigner ce qu'on a appris sur lui.
+			</p></blockquote></div>
+
+			<h3>Rencontre prévue</h3>
+
+			<div><blockquote style="font-size:14px"><p class="text-justify">
+			Cette option devient utile dans le cas où une personne a été signalée avant la maraude par exemple : on renseigne la rencontre en déclarant qu'elle est prévisionnelle, ce qui signifie qu'elle n'est pas considérée comme réalisée mais comme étant en suspens.</p>
+			<p class="text-justify">Sur l'accueil et le PQI, dans la case "Dernières rencontres", on peut voir sous les dernières dates de rencontres le nombre de rencontres prévues avec un usager. En allant sur la fiche de celui-ci, on voit alors en haut l'ensemble des rencontres prévues avec l'usager.</p>
+			<p class="text-justify">Après avoir réalisé la rencontre, on clique sur celle-ci dans la fiche usager, et il est alors possible de la modifier et de donner les informations collectées lors de la rencontre. Si on a par exemple raté la personne et que l'on veut remettre cette rencontre à plus tard, on peut en changer la date et la déclarer toujours prévisionnelle.
+			</p></blockquote></div>
+
+			<h3>Statistiques</h3>
+
+			<div><blockquote style="font-size:14px"><p class="text-justify">
+			On peut demander au logiciel de calculer certaines statistiques sur une période donnée pour toutes les villes du département ou sur une ville en particulier.</p>
+			<p class="text-justify">Ces statistiques portent sur les rencontres, les déplacements, les prestations.
+			</p></blockquote></div>
+		</div>
+	</div>
+</div>

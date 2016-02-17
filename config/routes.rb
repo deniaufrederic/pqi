@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
+  get 'guide'         =>  'static#guide'
   get 'groupes/show'
-
   root					          'sessions#new'
   get 'signup'        =>  'users#new'
   post 'login' 		    =>  'sessions#create'
