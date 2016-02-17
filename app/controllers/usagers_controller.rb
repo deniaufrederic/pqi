@@ -1,55 +1,9 @@
 class UsagersController < ApplicationController
-  before_action :logged_in_user,  only: [:new, :new_inconnu, :show, :index, :create, :edit, :update, :destroy, :pqi, :fiche, :fiche_jour, :edit_comp, :post_comp]
+  before_action :logged_in_user,  only: [:new, :show, :index, :create, :edit, :update, :destroy, :pqi, :fiche, :fiche_jour, :edit_comp, :post_comp]
   before_action :admin_user,      only: :destroy
 
   def new
     session[:stored] = "new"
-    @usager = Usager.new
-    @villes = [ ["Aubervilliers", "Aubervilliers"],
-                ["Aulnay-sous-Bois", "Aulnay-sous-Bois"],
-                ["Bagnolet", "Bagnolet"],
-                ["Bobigny", "Bobigny"],
-                ["Bondy", "Bondy"],
-                ["Clichy-sous-Bois", "Clichy-sous-Bois"],
-                ["Coubron", "Coubron"],
-                ["Drancy", "Drancy"],
-                ["Dugny", "Dugny"],
-                ["Epinay-sur-Seine", "Epinay-sur-Seine"],
-                ["Gagny", "Gagny"],
-                ["Gournay-sur-Marne", "Gournay-sur-Marne"],
-                ["L'Ile-Saint-Denis", "L'Ile-Saint-Denis"],
-                ["La Courneuve", "La Courneuve"],
-                ["La Plaine Saint-Denis", "La Plaine Saint-Denis"],
-                ["Le Blanc-Mesnil", "Le Blanc-Mesnil"],
-                ["Le Bourget", "Le Bourget"],
-                ["Le Pré-Saint-Gervais", "Le Pré-Saint-Gervais"],
-                ["Le Raincy", "Le Raincy"],
-                ["Les Lilas", "Les Lilas"],
-                ["Les Pavillons-sous-Bois", "Les Pavillons-sous-Bois"],
-                ["Livry-Gargan", "Livry-Gargan"],
-                ["Montfermeil", "Montfermeil"],
-                ["Montreuil", "Montreuil"],
-                ["Neuilly-Plaisance", "Neuilly-Plaisance"],
-                ["Neuilly-sur-Marne", "Neuilly-sur-Marne"],
-                ["Noisy-le-Grand", "Noisy-le-Grand"],
-                ["Noisy-le-Sec", "Noisy-le-Sec"],
-                ["Pantin", "Pantin"],
-                ["Pierrefitte", "Pierrefitte"],
-                ["Romainville", "Romainville"],
-                ["Rosny-sous-Bois", "Rosny-sous-Bois"],
-                ["Saint-Denis", "Saint-Denis"],
-                ["Saint-Ouen", "Saint-Ouen"],
-                ["Sevran", "Sevran"],
-                ["Stains", "Stains"],
-                ["Tremblay-en-France", "Tremblay-en-France"],
-                ["Vaujours", "Vaujours"],
-                ["Villemomble", "Villemomble"],
-                ["Villepinte", "Villepinte"],
-                ["Villetaneuse", "Villetaneuse"]]
-  end
-
-  def new_inconnu
-    session[:stored] = "new_inconnu"
     @usager = Usager.new
     @villes = [ ["Aubervilliers", "Aubervilliers"],
                 ["Aulnay-sous-Bois", "Aulnay-sous-Bois"],
@@ -109,12 +63,14 @@ class UsagersController < ApplicationController
   def create
     @usager = Usager.new(usager_params)
     @usager.user_id = current_user.id
-    if session[:stored] == "new_inconnu"
+    if params[:add_inconnu]
       if !params[:usager][:sexe]
         @usager.sexe = ""
       end
       @usager.nom = ""
-      @usager.prenom = "Inconnu(e)"
+      @usager.prenom = "Inconnu" if @usager.sexe == "Mr"
+      @usager.prenom = "Inconnue" if @usager.sexe == "Mme"
+      @usager.prenom = "Inconnu(e)" if @usager.sexe == ""
     end
     if @usager.save
       if @usager.pqi
@@ -125,9 +81,9 @@ class UsagersController < ApplicationController
       flash[:success] = "Nouvel usager ajouté !"
       redirect_to id_edit_comp_path(id: @usager.id)
     else
-      if session[:stored] == "new_inconnu"
+      if params[:add_inconnu]
         flash[:danger] = "Renseignez la ville où se trouve l'usager inconnu."
-        redirect_to new_inconnu_path
+        redirect_to new_usager_path
       else
         flash[:danger] = "Ajoutez au moins le nom ou le prénom de l'usager ! Si ils ne sont pas connus, spécifiez 'Inconnu' pour le nom. Il faut également renseigner son sexe et sa ville."
         redirect_to new_usager_path

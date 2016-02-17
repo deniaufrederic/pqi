@@ -70,6 +70,12 @@
 
 <hr>
 
-<div class="text-center"><%= f.submit "Ajouter usager", class: "btn btn-primary" %></div>
+<div class="btn-group text-center">
+   <%= f.submit "Ajouter",  class: "btn btn-primary",
+                            name: 'add_ok' %>
+   <%= f.submit "Inconnu",  class: "btn btn-danger",
+                                    name: "add_inconnu",
+                                    data: { confirm: "Etes-vous sûr(e) ? Vous allez créer un usager inconnu." } %>
+</div>
 
 <% end %>
