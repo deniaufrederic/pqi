@@ -28,7 +28,7 @@
 
 
 <% # Listes des dnv %>
-<% dnv = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, prev: false, dnv: true) %>
+<% dnv = Rencontre.where(date: maraude.date, type_renc: maraude.type_maraude, prev: false, dnv: true) %>
 <% m_dnv = [] %>
 <% dnv.each do |r| %>
   <% u = Usager.find_by(id: r.usager_id) %>
