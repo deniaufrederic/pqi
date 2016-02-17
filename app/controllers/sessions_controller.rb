@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  before_action :logged_in_user, only: :destroy
+
   def new
     if logged_in?
       redirect_to usagers_path
