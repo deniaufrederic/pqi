@@ -124,8 +124,8 @@
 
 <tr id="maraude">
   <td>
-    <%= link_to "#{maraude.type_maraude}", maraude %><br>
-    <%= link_to "#{maraude.date.strftime("%d/%m/%y")}", maraude %><br>
+    <%= link_to "#{maraude.type_maraude}", maraude, class: "lead" %><br>
+    <%= link_to "#{maraude.date.strftime("%d/%m/%y")}", maraude, class: "lead" %><br>
 
     <% villes = maraude.villes.split("\n") %>
     <% (0..(villes.length-1)).each do |i| %>
