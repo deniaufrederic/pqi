@@ -75,7 +75,7 @@
   <% end %>
 <% end %>
 <% (0..(liste_villes_dnv.length-1)).each do |i| %>
-  <% if !@maraude.villes.include?("#{liste_villes_dnv[i]}") %>
+  <% if !@maraude.villes.include?("#{liste_villes_dnv[i]}") unless der.include?("#{liste_villes_dnv[i]}") %>
     <% der << "#{liste_villes_dnv[i]}\n" %>
   <% end %>
 <% end %>
