@@ -41,15 +41,6 @@
 <% end %>
 
 
-<% # Liste des déroutages %>
-<% der = "" %>
-<% (0..(liste_villes_ok.length-1)).each do |i| %>
-  <% if !@maraude.villes.include?("#{liste_villes_ok[i]}") %>
-    <% der << "#{liste_villes_ok[i]}\n" %>
-  <% end %>
-<% end %>
-
-
 <% # Listes des dnv %>
 <% dnv = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, prev: false, dnv: true) %>
 <% m_dnv = [] %>
@@ -58,23 +49,37 @@
   <% m_dnv << "#{u.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
 <% end %>
 <% arr = m_dnv.sort %>
-<% liste_villes = [] %>
+<% liste_villes_dnv = [] %>
 <% liste_usagers = [] %>
 <% (0..(arr.length-1)).each do |i| %>
   <% ville = arr[i].split(' @').first %>
   <% usager = arr[i].split(' @').last %>
-  <% if liste_villes.last == "#{ville}" %>
+  <% if liste_villes_dnv.last == "#{ville}" %>
     <% liste_usagers.last << "   - #{usager}\n" %>
   <% else %>
-    <% liste_villes << "#{ville}" %>
+    <% liste_villes_dnv << "#{ville}" %>
     <% liste_usagers << "   - #{usager}\n" %>
   <% end %>
 <% end %>
 <% disp_dnv = "" %>
-<% (0..(liste_villes.length-1)).each do |n| %>
-  <% disp_dnv << "#{liste_villes[n].upcase} :\n#{liste_usagers[n]}\n" %>
+<% (0..(liste_villes_dnv.length-1)).each do |n| %>
+  <% disp_dnv << "#{liste_villes_dnv[n].upcase} :\n#{liste_usagers[n]}\n" %>
 <% end %>
 
+
+<% # Liste des déroutages %>
+<% der = "" %>
+<% (0..(liste_villes_ok.length-1)).each do |i| %>
+  <% if !@maraude.villes.include?("#{liste_villes_ok[i]}") %>
+    <% der << "#{liste_villes_ok[i]}\n" %>
+  <% end %>
+<% end %>
+<% (0..(liste_villes_dnv.length-1)).each do |i| %>
+  <% if !maraude.villes.include?("#{liste_villes_dnv[i]}") %>
+    <% der << "#{liste_villes_dnv[i]}\n" %>
+  <% end %>
+<% end %>
+<% der = der.split("\n").sort.join("\n") %>
 
 
 <% # Liste des signalements %>
@@ -145,7 +150,7 @@
         <% if @maraude.villes.present? %>
           <% villes = @maraude.villes.split("\n") %>
           <% (0..(villes.length-1)).each do |i| %>
-            <% if liste_villes_ok.include?("#{villes[i]}") %>
+            <% if liste_villes_ok.include?("#{villes[i]}") || liste_villes_dnv.include?("#{villes[i]}") %>
               <% villes[i] << " ☑ " %>
             <% else %>
               <% villes[i] << " ☐ " %>
