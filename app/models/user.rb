@@ -1,6 +1,9 @@
 class User < ActiveRecord::Base
   before_save { nom.upcase! }
   before_save { self.prenom = prenom.split(' ').map(&:capitalize).join(' ').split('-').map(&:capitalize).join('-') }
+  
+  default_scope -> { order(nom: :asc) }
+
   validates :nom, 			presence: true,
   							length: {maximum: 25}
   validates :prenom, 		presence: true,
@@ -8,6 +11,7 @@ class User < ActiveRecord::Base
   validates :identifiant, 	presence: true,
 							length: {maximum: 25, minimum: 4},
 							uniqueness: {case_sensitive: false}
+  
   has_secure_password
   validates :password,		presence: true,
 							length: {minimum: 6},
