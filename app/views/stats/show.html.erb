@@ -1,14 +1,18 @@
 <% provide(:title, "Statistiques") %>
 
-<h3>Effectuer une recherche par période ou par ville et période</h3>
+<div id="no-print">
+  <h3>Effectuer une recherche par période ou par ville et période</h3>
 
-<div class="container" id="container-periode">
-  <%= render 'form' %>
+  <div class="container" id="container-periode">
+    <%= render 'form' %>
+  </div>
 </div>
 
 <% if @ville.nil? && !@dates.nil? %>
+<div id="pqi-print">
   <h3 class="text-center">
     <%= "Statistiques sur le département du #{@dates.first.split('-').reverse.join('/')} au #{@dates.last.split('-').reverse.join('/')}" %>
+    <%= link_to image_tag("print.png", alt: "Imprimer", width: 30, length: 30), '#', onclick: "printpage()", id: 'print-link', class: "btn" %>
   </h3>
 
   <h5>
@@ -98,10 +102,13 @@
       <td><%= "#{@h_acc + @f_acc} (#{@h_acc}/#{@f_acc} ; #{@e_acc})" %></td>
       <td><%= "#{@pa_tot}/#{@pv_tot}/#{@pd_tot}/#{@ph_tot}" %></td>
   </table>
+</tr>
 
 <% elsif !@ville.nil? && !@dates.nil? %>
+<div id="pqi-print">
   <h3>
     <%= "Statistiques sur #{@ville} du #{@dates.first.split('-').reverse.join('/')} au #{@dates.last.split('-').reverse.join('/')}" %>
+    <%= link_to image_tag("print.png", alt: "Imprimer", width: 30, length: 30), '#', onclick: "printpage()", id: 'print-link', class: "btn" %>
   </h3>
 
   <h5>
@@ -154,5 +161,6 @@
       </td>
     </tr>
   </table>
+</div>
 
 <% end %>
