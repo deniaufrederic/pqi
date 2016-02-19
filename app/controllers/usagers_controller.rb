@@ -165,9 +165,10 @@ class UsagersController < ApplicationController
         if params[:usager][:groupe_nom] == ""
           @usager.update_attribute(:groupe_id, nil)
         end
-        @usager.update_attribute(:prenom, "Inconnu") if @usager.sexe == "Mr"
-        @usager.update_attribute(:prenom, "Inconnue") if @usager.sexe == "Mme"
-        @usager.update_attribute(:prenom, "Inconnu(e)") if @usager.sexe == ""
+        prenoms = ["Inconnu", "Inconnue", "Inconnu(e)"]
+        @usager.update_attribute(:prenom, "Inconnu") if @usager.sexe == "Mr" && prenoms.include?(@usager.prenom)
+        @usager.update_attribute(:prenom, "Inconnue") if @usager.sexe == "Mme" && prenoms.include?(@usager.prenom)
+        @usager.update_attribute(:prenom, "Inconnu(e)") if @usager.sexe == "" && prenoms.include?(@usager.prenom)
         flash[:success] = "Usager édité"
         redirect_to @usager
       else
@@ -189,9 +190,10 @@ class UsagersController < ApplicationController
       if params[:usager][:groupe_nom] == ""
         @usager.update_attribute(:groupe_id, nil)
       end
-      @usager.update_attribute(:prenom, "Inconnu") if @usager.sexe == "Mr"
-      @usager.update_attribute(:prenom, "Inconnue") if @usager.sexe == "Mme"
-      @usager.update_attribute(:prenom, "Inconnu(e)") if @usager.sexe == ""
+      prenoms = ["Inconnu", "Inconnue", "Inconnu(e)"]
+      @usager.update_attribute(:prenom, "Inconnu") if @usager.sexe == "Mr" && prenoms.include?(@usager.prenom)
+      @usager.update_attribute(:prenom, "Inconnue") if @usager.sexe == "Mme" && prenoms.include?(@usager.prenom)
+      @usager.update_attribute(:prenom, "Inconnu(e)") if @usager.sexe == "" && prenoms.include?(@usager.prenom)
       flash[:success] = "Usager édité"
       redirect_to @usager
     else
