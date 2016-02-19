@@ -165,6 +165,9 @@ class UsagersController < ApplicationController
         if params[:usager][:groupe_nom] == ""
           @usager.update_attribute(:groupe_id, nil)
         end
+        @usager.update_attribute(:prenom, "Inconnu") if @usager.sexe == "Mr"
+        @usager.update_attribute(:prenom, "Inconnue") if @usager.sexe == "Mme"
+        @usager.update_attribute(:prenom, "Inconnu(e)") if @usager.sexe == ""
         flash[:success] = "Usager édité"
         redirect_to @usager
       else
@@ -186,6 +189,10 @@ class UsagersController < ApplicationController
       if params[:usager][:groupe_nom] == ""
         @usager.update_attribute(:groupe_id, nil)
       end
+      @usager.update_attribute(:prenom, "Inconnu") if @usager.sexe == "Mr"
+      @usager.update_attribute(:prenom, "Inconnue") if @usager.sexe == "Mme"
+      @usager.update_attribute(:prenom, "Inconnu(e)") if @usager.sexe == ""
+      if @usager.prenom 
       flash[:success] = "Usager édité"
       redirect_to @usager
     else
