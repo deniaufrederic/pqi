@@ -3,6 +3,36 @@
 <div id="no-print">
   <h1>PQI (<%= pluralize(Usager.where(pqi: true).count, "usager") %>)</h1>
 
+  <% renc_prev = Rencontre.where(prev: true) %>
+  <% if renc_prev %>
+    <div id="accordion" class="renc-prev">
+      <h3><%= pluralize(renc_prev.count, "Rencontre") %> <%= "prévue".pluralize(renc_prev.count) %></h3>
+
+      <div>
+        <ul>
+          <% renc_prev.each do |r| %>
+            <% u = Usager.find(r.usager_id) %>
+            <li class="lead">
+              <%= link_to "#{u.sexe} #{u.nom} #{u.prenom}", u %>
+              : <%= link_to "#{r.type_renc}", edit_rencontre_path(r), "data-no-turbolink" => true %>
+              du <%= link_to "#{r.date.strftime("%d/%m/%y")}", edit_rencontre_path(r), "data-no-turbolink" => true %>
+              <% if r.signale %>
+                <%= " [#{r.signalement}]" %>
+              <% end %>
+              <% if r.accomp %>
+                <%= " [#{r.type_accomp}]" %>
+              <% end %>
+              <% if r.details.present? %>
+                <br>
+                <pre><%= r.details %></pre>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
   <div class="container" id="container-villes">
     <ul class="villes">
       <% @villes.each do |ville| %>
