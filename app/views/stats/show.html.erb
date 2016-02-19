@@ -106,7 +106,7 @@
 
 <% elsif !@ville.nil? && !@dates.nil? %>
 <div id="pqi-print">
-  <h3>
+  <h3 class="text-center">
     <%= "Statistiques sur #{@ville} du #{@dates.first.split('-').reverse.join('/')} au #{@dates.last.split('-').reverse.join('/')}" %>
     <%= link_to image_tag("print.png", alt: "Imprimer", width: 30, length: 30), '#', onclick: "printpage()", id: 'print-link', class: "btn" %>
   </h3>
