@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
+  root                    'sessions#new'
   get 'guide'         =>  'static#guide'
-  get 'groupes/show'
-  root					          'sessions#new'
   get 'signup'        =>  'users#new'
   post 'login' 		    =>  'sessions#create'
   delete 'logout'     =>  'sessions#destroy'
@@ -15,7 +14,7 @@ Rails.application.routes.draw do
   resources :maraudes, only: [:index, :show, :destroy, :new, :create]
   resources :rencontres, only: [:create, :edit, :update, :destroy]
   post 'new_groupe'   =>  'rencontres#post_groupe'
-  resources :groupes, only: :show
+  resources :groupes, only: [:index, :show]
 
   get	'pqi/:ville',
   	:controller => 'usagers',

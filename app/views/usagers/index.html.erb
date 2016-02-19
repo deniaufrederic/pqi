@@ -1,5 +1,8 @@
 <% provide(:title, 'Usagers') %>
-<h1>Usagers</h1>
+<h1>
+  Usagers
+  <br><%= link_to "Index des groupes", groupes_path, class: 'btn btn-info' %>
+</h1>
 
 <%= will_paginate %>
 

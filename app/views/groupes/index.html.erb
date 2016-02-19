@@ -1,0 +1,27 @@
+<% provide(:title, "Groupes") %>
+
+<h1>Index des groupes</h1>
+
+<% c = (@groupes.count / 4).floor %>
+<% r = @groupes.count % 4 %>
+<% i = 0 %>
+<% while i != c %>
+  <div class="row groupes">
+    <% @groupes[(4*i)..(4*(i+1) - 1)].each do |u| %>
+      <div class="col-md-3 col-sm-3 col-xs-3">
+	      <%= link_to "#{u.nom}", u, class: "lead" %>
+  	  </div>
+    <% end %>
+    <hr>
+  </div>
+  <% i += 1 %>
+<% end %>
+<% if r != 0 %>
+  <div class="row groupes">
+    <% @groupes[(4*c)..(4*c + r)].each do |u| %>
+      <div class="col-md-3 col-sm-3 col-xs-3">
+        <%= link_to "#{u.nom}", u, class: "lead" %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
