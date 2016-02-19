@@ -4,7 +4,7 @@
   <h1>PQI (<%= pluralize(Usager.where(pqi: true).count, "usager") %>)</h1>
 
   <% renc_prev = Rencontre.where(prev: true) %>
-  <% if renc_prev %>
+  <% if renc_prev.any? %>
     <div id="accordion" class="renc-prev">
       <h3><%= pluralize(renc_prev.count, "Rencontre") %> <%= "prévue".pluralize(renc_prev.count) %></h3>
 
