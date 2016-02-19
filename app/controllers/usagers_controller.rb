@@ -46,6 +46,12 @@ class UsagersController < ApplicationController
                 ["Villemomble", "Villemomble"],
                 ["Villepinte", "Villepinte"],
                 ["Villetaneuse", "Villetaneuse"]]
+    gon.noms = []
+    gon.prenoms = []
+    Usager.all.each do |u|
+      gon.noms << "#{u.nom}"
+      gon.prenoms << "#{u.prenom}"
+    end
   end
 
   def index

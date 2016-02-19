@@ -4,7 +4,7 @@
       <ul class="nav navbar-nav navbar-right navtop">
         <li><%= link_to "Accueil",   root_path %></li>
         <% if logged_in? %>
-          <li><%= link_to "Ajouter usager", new_usager_path %></li>
+          <li><%= link_to "Ajouter usager", new_usager_path, "data-no-turbolink" => true %></li>
           <li><%= link_to "PQI", pqi_path %></li>
           <li><%= link_to "Maraudes", maraudes_path %></li>
           <li><%= link_to "Statistiques", stats_path %></li>

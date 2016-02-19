@@ -1,3 +1,31 @@
+<script>
+var val_stock_nom = "zzz";
+var val_stock_prenom = "zzz";
+var val_nom = "zzz";
+var val_prenom = "zzz";
+var alerted = false;
+
+$(document).ready(function(){
+    $("#submit").mouseenter(function(){
+        val_nom = new RegExp('^' + $("#usager_nom").val() + '$', "i");
+       	val_prenom = new RegExp('^' + $("#usager_prenom").val() + '$', "i");
+       	if (val_stock_nom != $("#usager_nom").val() || val_stock_prenom != $("#usager_prenom").val()) {
+       		alerted = false;
+       	}
+        if ($("#usager_nom").val().length > 2 && $("#usager_prenom").val().length > 2 && alerted == false) {
+	        for (i = 0; i < gon.noms.length; i++) {
+	           	if (gon.noms[i].toString().match(val_nom) && gon.prenoms[i].toString().match(val_prenom)) {
+	            	alert("Etes-vous sûr(e) ? Un usager possédant les mêmes nom et prénom est déjà répertorié.");
+	            	alerted = true;
+	            	val_stock_nom = $("#usager_nom").val();
+	            	val_stock_prenom = $("#usager_prenom").val();
+	            };
+	        };
+        };
+    });
+});
+</script>
+
 <% provide(:title, 'Nouvel usager') %>
 <h1>Nouvel usager</h1>
 
