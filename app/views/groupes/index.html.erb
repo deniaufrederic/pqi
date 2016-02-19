@@ -10,7 +10,7 @@
     <% @groupes[(4*i)..(4*(i+1) - 1)].each do |u| %>
       <div class="col-md-3 col-sm-3 col-xs-3 lead">
 	      <%= link_to "#{u.nom}", u %>
-        <small>(<% u.usagers.count %>)</small>
+        <small>(<%= u.usagers.count %>)</small>
   	  </div>
     <% end %>
     <hr>
