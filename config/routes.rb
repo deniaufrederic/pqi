@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   resources :maraudes, only: [:index, :show, :destroy, :new, :create]
   resources :rencontres, only: [:create, :edit, :update, :destroy]
   post 'new_groupe'   =>  'rencontres#post_groupe'
-  resources :groupes, only: [:index, :show]
+  resources :groupes
 
   get	'pqi/:ville',
   	:controller => 'usagers',

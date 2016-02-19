@@ -1,0 +1,12 @@
+<% provide(:title, @groupe.nom) %>
+
+<%= simple_form_for(@groupe) do |f| %>
+
+<div>
+  <%= f.label :nom, "Groupe" %><br>
+  <%= f.text_field :nom, class: 'form-control' %>
+</div>
+
+<div><%= f.submit "Modifier nom", class: "btn btn-primary" %></div>
+
+<% end %>
