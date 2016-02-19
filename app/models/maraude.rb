@@ -1,4 +1,11 @@
 class Maraude < ActiveRecord::Base
+  has_and_belongs_to_many :intervenants
+
+  accepts_nested_attributes_for :intervenants, reject_if: lambda { |a| a[:nom].blank? },
+                                               allow_destroy: true
+
+  before_save :get_intervenants
+  
   default_scope -> { order(date: :desc) }
   validates :date, 	presence: true,
   					        uniqueness: { scope: :type_maraude }
@@ -13,6 +20,13 @@ class Maraude < ActiveRecord::Base
         end
       else
         scoped
+      end
+    end
+
+  private
+    def get_intervenants
+      self.intervenants = self.intervenants.collect do |interv|
+        Intervenant.find_or_create_by(nom: interv.nom)
       end
     end
 end

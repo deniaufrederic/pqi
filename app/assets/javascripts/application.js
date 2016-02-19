@@ -27,6 +27,12 @@ function printpage()
 }
 
 $(function() {
+	$( "input.intervenant-nom" ).click(function() {
+		$(this).addClass("ui-autocomplete-input");
+	});
+});
+
+$(function() {
 	$( ".check" ).click(function() {
 		if($(this).is(":checked")) {
 			$(this).parent().children("input:not(:checked)").addClass("no-disp");

@@ -1,8 +1,21 @@
-<% provide(:title, 'Villes maraude') %>
+<% provide(:title, "#{@maraude.type_maraude} du #{@maraude.date.strftime("%d/%m/%y")}") %>
 
-<h3>Villes théoriquement parcourues pendant la <%= @maraude.type_maraude.downcase %> du <%= @maraude.date.strftime("%d/%m/%y") %></h3>
+<h1><%= @maraude.type_maraude %> du <%= @maraude.date.strftime("%d/%m/%y") %></h1>
 
-<%= form_for(:maraude, url: id_post_villes_path(id: @maraude.id), method: :post) do |f| %>
+<%= form_for(@maraude, url: id_post_villes_path(id: @maraude.id), method: :post) do |f| %>
+
+<h3>Intervenants</h3>
+  
+  <ul id="intervenants">
+     <%= f.fields_for :intervenants do |interv| %>
+        <li><%= render 'intervenant_fields', f: interv %></li>
+     <% end %>
+     <%= link_to_add_association 'Ajouter un intervenant', f, :intervenants, class: 'btn btn-info links' %>
+  </ul>
+
+<hr>
+
+<h3>Villes théoriquement parcourues</h3>
 
   <div class="row">
     <div class="col-md-4 col-sm-4 col-xs-4">
@@ -40,5 +53,9 @@
     </div>
   </div>
 
-  <%= f.submit "Valider", class: "btn btn-primary" %>
+  <br>
+
+  <div class="text-center">
+    <%= f.submit "Valider", class: "btn btn-primary" %>
+  </div>
 <% end %>

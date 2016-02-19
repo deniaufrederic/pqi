@@ -1,0 +1,7 @@
+<div class="nested-fields">
+  <div class="form-inline">
+    <%= f.text_field :nom, data: {autocomplete_source: Intervenant.order(:nom).map(&:nom)}, class: 'form-control intervenant-nom' %>
+    <%= link_to_remove_association "Retirer", f, class: 'btn btn-danger' %>
+  </div>
+  <hr>
+</div>

@@ -126,6 +126,11 @@
   <td>
     <%= link_to "#{maraude.type_maraude}", maraude, class: "lead" %><br>
     <%= link_to "#{maraude.date.strftime("%d/%m/%y")}", maraude, class: "lead" %><br>
+    <% if maraude.intervenants.any? %>
+      <% maraude.intervenants.each do |int| %>
+        <%= "/ #{int.nom} /" %>
+      <% end %>
+    <% end %>
 
     <% villes = maraude.villes.split("\n") %>
     <% (0..(villes.length-1)).each do |i| %>
@@ -141,11 +146,7 @@
       Déroutage(s) : <pre class="maraude-list"><%= der %></pre>
     <% end %>
 
-    <% if maraude.villes.empty? %>
-      <%= link_to "Ajouter les villes théoriquement parcourues", id_m_villes_path(:id => maraude.id) %>
-    <% else %>
-      <%= link_to "Modifier les villes", id_m_villes_path(:id => maraude.id) %>
-    <% end %>
+    <%= link_to "Modifier villes et intervenants", id_m_villes_path(:id => maraude.id) %>
   </td>
   <td>
     <pre class="maraude-list text-justify"><%= disp_renc %></pre>

@@ -2,6 +2,13 @@
 
 <h1>
   <%= @maraude.type_maraude %> [<%= @maraude.date.strftime("%d/%m/%y") %>]
+  <% if @maraude.intervenants.any? %>
+    <br><small>
+      <% @maraude.intervenants.each do |int| %>
+        <%= "/ #{int.nom} /" %>
+      <% end %>
+    </small>
+  <% end %>
   <% if current_user.admin? %>
     <br><%= button_to "Supprimer la maraude", @maraude,
                                               method: :delete,
@@ -171,12 +178,8 @@
         <% end %>
       </div>
     </div>
-    <div class="text-right lead">
-      <% if @maraude.villes.present? %>
-        <%= link_to "Modifier les villes", id_m_villes_path(:id => @maraude.id) %>
-      <% else %>
-        <%= link_to "Ajouter les villes théoriquement parcourues", id_m_villes_path(:id => @maraude.id) %>
-      <% end %>
+    <div class="text-right">
+      <%= link_to "Modifier villes et intervenants", id_m_villes_path(:id => @maraude.id), class: 'btn btn-info' %>
     </div>
   </div>
 
@@ -426,7 +429,15 @@
   <% end %>
 <% end %>
 <% disp = "COMPTE-RENDU DE MARAUDE\n" %>
-<% disp << "#{@maraude.type_maraude} [#{@maraude.date.strftime("%d/%m/%y")}]\n\n\n" %>
+<% disp << "#{@maraude.type_maraude} [#{@maraude.date.strftime("%d/%m/%y")}]\n" %>
+<% if @maraude.intervenants.any? %>
+  <% @maraude.intervenants.each do |int| %>
+    <% disp << "/ #{int.nom} /" %>
+  <% end %>
+  <% disp << "\n" %>
+<% end %>
+<% disp << "\n\n" %>
+
 <% (0..(liste_villes.length-1)).each do |n| %>
   <% disp << "#{liste_villes[n].upcase} :\n#{liste_usagers[n]}\n\n" %>
 <% end %>
