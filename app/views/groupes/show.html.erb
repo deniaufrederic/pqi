@@ -8,7 +8,7 @@
   </div>
 </h1>
 <h1>
-  <small>Membres</small>
+  <small><%= pluralize(@groupe.usagers.count, "membres") %></small>
 </h1>
 
 <% c = (@usagers.count / 4).floor %>
