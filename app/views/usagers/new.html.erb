@@ -12,7 +12,7 @@ $(document).ready(function(){
        	if (val_stock_nom != $("#usager_nom").val() || val_stock_prenom != $("#usager_prenom").val()) {
        		alerted = false;
        	}
-        if (alerted == false) {
+        if (alerted == false && ["Inconnu", "Inconnue", "Inconnu(e)"].indexOf($("#usager_prenom").val()) == -1) {
 	        for (i = 0; i < gon.noms.length; i++) {
 	           	if (gon.noms[i].toString().match(val_nom) && gon.prenoms[i].toString().match(val_prenom)) {
 	            	alert("Etes-vous sûr(e) ? Un usager possédant les mêmes nom et prénom est déjà répertorié.");
