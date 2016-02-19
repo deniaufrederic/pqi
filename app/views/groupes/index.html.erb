@@ -8,8 +8,9 @@
 <% while i != c %>
   <div class="row groupes">
     <% @groupes[(4*i)..(4*(i+1) - 1)].each do |u| %>
-      <div class="col-md-3 col-sm-3 col-xs-3">
-	      <%= link_to "#{u.nom}", u, class: "lead" %>
+      <div class="col-md-3 col-sm-3 col-xs-3 lead">
+	      <%= link_to "#{u.nom}", u %>
+        <small>(<% u.usagers.count %>)</small>
   	  </div>
     <% end %>
     <hr>
@@ -19,8 +20,9 @@
 <% if r != 0 %>
   <div class="row groupes">
     <% @groupes[(4*c)..(4*c + r)].each do |u| %>
-      <div class="col-md-3 col-sm-3 col-xs-3">
-        <%= link_to "#{u.nom}", u, class: "lead" %>
+      <div class="col-md-3 col-sm-3 col-xs-3 lead">
+        <%= link_to "#{u.nom}", u %>
+        <small>(<%= u.usagers.count %>)</small>
       </div>
     <% end %>
   </div>
