@@ -192,7 +192,6 @@ class UsagersController < ApplicationController
       @usager.update_attribute(:prenom, "Inconnu") if @usager.sexe == "Mr"
       @usager.update_attribute(:prenom, "Inconnue") if @usager.sexe == "Mme"
       @usager.update_attribute(:prenom, "Inconnu(e)") if @usager.sexe == ""
-      if @usager.prenom 
       flash[:success] = "Usager édité"
       redirect_to @usager
     else
