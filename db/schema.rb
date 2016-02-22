@@ -26,9 +26,9 @@ ActiveRecord::Schema.define(version: 20160219133207) do
   add_index "enfants", ["usager_id"], name: "index_enfants_on_usager_id"
 
   create_table "groupes", force: :cascade do |t|
+    t.string   "nom"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string   "nom"
   end
 
   add_index "groupes", ["nom"], name: "index_groupes_on_nom", unique: true
@@ -101,8 +101,6 @@ ActiveRecord::Schema.define(version: 20160219133207) do
     t.text     "ressources"
     t.float    "montant"
     t.text     "fiche_jour"
-    t.date     "sejour_date"
-    t.date     "cfr_date"
     t.boolean  "dom"
     t.string   "dom_org"
     t.string   "dom_adr"
