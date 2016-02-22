@@ -293,13 +293,12 @@ span.ui-helper-hidden-accessible {
 
 .ui-tabs {
   width: 100%;
-  overflow: auto;
+  overflow: visible;
   border: 1px solid #eee;
   border-radius: 6px;
   .ui-tabs-nav {
     padding: 0;
     margin: 0;
-    white-space: nowrap;
     border-bottom: 1px solid #eee;
     border-radius: 6px 6px 0 0;
     padding: 10px 10px 0 10px;
@@ -361,6 +360,7 @@ div.appear {
   &.disp {
     opacity: 1;
     max-height: 300px;
+    overflow: visible;
   }
 }
 
