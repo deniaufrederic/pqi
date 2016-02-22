@@ -1,16 +1,14 @@
 <script>
 var val_stock = ""
 var val = ""
-var val_affiche = ""
 
 $(document).ready(function(){
     $("#submit").mouseenter(function(){
         val = $("#rencontre_date").val();
-        val_affiche = val.slice(8,10) + '/' + val.slice(5,7) + '/' + val.slice(2,4);
         if (val_stock != val) {
             val_stock = val;
             if (gon.renc.indexOf(val) > -1) {
-                alert("Etes-vous sûr(e) ? Cette personne a déjà été rencontrée le " + val_affiche + ". S'il s'agit d'une simple édition de rencontre dont on n'a pas changé la date, ne pas prendre ce message en compte.");
+                alert("Etes-vous sûr(e) ? Cette personne a déjà été rencontrée le " + val + ". S'il s'agit d'une simple édition de rencontre dont on n'a pas changé la date, ne pas prendre ce message en compte.");
             };
         };
     });

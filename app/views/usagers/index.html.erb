@@ -6,12 +6,12 @@
 
 <%= will_paginate %>
 
-<div class="text-center">
-  <%= form_tag(usagers_path, :method => "get", id: "search-form") do %>
-    <%= text_field_tag :search, params[:search], placeholder: "Rechercher des usagers" %>
-    <%= submit_tag "Rechercher", class: 'btn btn-primary' %>
-  <% end %>
-</div>
+<%= form_tag(usagers_path, :method => "get", id: "search-form", role: 'search', class: "navbar navbar-search") do %>
+  <div class="form-group col-md-4 col-sm-4 col-xs-4">
+    <%= text_field_tag :search, params[:search], placeholder: "Rechercher des usagers", class: 'form-control' %>
+  </div>
+  <%= submit_tag "Rechercher", class: 'btn btn-default' %>
+<% end %>
 
 <h4>Au passage de la souris, en vert les usagers sur PQI, en rouge ceux qui n'y sont pas.</h4>
 

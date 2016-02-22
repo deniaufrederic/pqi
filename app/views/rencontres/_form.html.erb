@@ -10,7 +10,10 @@
   <div class="row">
     <div class="form-inline col-md-6 col-sm-6 col-xs-6">
       <h3>Date</h3>
-      <%= f.input :date, label: false, :as => :date_picker, input_html: {value: Date.today}, class: 'form-control' %>
+      <div class="input-group date" id="datepicker">
+        <%= f.text_field :date, class: 'form-control', data: { date_format: 'DD/MM/YYYY', locale: 'fr' }, value: Date.today.strftime("%d/%m/%Y") %>
+        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+      </div>
     </div>
     <div class="col-md-6 col-sm-6 col-xs-6">
       <h3>Type</h3>

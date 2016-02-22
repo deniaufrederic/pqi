@@ -29,10 +29,12 @@ class MaraudesController < ApplicationController
   def create
     @maraude = Maraude.new(maraude_params)
     @maraude.villes = ""
-    if Maraude.find_by(date: params[:maraude][:date], type_maraude: params[:maraude][:type_maraude])
+    if Maraude.find_by(date: params[:maraude][:date].to_date.strftime("%F"), type_maraude: params[:maraude][:type_maraude])
       flash[:danger] = "Cette maraude existe déjà"
       redirect_to new_maraude_path
     elsif @maraude.save
+      @maraude.date = params[:maraude][:date].to_date.strftime("%F")
+      @maraude.save
       flash[:success] = "Maraude créée"
       redirect_to id_m_villes_path(id: @maraude.id)
     else  

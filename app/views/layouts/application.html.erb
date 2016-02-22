@@ -8,6 +8,7 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
   <%= render 'layouts/shim' %>
+  <script type="text/javascript">$.widget.bridge('uitooltip', $.ui.tooltip);</script>
 </head>
 <body>
   <%= render 'layouts/header' %>
@@ -16,7 +17,7 @@
       <div class="alert alert-<%= message_type %>"><%= message %></div>
     <% end %>
   	<%= yield %>
-  	<%= render 'layouts/footer' %>
   </div>
+  <%= render 'layouts/footer' %>
 </body>
 </html>

@@ -27,18 +27,19 @@ class RencontresController < ApplicationController
       @nb_enf << ["#{i}", "#{i}"]
       i += 1
     end
-    @rencontre = @usager.rencontres.build
     gon.renc = []
     if @usager.rencontres.any?
       @usager.rencontres.each do |r|
-        gon.renc << "#{r.date}"
+        gon.renc << "#{r.date.strftime('%d/%m/%Y')}"
       end
     end
+    @rencontre = @usager.rencontres.build
   end
 
   def create
     @usager = Usager.find_by(id: session[:stored_id])
     @rencontre = @usager.rencontres.build(rencontre_params)
+    @rencontre.date = params[:rencontre][:date].to_date.strftime("%F")
     if !!session[:usagers_ids]
       @rencontre.date = session[:date]
       @rencontre.type_renc = session[:type_renc]
@@ -220,7 +221,7 @@ class RencontresController < ApplicationController
     store_id
     @usager = Usager.find(session[:stored_id])
     r = Rencontre.find_by(usager_id: @usager.id,
-                          date: params[:rencontres][:date],
+                          date: params[:rencontres][:date].to_date.strftime("%F"),
                           type_renc: params[:rencontres][:type_renc])
     if params[:suppr_renc]
       if r.nil?
@@ -284,7 +285,7 @@ class RencontresController < ApplicationController
     gon.renc = []
     if @usager.rencontres.any?
       @usager.rencontres.each do |r|
-        gon.renc << "#{r.date}"
+        gon.renc << "#{r.date.strftime('%d/%m/%Y')}"
       end
     end
   end
@@ -293,6 +294,7 @@ class RencontresController < ApplicationController
     @rencontre = Rencontre.find(params[:id])
     @usager = Usager.find(@rencontre.usager_id)
     if @rencontre.update_attributes(rencontre_params)
+      @rencontre.update_attribute(:date, params[:rencontre][:date].to_date.strftime("%F"))
       if @rencontre.type_renc.split(' ').first == "Maraude" && !@rencontre.prev
         mar = true
         if !Maraude.find_by(date: @rencontre.date, type_maraude: @rencontre.type_renc).present?
@@ -384,9 +386,10 @@ class RencontresController < ApplicationController
         end
         @usager.fiche = rencontre_u if rencontre_u
         @usager.save
+        @rencontre.update_attributes(rencontre_params)
         @rencontre.update_attribute(:nb_enf, 0) unless params[:rencontre][:nb_enf]
         @rencontre.update_attribute(:prestas, params[:rencontre][:prestas].reject{ |a| a == '0' }.join(' #'))
-        @rencontre.update_attributes(rencontre_params)
+        @rencontre.update_attribute(:date, params[:rencontre][:date].to_date.strftime("%F"))
         flash[:success] = "Rencontre mise à jour (Vérifiez que la rencontre avant mise à jour dans la fiche de suivi de l'usager a bien été retirée)"
         redirect_to @usager
       else

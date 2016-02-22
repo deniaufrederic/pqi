@@ -9,67 +9,108 @@
   <%= f.label :pqi, "PQI" %>
 </h2>
 
-<h2 class="text-center form-inline">
-  <br><%= f.label :groupe_nom, "Groupe" %>
-  <%= f.text_field :groupe_nom, data: {autocomplete_source: Groupe.order(:nom).map(&:nom)}, class: 'form-control' %>
-</h2>
+<div class="row">
+  <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2 form-horizontal">
+    <div class="form-group">
+      <h2><%= f.label :groupe_nom, "Groupe", class: "control-label col-md-3 col-sm-3 col-xs-3" %></h2>
+      <div class="col-md-9 col-sm-9 col-xs-9">
+        <%= f.text_field :groupe_nom, data: {autocomplete_source: Groupe.order(:nom).map(&:nom)}, class: 'form-control' %>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <div id="accordion">
 
   <h3>Identité</h3>
 
-  <div>
-    <div class="text-center form-inline">
-      <%= f.radio_button :sexe, "Mr", class: 'form-control' %>
-      <%= f.label :sexe_m, "Mr" %>
-
-      <%= f.radio_button :sexe, "Mme", class: 'form-control' %>
-      <%= f.label :sexe_f, "Mme" %>
+  <div class="text-center">
+    <div class="row">
+      <div class="form-inline col-md-1 col-md-offset-5">
+        <%= f.radio_button :sexe, "Mr", class: 'form-control' %>
+        <%= f.label :sexe_m, "Mr" %>
+      </div>
+      <div class="form-inline col-md-1">
+        <%= f.radio_button :sexe, "Mme", class: 'form-control' %>
+        <%= f.label :sexe_f, "Mme" %>
+      </div>
     </div>
 
-    <div class="text-center form-inline">
-      <%= f.text_field :nom, class: 'form-control', title: 'Nom' %>
-
-      <%= f.text_field :prenom, class: 'form-control', title: 'Prénom' %>
+    <div class="row">
+      <div class="col-md-4 col-md-offset-2">
+        <%= f.text_field :nom,  class: 'form-control',
+                                'data-toggle' => "tooltip",
+                                'data-placement' => "bottom",
+                                title: 'Nom' %>
+      </div>
+      <div class="col-md-4">
+        <%= f.text_field :prenom, class: 'form-control',
+                                  'data-toggle' => "tooltip",
+                                  'data-placement' => "bottom",
+                                  title: 'Prénom' %>
+      </div>
     </div>
   </div>
 
 
   <h3>Informations générales</h3>
 
-  <div>
-    <table class="table-responsive text-center">
-      <tr class="table_head">
-        <th>Ville</th>
-        <th>Adresse</th>
-        <th>Complément d'adresse</th>
-        <th>Date de naissance</th>
-        <th>Téléphone</th>
-      </tr>
-      <tr id="usager-<%= @usager.id %>">
-        <td><%= f.select :ville, @villes, prompt: "Choisissez une ville", class: 'form-control' %></td>
-        <td><%= f.text_field :adresse, class: 'form-control' %></td>
-        <td><%= f.text_field :adresse_précis, class: 'form-control' %></td>
-        <td class="date_naissance input-group date" id="datepicker">
-          <%= f.text_field :date_naissance, class: 'form-control', data: { date_format: 'DD/MM/YYYY', locale: 'fr' } %>
-          <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-        </td>
-        <td><%= f.text_field :tel, class: 'form-control' %></td>
-      </tr>
-    </table>
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+      <div class="form-horizontal">
+        <div class="form-group">
+          <%= f.label :ville, class: "control-label col-md-3 col-sm-3 col-xs-3" %>
+          <div class="col-md-9 col-sm-9 col-xs-9">
+            <%= f.select :ville, @villes, prompt: "Choisissez une ville", class: 'form-control' %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.label :adresse, class: "control-label col-md-3 col-sm-3 col-xs-3" %>
+          <div class="col-md-9 col-sm-9 col-xs-9">
+            <%= f.text_field :adresse, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.label :adresse_précis, "Complément d'adresse", class: "control-label col-md-3 col-sm-3 col-xs-3" %>
+          <div class="col-md-9 col-sm-9 col-xs-9">
+            <%= f.text_area :adresse_précis, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.label :date_naissance, "Date de naissance", class: "control-label col-md-3 col-sm-3 col-xs-3" %>
+          <div class="col-md-9 col-sm-9 col-xs-9 input-group date" id="datepicker">
+            <% if @usager.date_naissance.present? %>
+              <%= f.text_field :date_naissance, class: 'form-control', data: { date_format: 'DD/MM/YYYY', locale: 'fr' }, value: @usager.date_naissance.strftime("%d/%m/%Y") %>
+              <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+            <% else %>
+              <%= f.text_field :date_naissance, class: 'form-control', data: { date_format: 'DD/MM/YYYY', locale: 'fr' } %>
+              <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+            <% end %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.label :tel, "Téléphone", class: "control-label col-md-3 col-sm-3 col-xs-3" %>
+          <div class="col-md-9 col-sm-9 col-xs-9">
+            <%= f.text_field :tel, class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
 
   <h3>Enfants</h3>
 
-  <div>
-    <ul id="enfants">
-      <%= f.simple_fields_for :enfants do |enf| %>
-        <li><%= render 'enfant_fields', f: enf %></li>
-      <% end %>
-      <%= link_to_add_association 'Ajouter un enfant', f, :enfants, class: 'links btn btn-primary' %>
-    </ul>
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+      <ul id="enfants">
+        <%= f.simple_fields_for :enfants do |enf| %>
+          <li><%= render 'enfant_fields', f: enf %></li>
+        <% end %>
+        <%= link_to_add_association 'Ajouter un enfant', f, :enfants, class: 'links btn btn-primary' %>
+      </ul>
+    </div>
   </div>
 
 
@@ -77,12 +118,13 @@
 
   <div>
     <%= f.label :notes, "Observations" %>
-    <%= f.text_field :notes, class: 'form-control' %>
+    <%= f.text_area :notes, rows: 2, class: 'form-control' %>
   </div>
 </div>
 
 <hr>
-
-<%= f.submit "Enregistrer les modifications", class: "btn btn-primary" %>
+  <div class="text-center">
+    <%= f.submit "Enregistrer les modifications", class: "btn btn-primary" %>
+  </div>
 
 <% end %>

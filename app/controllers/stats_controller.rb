@@ -54,21 +54,27 @@ before_action :logged_in_user, 	only: [:show, :create]
   end
 
   def create
-  	if params[:stat][:date_deb].empty? && !params[:stat][:date_fin].empty?
+    if !params[:stat][:date_deb].present? && !params[:stat][:date_fin].present?
+      flash[:danger] = "Veuillez indiquer une période !"
+      redirect_to stats_path
+  	elsif !params[:stat][:date_deb].present? && params[:stat][:date_fin].present?
   	  flash[:danger] = "Veuillez indiquer une date de début de période !"
   	  redirect_to stats_path
-  	elsif !params[:stat][:date_deb].empty? && params[:stat][:date_fin].empty?
+  	elsif params[:stat][:date_deb].present? && !params[:stat][:date_fin].present?
   	  flash[:danger] = "Veuillez indiquer une date de fin de période !"
   	  redirect_to stats_path
-  	elsif params[:stat][:date_deb].empty? && !params[:stat][:ville].empty?
+  	elsif !params[:stat][:date_deb].present? && params[:stat][:ville].present?
   	  flash[:danger] = "Veuillez indiquer une période !"
   	  redirect_to stats_path
+    elsif !params[:stat][:date_fin].present? && params[:stat][:ville].present?
+      flash[:danger] = "Veuillez indiquer une période !"
+      redirect_to stats_path
   	elsif params[:stat][:ville].empty? && !params[:stat][:date_deb].empty?
-  	  redirect_to stats_dates_path(	date_deb: params[:stat][:date_deb],
-  									date_fin: params[:stat][:date_fin])
+  	  redirect_to stats_dates_path(	date_deb: params[:stat][:date_deb].to_date.strftime("%F"),
+  									date_fin: params[:stat][:date_fin].to_date.strftime("%F"))
   	else
-  	  redirect_to stats_dates_ville_path(	date_deb: params[:stat][:date_deb],
-  											date_fin: params[:stat][:date_fin],
+  	  redirect_to stats_dates_ville_path(	date_deb: params[:stat][:date_deb].to_date.strftime("%F"),
+  											date_fin: params[:stat][:date_fin].to_date.strftime("%F"),
   											ville: params[:stat][:ville])
   	end
   end

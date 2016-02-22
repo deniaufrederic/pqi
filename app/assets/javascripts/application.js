@@ -14,6 +14,7 @@
 //= require jquery.turbolinks
 //= require jquery-ui
 //= require jquery_ujs
+//= require bootstrap-sprockets
 //= require_tree .
 //= require moment
 //= require bootstrap-datetimepicker
@@ -57,6 +58,18 @@ $(function() {
 	$("input").blur(function() {
 		$(this).parent().parent().parent(".part").removeClass("focused");
 	});
+	$("textarea").focus(function() {
+		$(this).parent().parent().parent(".part").addClass("focused");
+	});
+	$("textarea").blur(function() {
+		$(this).parent().parent().parent(".part").removeClass("focused");
+	});
+	$("select").focus(function() {
+		$(this).parent().parent().parent(".part").addClass("focused");
+	});
+	$("select").blur(function() {
+		$(this).parent().parent().parent(".part").removeClass("focused");
+	});
 });
 
 $(document).ready(function() {
@@ -83,7 +96,9 @@ $(function() {
     });
 });
 
-$( document ).tooltip();
+$(function() {
+	$('[data-toggle="tooltip"]').tooltip();
+});
 
 $(function() {
     $( ".input-group.date" ).datetimepicker();

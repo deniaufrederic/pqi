@@ -2,7 +2,10 @@
 
 <div class="form-inline">
   <%= f.label :date %>
-  <%= f.input :date, :as => :date_picker, label: false, class: 'form-control' %>
+  <div class="input-group date" id="datepicker">
+	  <%= f.text_field :date, class: 'form-control', data: { date_format: 'DD/MM/YYYY', locale: 'fr' } %>
+	  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+	</div>
 
   <%= f.label :type_maraude, "Type de maraude" %>
   <%= f.select :type_maraude, @types, prompt: "Choisissez un type de maraude", class: 'form-control' %>

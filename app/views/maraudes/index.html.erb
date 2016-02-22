@@ -2,17 +2,17 @@
 
 <h1>
   Index des maraudes<br>
-  <%= link_to "Nouvelle maraude", new_maraude_path, class: "btn btn-info btn-lg" %>
+  <%= link_to "Nouvelle maraude", new_maraude_path, class: "btn btn-info" %>
 </h1>
 
 <%= will_paginate %>
 
-<div class="text-center">
-  <%= form_tag(maraudes_path, :method => "get", id: "search-form") do %>
-    <%= text_field_tag :search, params[:search], placeholder: "Rechercher des maraudes" %>
-    <%= submit_tag "Rechercher", class: 'btn btn-primary' %>
-  <% end %>
-</div>
+<%= form_tag(maraudes_path, :method => "get", id: "search-form", role: 'search', class: "navbar navbar-search") do %>
+  <div class="form-group col-md-4 col-sm-4 col-xs-4">
+    <%= text_field_tag :search, params[:search], placeholder: "Rechercher des maraudes", class: 'form-control' %>
+  </div>
+  <%= submit_tag "Rechercher", class: 'btn btn-default' %>
+<% end %>
 
 <h4 class="text-right"><%= pluralize(@maraudes.count, "maraude") %></h4>
 
