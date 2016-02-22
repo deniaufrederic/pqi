@@ -51,6 +51,27 @@ $(function() {
 });
 
 $(function() {
+	$("input").focus(function() {
+		$(this).parent().parent().parent(".part").addClass("focused");
+	});
+	$("input").blur(function() {
+		$(this).parent().parent().parent(".part").removeClass("focused");
+	});
+});
+
+$(document).ready(function() {
+  $('form')
+    .on('cocoon:after-insert', function() {
+        $("input").focus(function() {
+			$(this).parent().parent().parent(".part").addClass("focused");
+		});
+		$("input").blur(function() {
+			$(this).parent().parent().parent(".part").removeClass("focused");
+		});
+	});
+});
+
+$(function() {
     $( "#navtop-icon" ).click(function() {
       	$( ".navtop" ).toggleClass( "responsive" );
     });

@@ -1,7 +1,7 @@
 <div class="nested-fields">
 
   <blockquote id="enfants">
-    <div class="form-horizontal">
+    <div class="form-horizontal part part-hover">
       <div class="form-group">
         <%= f.label :nom, class: "control-label col-md-3 col-sm-3 col-xs-3" %>
         <div class="col-md-9 col-sm-9 col-xs-9">
@@ -29,14 +29,16 @@
 
       <div class="form-group">
         <%= f.label :date_naissance, "Date de naissance", class: "control-label col-md-3 col-sm-3 col-xs-3" %>
-        <div class="col-md-9 col-sm-9 col-xs-9 input-group date" id="datepicker2">
+        <div class="col-md-9 col-sm-9 col-xs-9 input-group date" id="datepicker">
           <%= f.text_field :date_naissance, class: 'form-control', data: { date_format: 'DD/MM/YYYY', locale: 'fr' } %>
           <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
         </div>
       </div>
     </div>
 
+    <div class="text-center">
       <%= link_to_remove_association "Retirer", f, class: 'btn btn-danger' %>
+    </div>
   </blockquote>
 
   <hr>

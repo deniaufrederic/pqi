@@ -237,6 +237,7 @@ blockquote#enfants {
 div.form-horizontal {
     div.part {
         padding: 10px 40px;
+        margin-bottom: 10px;
         border: 1px solid white;
         border-radius: 6px;
         background-color: white;
@@ -244,9 +245,13 @@ div.form-horizontal {
         h3 {
             padding-bottom: 30px;
         }
-        &:hover {
+        &.part-hover:hover {
             border: 1px solid #eee;
             background-color: #eee;
+        }
+        &.part-hover.focused {
+            border: 1px solid #ccc;
+            background-color: #ccc;
         }
     }
 }
