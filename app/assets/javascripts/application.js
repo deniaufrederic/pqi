@@ -65,6 +65,17 @@ $(function() {
 $( document ).tooltip();
 
 $(function() {
+    $( ".input-group.date" ).datetimepicker();
+});
+
+$(document).ready(function() {
+  $('form')
+    .on('cocoon:after-insert', function() {
+        $( ".input-group.date" ).datetimepicker();
+    })
+});
+
+$(function() {
     $( "#tabs" ).tabs({
     	collapsible: true,
     	heightStyle: "content"

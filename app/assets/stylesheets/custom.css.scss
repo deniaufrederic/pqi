@@ -234,6 +234,23 @@ blockquote#enfants {
     font-size: 14px;
 }
 
+div.form-horizontal {
+    div.part {
+        padding: 10px 40px;
+        border: 1px solid white;
+        border-radius: 6px;
+        background-color: white;
+        transition: 0.4s;
+        h3 {
+            padding-bottom: 30px;
+        }
+        &:hover {
+            border: 1px solid #eee;
+            background-color: #eee;
+        }
+    }
+}
+
 /* Tooltip text */
 .ui-tooltip .ui-tooltip-content {
     width: 120px;
