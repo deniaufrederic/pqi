@@ -58,6 +58,12 @@ $(function() {
 	$("input").blur(function() {
 		$(this).parent().parent().parent(".part").removeClass("focused");
 	});
+	$("input.check").focus(function() {
+		$(this).parent().parent(".part").addClass("focused");
+	});
+	$("input.check").blur(function() {
+		$(this).parent().parent(".part").removeClass("focused");
+	});
 	$("textarea").focus(function() {
 		$(this).parent().parent().parent(".part").addClass("focused");
 	});
