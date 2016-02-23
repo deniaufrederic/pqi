@@ -289,7 +289,7 @@ class UsagersController < ApplicationController
                 ["Villemomble", "Villemomble"],
                 ["Villepinte", "Villepinte"],
                 ["Villetaneuse", "Villetaneuse"]]
-    @usagers = Usager.where(pqi: true, ville: session[:stored_ville]) unless session[:stored_ville] == "pqi"
+    @usagers = Usager.where(pqi: true, ville: session[:stored_ville]).order('adresse ASC, adresse_précis ASC, nom ASC') unless session[:stored_ville] == "pqi"
     @ville_actuelle = session[:stored_ville]
     session.delete(:stored_ville)
   end
