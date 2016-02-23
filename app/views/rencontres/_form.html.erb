@@ -17,12 +17,14 @@
         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
       </div>
     </div>
-    <% unless current_user.benev? %>
-      <div class="col-md-6 col-sm-6 col-xs-6">
-        <h3>Type</h3>
+    <div class="col-md-6 col-sm-6 col-xs-6">
+      <h3>Type</h3>
+      <% unless current_user.benev? %>
         <%= f.select :type_renc, @types, prompt: "Quel type de rencontre ?", class: 'form-control' %>
-      </div>
-    <% end %>
+      <% else %>
+        <%= f.select :type_renc, ["Maraude bénévoles"], disabled: true, class: 'form-control' %>
+      <% end %>
+    </div>
   </div>
 
   <hr>

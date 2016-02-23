@@ -45,9 +45,6 @@ class RencontresController < ApplicationController
       @rencontre.type_renc = session[:type_renc]
     else
       @rencontre.date = params[:rencontre][:date].to_date.strftime("%F")
-      if current_user.benev?
-        @rencontre.type_renc = "Maraude bénévoles"
-      end
     end
     if @rencontre.valid?
       if @rencontre.type_renc.split(' ').first == "Maraude" && !@rencontre.prev
@@ -329,9 +326,6 @@ class RencontresController < ApplicationController
       flash[:danger] = "Accès restreint"
       redirect_to id_rencontre_edit_path(id: @usager.id)
     else
-      if current_user.benev?
-        @rencontre.update_attribute(:type_renc, "Maraude bénévoles")
-      end
       if @rencontre.update_attributes(rencontre_params)
         @rencontre.update_attribute(:date, params[:rencontre][:date].to_date.strftime("%F"))
         if @rencontre.type_renc.split(' ').first == "Maraude" && !@rencontre.prev
