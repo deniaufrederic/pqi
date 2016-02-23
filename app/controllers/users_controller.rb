@@ -87,7 +87,8 @@ class UsersController < ApplicationController
       								  :identifiant,
       								  :password,
       								  :password_confirmation,
-      								  :admin)
+      								  :admin,
+                        :benev)
       else
       	params.require(:user).permit( :nom,
       								  :prenom,
