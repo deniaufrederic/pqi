@@ -6,7 +6,7 @@
 <% end %>
 >
 
-  <td class="identité">
+  <td>
     <%= link_to "#{usager.sexe} #{usager.nom} #{usager.prenom}", usager %>
     <% if usager.enfants.any? %>
       <br><%= pluralize(usager.enfants.count, 'enfant') %>
@@ -21,7 +21,7 @@
       <br><%= link_to "#{usager.groupe.nom}", usager.groupe %>
     <% end %>
   </td>
-  <td class="adresse">
+  <td>
     <%= "#{usager.ville.upcase}" %>
     <% if usager.adresse %>
       <br><%= "#{usager.adresse}" %>
@@ -30,7 +30,7 @@
       <br><%= "#{usager.adresse_précis}" %>
     <% end %>
   </td>
-  <td class="rencontres">
+  <td>
     <% dates_renc = [] %>
     <% Rencontre.where(usager_id: usager.id, prev: false, dnv: false).each do |r| %>
       <% dates_renc << "#{r.date.strftime("%d/%m/%y")}" %>

@@ -39,11 +39,15 @@ class RencontresController < ApplicationController
   def create
     @usager = Usager.find_by(id: session[:stored_id])
     @rencontre = @usager.rencontres.build(rencontre_params)
+    @rencontre.user_id = current_user.id
     if session.has_key?('groupe')
       @rencontre.date = session[:date]
       @rencontre.type_renc = session[:type_renc]
     else
       @rencontre.date = params[:rencontre][:date].to_date.strftime("%F")
+      if current_user.benev?
+        @rencontre.type_renc = "Maraude bénévoles"
+      end
     end
     if @rencontre.valid?
       if @rencontre.type_renc.split(' ').first == "Maraude" && !@rencontre.prev
@@ -188,21 +192,26 @@ class RencontresController < ApplicationController
   def destroy
     r = Rencontre.find(params[:id])
     @usager = Usager.find(r.usager_id)
-    if @usager.fiche.present?
-      u_del = @usager.fiche.split("//")
-      rank = u_del.index(" #{r.type_renc} [#{r.date.strftime("%d/%m/%y")}] ")
-      if rank
-        while rank != nil
-          u_del = u_del[0..(rank-1)].concat(u_del[(rank+2)..(u_del.length-1)])
-          rank = u_del.index(" #{r.type_renc} [#{r.date.strftime("%d/%m/%y")}] ")
+    if current_user.benev? && r.type_renc != "Maraude bénévoles"
+      flash[:danger] = "Accès restreint"
+      redirect_to id_rencontre_edit_path(id: @usager.id)
+    else
+      if @usager.fiche.present?
+        u_del = @usager.fiche.split("//")
+        rank = u_del.index(" #{r.type_renc} [#{r.date.strftime("%d/%m/%y")}] ")
+        if rank
+          while rank != nil
+            u_del = u_del[0..(rank-1)].concat(u_del[(rank+2)..(u_del.length-1)])
+            rank = u_del.index(" #{r.type_renc} [#{r.date.strftime("%d/%m/%y")}] ")
+          end
         end
+        @usager.fiche = "#{u_del.join("//")}"
+        @usager.save
       end
-      @usager.fiche = "#{u_del.join("//")}"
-      @usager.save
+      r.destroy
+      flash[:success] = "Rencontre supprimée (Vérifiez que la rencontre a bien été retirée dans la fiche suivi de l'usager)"
+      redirect_to @usager
     end
-    r.destroy
-    flash[:success] = "Rencontre supprimée (Vérifiez que la rencontre a bien été retirée dans la fiche suivi de l'usager)"
-    redirect_to @usager
   end
 
   def edit_form
@@ -230,33 +239,38 @@ class RencontresController < ApplicationController
     r = Rencontre.find_by(usager_id: @usager.id,
                           date: params[:rencontres][:date].to_date.strftime("%F"),
                           type_renc: params[:rencontres][:type_renc])
-    if params[:suppr_renc]
-      if r.nil?
-        flash[:danger] = "Cette rencontre n'a pas été trouvée"
-        redirect_to id_rencontre_edit_path(id: @usager.id)
-      else
-        r.destroy
-        if @usager.fiche.present?
-          u_del = @usager.fiche.split("//")
-          rank = u_del.index(" #{r.type_renc} [#{r.date.strftime("%d/%m/%y")}] ")
-          if rank
-            while rank != nil
-              u_del = u_del[0..(rank-1)].concat(u_del[(rank+2)..(u_del.length-1)])
-              rank = u_del.index(" #{r.type_renc} [#{r.date.strftime("%d/%m/%y")}] ")
+    if current_user.benev? && r.type_renc != "Maraude bénévoles"
+      flash[:danger] = "Accès restreint"
+      redirect_to id_rencontre_edit_path(id: @usager.id)
+    else
+      if params[:suppr_renc]
+        if r.nil?
+          flash[:danger] = "Cette rencontre n'a pas été trouvée"
+          redirect_to id_rencontre_edit_path(id: @usager.id)
+        else
+          r.destroy
+          if @usager.fiche.present?
+            u_del = @usager.fiche.split("//")
+            rank = u_del.index(" #{r.type_renc} [#{r.date.strftime("%d/%m/%y")}] ")
+            if rank
+              while rank != nil
+                u_del = u_del[0..(rank-1)].concat(u_del[(rank+2)..(u_del.length-1)])
+                rank = u_del.index(" #{r.type_renc} [#{r.date.strftime("%d/%m/%y")}] ")
+              end
             end
+            @usager.fiche = "#{u_del.join("//")}"
+            @usager.save
           end
-          @usager.fiche = "#{u_del.join("//")}"
-          @usager.save
+          flash[:success] = "Rencontre supprimée (Vérifiez que la rencontre a bien été retirée dans la fiche suivi de l'usager)"
+          redirect_to @usager
         end
-        flash[:success] = "Rencontre supprimée (Vérifiez que la rencontre a bien été retirée dans la fiche suivi de l'usager)"
-        redirect_to @usager
-      end
-    elsif params[:edit_renc]
-      if r.nil?
-        flash[:danger] = "Cette rencontre n'a pas été trouvée"
-        redirect_to id_rencontre_edit_path(id: @usager.id)
-      else
-        redirect_to edit_rencontre_path(r)
+      elsif params[:edit_renc]
+        if r.nil?
+          flash[:danger] = "Cette rencontre n'a pas été trouvée"
+          redirect_to id_rencontre_edit_path(id: @usager.id)
+        else
+          redirect_to edit_rencontre_path(r)
+        end
       end
     end
     session.delete(:stored_id)
@@ -272,33 +286,38 @@ class RencontresController < ApplicationController
     end
     @rencontre = Rencontre.find(params[:id])
     @usager = Usager.find(@rencontre.usager_id)
-    @nb_enf = []
-    i = 0
-    until i == @usager.enfants.count + 1 do
-      @nb_enf << ["#{i}", "#{i}"]
-      i += 1
-    end
-    @signalements = [ ["Signalement 115", "Signalement 115"],
-                      ["Signalement tiers", "Signalement tiers"],
-                      ["Croisé(e) en maraude", "Croisé(e) en maraude"]]
-    @types =  [ ["Maraude salariés 1", "Maraude salariés 1"],
-                ["Maraude salariés 2", "Maraude salariés 2"],
-                ["Maraude bénévoles", "Maraude bénévoles"],
-                ["Maraude jour", "Maraude jour"],
-                ["Maraude médicale", "Maraude médicale"],
-                ["Rencontre pôle jour", "Rencontre pôle jour"],
-                ["Autre", "Autre"]]
-    @prestas = [["Prestation alimentaire", "Prestation alimentaire"],
-                ["Vestiaire", "Vestiaire"],
-                ["Duvet", "Duvet"],
-                ["Hygiène", "Hygiène"]]
-    @accomps = [["Accompagnement 115", "Accompagnement 115"],
-                ["Accompagnement SIAO", "Accompagnement SIAO"],
-                ["Autre", "Autre"]]
-    gon.renc = []
-    if @usager.rencontres.any?
-      @usager.rencontres.each do |r|
-        gon.renc << "#{r.date.strftime('%d/%m/%Y')}"
+    if current_user.benev? && @rencontre.type_renc != "Maraude bénévoles"
+      flash[:danger] = "Accès restreint"
+      redirect_to id_rencontre_edit_path(id: @usager.id)
+    else
+      @nb_enf = []
+      i = 0
+      until i == @usager.enfants.count + 1 do
+        @nb_enf << ["#{i}", "#{i}"]
+        i += 1
+      end
+      @signalements = [ ["Signalement 115", "Signalement 115"],
+                        ["Signalement tiers", "Signalement tiers"],
+                        ["Croisé(e) en maraude", "Croisé(e) en maraude"]]
+      @types =  [ ["Maraude salariés 1", "Maraude salariés 1"],
+                  ["Maraude salariés 2", "Maraude salariés 2"],
+                  ["Maraude bénévoles", "Maraude bénévoles"],
+                  ["Maraude jour", "Maraude jour"],
+                  ["Maraude médicale", "Maraude médicale"],
+                  ["Rencontre pôle jour", "Rencontre pôle jour"],
+                  ["Autre", "Autre"]]
+      @prestas = [["Prestation alimentaire", "Prestation alimentaire"],
+                  ["Vestiaire", "Vestiaire"],
+                  ["Duvet", "Duvet"],
+                  ["Hygiène", "Hygiène"]]
+      @accomps = [["Accompagnement 115", "Accompagnement 115"],
+                  ["Accompagnement SIAO", "Accompagnement SIAO"],
+                  ["Autre", "Autre"]]
+      gon.renc = []
+      if @usager.rencontres.any?
+        @usager.rencontres.each do |r|
+          gon.renc << "#{r.date.strftime('%d/%m/%Y')}"
+        end
       end
     end
   end
@@ -306,111 +325,119 @@ class RencontresController < ApplicationController
   def update
     @rencontre = Rencontre.find(params[:id])
     @usager = Usager.find(@rencontre.usager_id)
-    if @rencontre.update_attributes(rencontre_params)
-      @rencontre.update_attribute(:date, params[:rencontre][:date].to_date.strftime("%F"))
-      if @rencontre.type_renc.split(' ').first == "Maraude" && !@rencontre.prev
-        mar = true
-        if !Maraude.find_by(date: @rencontre.date, type_maraude: @rencontre.type_renc).present?
-          @maraude = Maraude.create(date: @rencontre.date, type_maraude: @rencontre.type_renc, villes: "")
+    if current_user.benev? && @rencontre.type_renc != "Maraude bénévoles"
+      flash[:danger] = "Accès restreint"
+      redirect_to id_rencontre_edit_path(id: @usager.id)
+    else
+      if current_user.benev?
+        @rencontre.update_attribute(:type_renc, "Maraude bénévoles")
+      end
+      if @rencontre.update_attributes(rencontre_params)
+        @rencontre.update_attribute(:date, params[:rencontre][:date].to_date.strftime("%F"))
+        if @rencontre.type_renc.split(' ').first == "Maraude" && !@rencontre.prev
+          mar = true
+          if !Maraude.find_by(date: @rencontre.date, type_maraude: @rencontre.type_renc).present?
+            @maraude = Maraude.create(date: @rencontre.date, type_maraude: @rencontre.type_renc, villes: "")
+          end
+        else
+          mar = false
+          if @rencontre.dnv
+            err = true
+            flash[:danger] = "Erreur : Maraude déplacée mais personne non vue alors qu'il ne s'agit pas d'une maraude ou que la rencontre est prévisionnelle"
+          end
         end
-      else
-        mar = false
+        rencontre_u = "// #{@rencontre.type_renc} [#{@rencontre.date.strftime("%d/%m/%y")}] //"
+        if @rencontre.signale && !@rencontre.signalement.empty?
+          rencontre_u << "\n#{@rencontre.signalement}"
+        end
+        if @rencontre.accomp && !@rencontre.type_accomp.empty?
+          rencontre_u << "\n#{@rencontre.type_accomp}"
+        end
+        rencontre_p = params[:rencontre][:prestas].reject{ |a| a == '0' }.join(' #')
+        if rencontre_p && !rencontre_p.empty?
+          rencontre_u << "\n#{rencontre_p.split(' #').join(' - ')}"
+        end
         if @rencontre.dnv
-          err = true
-          flash[:danger] = "Erreur : Maraude déplacée mais personne non vue alors qu'il ne s'agit pas d'une maraude ou que la rencontre est prévisionnelle"
+          rencontre_u << "\nMaraude déplacée mais personne non vue"
         end
-      end
-      rencontre_u = "// #{@rencontre.type_renc} [#{@rencontre.date.strftime("%d/%m/%y")}] //"
-      if @rencontre.signale && !@rencontre.signalement.empty?
-        rencontre_u << "\n#{@rencontre.signalement}"
-      end
-      if @rencontre.accomp && !@rencontre.type_accomp.empty?
-        rencontre_u << "\n#{@rencontre.type_accomp}"
-      end
-      rencontre_p = params[:rencontre][:prestas].reject{ |a| a == '0' }.join(' #')
-      if rencontre_p && !rencontre_p.empty?
-        rencontre_u << "\n#{rencontre_p.split(' #').join(' - ')}"
-      end
-      if @rencontre.dnv
-        rencontre_u << "\nMaraude déplacée mais personne non vue"
-      end
-      if @usager.enfants.any? && !@rencontre.dnv
-        rencontre_u << "\nAvec #{@rencontre.nb_enf} #{"enfant".pluralize(@rencontre.nb_enf)}."
-      end
-      if !@rencontre.details.empty?
-        rencontre_u << "\n#{@rencontre.details}"
-      else
-        rencontre_u << "\nRencontre sans détails."
-      end
-      rencontre_u << "\n\n\n" unless !@usager.fiche
-      if @rencontre.signale
-        if !@rencontre.signalement.empty?
-          if !mar && !@rencontre.prev
+        if @usager.enfants.any? && !@rencontre.dnv
+          rencontre_u << "\nAvec #{@rencontre.nb_enf} #{"enfant".pluralize(@rencontre.nb_enf)}."
+        end
+        if !@rencontre.details.empty?
+          rencontre_u << "\n#{@rencontre.details}"
+        else
+          rencontre_u << "\nRencontre sans détails."
+        end
+        rencontre_u << "\n\n\n" unless !@usager.fiche
+        if @rencontre.signale
+          if !@rencontre.signalement.empty?
+            if !mar && !@rencontre.prev
+              errb = true
+              if err
+                flash[:danger] << " et signalement alors que la rencontre annoncée n'est pas une maraude"
+              else
+                flash[:danger] = "Erreur : signalement alors que la rencontre annoncée n'est pas une maraude"
+              end
+            end
+          else
             errb = true
             if err
-              flash[:danger] << " et signalement alors que la rencontre annoncée n'est pas une maraude"
+              flash[:danger] << " et précisez le type de signalement"
             else
-              flash[:danger] = "Erreur : signalement alors que la rencontre annoncée n'est pas une maraude"
+              flash[:danger] = "Précisez le type de signalement"
             end
           end
         else
-          errb = true
-          if err
-            flash[:danger] << " et précisez le type de signalement"
-          else
-            flash[:danger] = "Précisez le type de signalement"
-          end
+          params[:rencontre][:signalement] = nil
         end
-      else
-        params[:rencontre][:signalement] = nil
-      end
-      if @rencontre.accomp
-        if !@rencontre.type_accomp.empty?
-          if @rencontre.dnv
+        if @rencontre.accomp
+          if !@rencontre.type_accomp.empty?
+            if @rencontre.dnv
+              errc = true
+              if err || errb
+                flash[:danger] << " et accompagnement alors que la maraude s'est déplacée sans voir la personne"
+              else
+                flash[:danger] = "Erreur : accompagnement alors que la maraude s'est déplacée sans voir la personne"
+              end
+            end
+          else
             errc = true
             if err || errb
-              flash[:danger] << " et accompagnement alors que la maraude s'est déplacée sans voir la personne"
+              flash[:danger] << " et précisez le type d'accompagnement"
             else
-              flash[:danger] = "Erreur : accompagnement alors que la maraude s'est déplacée sans voir la personne"
+              flash[:danger] = "Précisez le type d'accompagnement"
             end
           end
         else
-          errc = true
-          if err || errb
-            flash[:danger] << " et précisez le type d'accompagnement"
-          else
-            flash[:danger] = "Précisez le type d'accompagnement"
-          end
+          params[:rencontre][:type_accomp] = nil
         end
-      else
-        params[:rencontre][:type_accomp] = nil
-      end
-      if !err && !errb && !errc
-        if @usager.fiche.present?
-          u_del = @usager.fiche.split("//")
-          rank = u_del.index(" #{@rencontre.type_renc} [#{@rencontre.date.strftime("%d/%m/%y")}] ")
-          if rank
-            while rank != nil
-              u_del = u_del[0..(rank-1)].concat(u_del[(rank+2)..(u_del.length-1)])
-              rank = u_del.index(" #{@rencontre.type_renc} [#{@rencontre.date.strftime("%d/%m/%y")}] ")
+        if !err && !errb && !errc
+          if @usager.fiche.present?
+            u_del = @usager.fiche.split("//")
+            rank = u_del.index(" #{@rencontre.type_renc} [#{@rencontre.date.strftime("%d/%m/%y")}] ")
+            if rank
+              while rank != nil
+                u_del = u_del[0..(rank-1)].concat(u_del[(rank+2)..(u_del.length-1)])
+                rank = u_del.index(" #{@rencontre.type_renc} [#{@rencontre.date.strftime("%d/%m/%y")}] ")
+              end
             end
+            rencontre_u << "#{u_del.join("//")}"
           end
-          rencontre_u << "#{u_del.join("//")}"
+          @usager.fiche = rencontre_u if rencontre_u
+          @usager.save
+          @rencontre.update_attributes(rencontre_params)
+          @rencontre.update_attribute(:nb_enf, 0) unless params[:rencontre][:nb_enf]
+          @rencontre.update_attribute(:prestas, params[:rencontre][:prestas].reject{ |a| a == '0' }.join(' #'))
+          @rencontre.update_attribute(:date, params[:rencontre][:date].to_date.strftime("%F"))
+          flash[:success] = "Rencontre mise à jour (Vérifiez que la rencontre avant mise à jour dans la fiche de suivi de l'usager a bien été retirée)"
+          redirect_to @usager
+        else
+          redirect_to id_rencontre_path(:id => @usager.id)
         end
-        @usager.fiche = rencontre_u if rencontre_u
-        @usager.save
-        @rencontre.update_attributes(rencontre_params)
-        @rencontre.update_attribute(:nb_enf, 0) unless params[:rencontre][:nb_enf]
-        @rencontre.update_attribute(:prestas, params[:rencontre][:prestas].reject{ |a| a == '0' }.join(' #'))
-        @rencontre.update_attribute(:date, params[:rencontre][:date].to_date.strftime("%F"))
-        flash[:success] = "Rencontre mise à jour (Vérifiez que la rencontre avant mise à jour dans la fiche de suivi de l'usager a bien été retirée)"
-        redirect_to @usager
       else
-        redirect_to id_rencontre_path(:id => @usager.id)
+        flash[:danger] = "Mise à jour impossible. Veillez à remplir les informations nécessaires (Date, type de rencontre). La rencontre existe peut-être déjà (mêmes date et type de rencontre avec l'usager)."
+        render 'edit'
       end
-    else
-      flash[:danger] = "Mise à jour impossible. Veillez à remplir les informations nécessaires (Date, type de rencontre). La rencontre existe peut-être déjà (mêmes date et type de rencontre avec l'usager)."
-      render 'edit'
     end
   end
 

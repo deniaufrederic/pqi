@@ -39,16 +39,21 @@ class UsersController < ApplicationController
 
   def create
   	@user = User.new(user_params)
-  	if @user.save && logged_in?
-  	  if params[:user][:admin] == '1'
-  	    flash[:success] = "Nouvel administrateur créé !"
-  	 	  redirect_to @user
-  	 	else
-     	  flash[:success] = "Nouvel utilisateur créé !"
-	  	  redirect_to @user
-	  	end
-  	else
-  	  render 'new'
+    if @user.benev? && @user.admin?
+      flash[:danger] = "Un utilisateur ne peut pas être bénévole et administrateur"
+      redirect_to new_user_path
+    else
+    	if @user.save && logged_in?
+    	  if params[:user][:admin] == '1'
+    	    flash[:success] = "Nouvel administrateur créé !"
+    	 	  redirect_to @user
+    	 	else
+       	  flash[:success] = "Nouvel utilisateur créé !"
+  	  	  redirect_to @user
+  	  	end
+    	else
+    	  render 'new'
+      end
     end
   end
 
