@@ -1,8 +1,12 @@
 <% provide(:title, @user.nom) %>
 
 <h1>
-  <%= "#{@user.nom.upcase} #{@user.prenom}" %><br>
-  <%= @user.identifiant %>
+  <%= @user.identifiant %> (<%= "#{@user.nom.upcase} #{@user.prenom}" %>)
+  <% if @user.benev? %>
+    <br>Bénévole
+  <% else %>
+    <br>Salarié
+  <% end %>
   <% if @user.admin? %>
     <br>Administrateur
   <% end %>

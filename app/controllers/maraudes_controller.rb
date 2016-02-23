@@ -95,10 +95,11 @@ class MaraudesController < ApplicationController
     villes = params[:maraude][:villes].reject{ |a| a == '0' }.join("\n")
     @maraude = Maraude.find(session[:stored_id])
     if @maraude.update_attribute(:villes, villes)
-      if params[:maraude][:intervenants_attributes] && @maraude.update_attribute(:intervenants_attributes, params[:maraude][:intervenants_attributes])
-        flash[:success] = "Modifications apportées"
-        redirect_to @maraude
+      if params[:maraude][:intervenants_attributes]
+        @maraude.update_attribute(:intervenants_attributes, params[:maraude][:intervenants_attributes])
       end
+      flash[:success] = "Modifications apportées"
+      redirect_to @maraude
     else
       flash[:danger] = "Problème inconnu, veuillez réessayer"
       redirect_to id_m_villes_path(id: @maraude.id)

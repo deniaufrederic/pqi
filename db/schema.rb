@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160219133207) do
+ActiveRecord::Schema.define(version: 20160222214905) do
 
   create_table "enfants", force: :cascade do |t|
     t.integer  "usager_id"
@@ -132,6 +132,7 @@ ActiveRecord::Schema.define(version: 20160219133207) do
     t.string   "identifiant"
     t.string   "password_digest"
     t.boolean  "admin",           default: false
+    t.boolean  "benev"
   end
 
   add_index "users", ["identifiant"], name: "index_users_on_identifiant", unique: true

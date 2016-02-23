@@ -7,6 +7,11 @@
                                        data: { confirm: "Etes-vous sûr(e) ?" } %>
     <% end %>
   <% end %><br>
+  <% if user.benev? %>
+    Bénévole<br>
+  <% else %>
+    Salarié<br>
+  <% end %>
   <% if user.admin? %>
   	Administrateur<br>
   <% end %>
