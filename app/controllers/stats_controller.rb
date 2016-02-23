@@ -2,6 +2,12 @@ class StatsController < ApplicationController
 before_action :logged_in_user, 	only: [:show, :create]
 
   def show
+    if session.has_key?('groupe')
+      session.delete(:usager_ids)
+      session.delete(:groupe)
+      session.delete(:date)
+      session.delete(:type_renc)
+    end
   	@ville = nil
   	@dates = nil
   	stats_ville

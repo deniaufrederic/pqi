@@ -3,6 +3,12 @@ class MaraudesController < ApplicationController
   before_action :admin_user, only: [:destroy]
 
   def index
+    if session.has_key?('groupe')
+      session.delete(:usager_ids)
+      session.delete(:groupe)
+      session.delete(:date)
+      session.delete(:type_renc)
+    end
     if params[:search]
       @maraudes = Maraude.search(params[:search]).paginate(page: params[:page], per_page: 5)
       if @maraudes.empty?
@@ -14,10 +20,22 @@ class MaraudesController < ApplicationController
   end
 
   def show
+    if session.has_key?('groupe')
+      session.delete(:usager_ids)
+      session.delete(:groupe)
+      session.delete(:date)
+      session.delete(:type_renc)
+    end
   	@maraude = Maraude.find(params[:id])
   end
 
   def new
+    if session.has_key?('groupe')
+      session.delete(:usager_ids)
+      session.delete(:groupe)
+      session.delete(:date)
+      session.delete(:type_renc)
+    end
     @maraude = Maraude.new
     @types =  [ ["Maraude salariés 1", "Maraude salariés 1"],
                 ["Maraude salariés 2", "Maraude salariés 2"],
@@ -44,6 +62,12 @@ class MaraudesController < ApplicationController
   end
 
   def villes
+    if session.has_key?('groupe')
+      session.delete(:usager_ids)
+      session.delete(:groupe)
+      session.delete(:date)
+      session.delete(:type_renc)
+    end
     store_id
     @villes = [ ["Aubervilliers", "Aubervilliers"],
                 ["Aulnay-sous-Bois", "Aulnay-sous-Bois"],

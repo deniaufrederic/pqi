@@ -2,15 +2,33 @@ class GroupesController < ApplicationController
   before_action :logged_in_user, only: [:index, :show, :edit, :update, :destroy]
 
   def index
+    if session.has_key?('groupe')
+      session.delete(:usager_ids)
+      session.delete(:groupe)
+      session.delete(:date)
+      session.delete(:type_renc)
+    end
   	@groupes = Groupe.paginate(page: params[:page], per_page: 20)
   end
 
   def show
+    if session.has_key?('groupe')
+      session.delete(:usager_ids)
+      session.delete(:groupe)
+      session.delete(:date)
+      session.delete(:type_renc)
+    end
   	@groupe = Groupe.find(params[:id])
   	@usagers = @groupe.usagers
   end
 
   def edit
+    if session.has_key?('groupe')
+      session.delete(:usager_ids)
+      session.delete(:groupe)
+      session.delete(:date)
+      session.delete(:type_renc)
+    end
   	@groupe = Groupe.find(params[:id])
   end
 

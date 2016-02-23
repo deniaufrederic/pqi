@@ -4,14 +4,32 @@ class UsersController < ApplicationController
   before_action :admin_user,		  only: [:new, :create, :destroy]
 
   def index
+    if session.has_key?('groupe')
+      session.delete(:usager_ids)
+      session.delete(:groupe)
+      session.delete(:date)
+      session.delete(:type_renc)
+    end
   	@users = User.paginate(page: params[:page], per_page: 10)
   end
 
   def show
+    if session.has_key?('groupe')
+      session.delete(:usager_ids)
+      session.delete(:groupe)
+      session.delete(:date)
+      session.delete(:type_renc)
+    end
   	@user = User.find(params[:id])
   end
 
   def new
+    if session.has_key?('groupe')
+      session.delete(:usager_ids)
+      session.delete(:groupe)
+      session.delete(:date)
+      session.delete(:type_renc)
+    end
   	@user = User.new
   	if logged_in?
   		admin_user
@@ -34,6 +52,12 @@ class UsersController < ApplicationController
   end
 
   def edit
+    if session.has_key?('groupe')
+      session.delete(:usager_ids)
+      session.delete(:groupe)
+      session.delete(:date)
+      session.delete(:type_renc)
+    end
   	@user = User.find(params[:id])
   end
 
