@@ -2,8 +2,8 @@
 <% provide(:button_text, 'Sauvegarder les modifications') %>
 
 <h1>
-<% if current_user?(@user) %>Editez votre profil
-<% else %>Editez le profil de <%= "#{@user.nom} #{@user.prenom}" %>
+<% if current_user?(@user) %>Editer votre profil
+<% else %>Editer le profil de <%= "#{@user.nom} #{@user.prenom}" %>
 <% end %>
 </h1>
 

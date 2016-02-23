@@ -146,7 +146,7 @@
       Déroutage(s) : <pre class="maraude-list"><%= der %></pre>
     <% end %>
 
-    <%= link_to "Modifier villes et intervenants", id_m_villes_path(:id => maraude.id) %>
+    <%= link_to "Modifier villes et intervenants", id_m_villes_path(:id => maraude.id) unless current_user.benev? %>
   </td>
   <td>
     <pre class="maraude-list text-justify"><%= disp_renc %></pre>

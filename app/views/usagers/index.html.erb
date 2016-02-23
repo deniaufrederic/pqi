@@ -22,7 +22,9 @@
     <th class="identité">Identité</th>
     <th class="adresse">Adresse</th>
     <th class="rencontres">Dernières rencontres</th>
-    <th class="supp">Edition et Suppression (privilège admin)</th>
+    <% unless current_user.admin? %>
+      <th class="supp">Edition et Suppression (privilège admin)</th>
+    <% end %>
   </tr>
   <% if !@usagers.empty? %>
     <%= render @usagers %>

@@ -104,7 +104,11 @@ class UsagersController < ApplicationController
         @usager.save
       end
       flash[:success] = "Nouvel usager ajouté !"
-      redirect_to id_edit_comp_path(id: @usager.id)
+      unless current_user.benev?
+        redirect_to id_edit_comp_path(id: @usager.id)
+      else
+        redirect_to id_rencontre_path(id: @usager.id)
+      end
     else
       if params[:add_inconnu]
         flash[:danger] = "Renseignez la ville où se trouve l'usager inconnu."

@@ -7,12 +7,15 @@
 <% end %>
 
 <h1>
-  <%= "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %><br>
-  <% if logged_in? && current_user.admin? %>
-    <%= link_to "Supprimer", @usager, method: :delete,
-                                      data: { confirm: "Etes-vous sûr(e) ?" } %>
+  <%= "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %>
+  <% unless current_user.benev? %>
+    <br>
+    <% if logged_in? && current_user.admin? %>
+      <%= link_to "Supprimer", @usager, method: :delete,
+                                        data: { confirm: "Etes-vous sûr(e) ?" } %>
+    <% end %>
+    | <%= link_to "Editer", edit_usager_path(@usager) %>
   <% end %>
-  | <%= link_to "Editer", edit_usager_path(@usager) %>
 </h1>
 
 <h2 class="text-center">
@@ -251,109 +254,110 @@
     </table>
   </div>
 
+  <% unless current_user.benev? %>
+    <h3>Informations complémentaires</h3>
 
-  <h3>Informations complémentaires</h3>
-
-  <div>
-    <div id="tabs">
-      <ul>
-        <li><a href="#tab-1">Ressources</a></li>
-        <li><a href="#tab-2">Suivi social</a></li>
-        <li><a href="#tab-3">Suivi médical</a></li>
-        <li><a href="#tab-4">Autres informations</a></li>
-        <%= link_to "Editer", id_edit_comp_path(id: @usager.id), class: "btn btn-info", id: "edit-comp-link" %>
-      </ul>
-      <div id="tab-1">
-        <pre class="maraude-list lead"><%= @usager.ressources %></pre>
-        <p class="lead"><%= "Montant : #{@usager.montant} €" if @usager.montant.present? %></p>
-      </div>
-      <div id="tab-2">
-        <p class="lead">
-          <% if @usager.sejour %>
-            Carte de séjour
-          <% end %>
-          <% if @usager.cfr %>
-            CNI/Passeport
-          <% end %>
-          <% if @usager.carte_date.present? %>
-            <%= " (Valide jusqu'au #{@usager.carte_date.strftime("%d/%m/%y")})" %>
-          <% end %>
-        </p>
-
-        <% if @usager.dom %>
-          <p class="lead">Domiciliation
-          <%= " : #{@usager.dom_org}" if @usager.dom_org.present? %>
-          <%= " (#{@usager.dom_adr})" if @usager.dom_adr.present? %></p>
-        <% end %>
-
-        <p class="lead">
-          <% if @usager.tut %>
-            Tutelle
-          <% end %>
-          <% if @usager.cur %>
-            Curatelle
-          <% end %>
-          <% if @usager.tutcur_org.present? %>
-            <%= " : #{@usager.tutcur_org}" if @usager.tutcur_org.present? %>
-          <% end %>
-        </p>
-
-        <% if @usager.suivi %>
-          <p class="lead">Service de suivi social
-          <%= " : #{@usager.suivi_org}" if @usager.suivi_org.present? %></p>
-        <% end %>
-      </div>
-      <div id="tab-3">
-        <pre class="maraude-list lead"><%= @usager.prestas_med %></pre>
-        <% if @usager.medecin != "0" %>
+    <div>
+      <div id="tabs">
+        <ul>
+          <li><a href="#tab-1">Ressources</a></li>
+          <li><a href="#tab-2">Suivi social</a></li>
+          <li><a href="#tab-3">Suivi médical</a></li>
+          <li><a href="#tab-4">Autres informations</a></li>
+          <%= link_to "Editer", id_edit_comp_path(id: @usager.id), class: "btn btn-info", id: "edit-comp-link" %>
+        </ul>
+        <div id="tab-1">
+          <pre class="maraude-list lead"><%= @usager.ressources %></pre>
+          <p class="lead"><%= "Montant : #{@usager.montant} €" if @usager.montant.present? %></p>
+        </div>
+        <div id="tab-2">
           <p class="lead">
-            Médecin traitant
-            <%= " : #{@usager.medecin_infos}" if @usager.medecin_infos.present? %>
+            <% if @usager.sejour %>
+              Carte de séjour
+            <% end %>
+            <% if @usager.cfr %>
+              CNI/Passeport
+            <% end %>
+            <% if @usager.carte_date.present? %>
+              <%= " (Valide jusqu'au #{@usager.carte_date.strftime("%d/%m/%y")})" %>
+            <% end %>
           </p>
-        <% else %>
-          <p class="lead">Pas de médecin traitant connu</p>
-        <% end %>
-        <% if @usager.pb_sante != "0" %>
-          <p class="lead">Problématique de santé</p>
-        <% else %>
-          <p class="lead">Pas de problèmes de santé connus</p>
-        <% end %>
-        <% if @usager.infos_sante.present? %>
-          <pre class="maraude-list lead"><%= @usager.infos_sante %></pre>
-        <% end %>
+
+          <% if @usager.dom %>
+            <p class="lead">Domiciliation
+            <%= " : #{@usager.dom_org}" if @usager.dom_org.present? %>
+            <%= " (#{@usager.dom_adr})" if @usager.dom_adr.present? %></p>
+          <% end %>
+
+          <p class="lead">
+            <% if @usager.tut %>
+              Tutelle
+            <% end %>
+            <% if @usager.cur %>
+              Curatelle
+            <% end %>
+            <% if @usager.tutcur_org.present? %>
+              <%= " : #{@usager.tutcur_org}" if @usager.tutcur_org.present? %>
+            <% end %>
+          </p>
+
+          <% if @usager.suivi %>
+            <p class="lead">Service de suivi social
+            <%= " : #{@usager.suivi_org}" if @usager.suivi_org.present? %></p>
+          <% end %>
+        </div>
+        <div id="tab-3">
+          <pre class="maraude-list lead"><%= @usager.prestas_med %></pre>
+          <% if @usager.medecin != "0" %>
+            <p class="lead">
+              Médecin traitant
+              <%= " : #{@usager.medecin_infos}" if @usager.medecin_infos.present? %>
+            </p>
+          <% else %>
+            <p class="lead">Pas de médecin traitant connu</p>
+          <% end %>
+          <% if @usager.pb_sante != "0" %>
+            <p class="lead">Problématique de santé</p>
+          <% else %>
+            <p class="lead">Pas de problèmes de santé connus</p>
+          <% end %>
+          <% if @usager.infos_sante.present? %>
+            <pre class="maraude-list lead"><%= @usager.infos_sante %></pre>
+          <% end %>
+        </div>
+        <div id="tab-4">
+          <% if @usager.autres_infos.present? %>
+            <pre class="maraude-list lead"><%= @usager.autres_infos %></pre>
+          <% else %>
+            <pre class="maraude-list lead">Pas d'autres informations.</pre>
+          <% end %>
+        </div>
       </div>
-      <div id="tab-4">
-        <% if @usager.autres_infos.present? %>
-          <pre class="maraude-list lead"><%= @usager.autres_infos %></pre>
-        <% else %>
-          <pre class="maraude-list lead">Pas d'autres informations.</pre>
-        <% end %>
+    </div>
+
+    <h3>Suivi</h3>
+
+    <div class="row">
+      <div class="col-md-6 col-sm-6 col-xs-6">
+        <h3 class="text-center">
+          <%= link_to "Fiche de rencontres",  id_fiche_path(:id => @usager.id),
+                                              class: "btn btn-info btn-lg" %>
+        </h3>
+
+        <pre class="pre-scrollable text-justify"><%= @usager.fiche %></pre>
+      </div>
+
+      <div class="col-md-6 col-sm-6 col-xs-6">
+        <h3 class="text-center">
+          <%= link_to "Fiche de suivi jour",  id_fiche_jour_path(:id => @usager.id),
+                                              class: "btn btn-info btn-lg" %>
+        </h3>
+
+        <pre class="pre-scrollable text-justify"><%= @usager.fiche_jour %></pre>
       </div>
     </div>
-  </div>
-
-  <h3>Suivi</h3>
-
-  <div class="row">
-    <div class="col-md-6 col-sm-6 col-xs-6">
-      <h3 class="text-center">
-        <%= link_to "Fiche de rencontres",  id_fiche_path(:id => @usager.id),
-                                            class: "btn btn-info btn-lg" %>
-      </h3>
-
-      <pre class="pre-scrollable text-justify"><%= @usager.fiche %></pre>
-    </div>
-
-    <div class="col-md-6 col-sm-6 col-xs-6">
-      <h3 class="text-center">
-        <%= link_to "Fiche de suivi jour",  id_fiche_jour_path(:id => @usager.id),
-                                            class: "btn btn-info btn-lg" %>
-      </h3>
-
-      <pre class="pre-scrollable text-justify"><%= @usager.fiche_jour %></pre>
-    </div>
-  </div>
-
+  <% end %>
+  
 </div>
 
 <div class="text-right lead">

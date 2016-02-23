@@ -45,11 +45,11 @@
     <%= link_to "Ajouter une rencontre", id_rencontre_path(:id => usager.id), id: 'ajout-rencontre', "data-no-turbolink" => true %>
 
   </td>
-  <td>
-    <%= link_to "Modifier", edit_usager_path(usager) %><br>
-    <% if current_user.admin? %>
-      <%= link_to "Supprimer", usager, method: :delete,
-                                       data: { confirm: "Etes-vous sûr(e) ?" } %>
-    <% end %>
-  </td>
+  <% unless current_user.admin? %>
+    <td>
+      <%= link_to "Modifier", edit_usager_path(usager) %><br>
+      <%= link_to "Supprimer", usager,  method: :delete,
+                                        data: { confirm: "Etes-vous sûr(e) ?" } %>
+    </td>
+  <% end %>
 </tr>

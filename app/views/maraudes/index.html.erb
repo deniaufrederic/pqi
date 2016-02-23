@@ -1,8 +1,10 @@
 <% provide(:title, 'Maraudes') %>
 
 <h1>
-  Index des maraudes<br>
-  <%= link_to "Nouvelle maraude", new_maraude_path, class: "btn btn-info" %>
+  Index des maraudes
+  <% unless current_user.benev? %>
+    <br><%= link_to "Nouvelle maraude", new_maraude_path, class: "btn btn-info" %>
+  <% end %>
 </h1>
 
 <%= will_paginate %>
