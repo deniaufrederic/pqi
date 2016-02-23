@@ -17,4 +17,12 @@ class ApplicationController < ActionController::Base
     def admin_user
       redirect_to(root_url) unless current_user.admin?
     end
+
+    def benev_user
+      if current_user.benev?
+        store_location
+        flash[:danger] = "Accès réservé aux salariés"
+        redirect_back_or(root_url)
+      end
+    end
 end

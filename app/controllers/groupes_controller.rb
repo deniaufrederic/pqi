@@ -1,5 +1,6 @@
 class GroupesController < ApplicationController
-  before_action :logged_in_user, only: [:index, :show, :edit, :update, :destroy]
+  before_action :logged_in_user,  only: [:index, :show, :edit, :update, :destroy]
+  before_action :benev_user,      only: [:edit, :update, :destroy]
 
   def index
     if session.has_key?('groupe')

@@ -1,11 +1,13 @@
 <% provide(:title, @groupe.nom) %>
 
 <h1>
-  Groupe "<%= @groupe.nom %>"<br>
-  <div class="btn-group">
-    <%= link_to "Editer", edit_groupe_path(@groupe), class: "btn btn-info" %>
-    <%= link_to "Supprimer", @groupe, method: :delete, data: { confirm: "Etes-vous sûr(e) ?" }, class: "btn btn-danger" unless !current_user.admin? %>
-  </div>
+  Groupe "<%= @groupe.nom %>"
+  <% unless current_user.benev? %>
+    <br><div class="btn-group">
+      <%= link_to "Editer", edit_groupe_path(@groupe), class: "btn btn-info" %>
+      <%= link_to "Supprimer", @groupe, method: :delete, data: { confirm: "Etes-vous sûr(e) ?" }, class: "btn btn-danger" unless !current_user.admin? %>
+    </div>
+  <% end %>
 </h1>
 <h1>
   <small><%= pluralize(@groupe.usagers.count, "membre") %></small>

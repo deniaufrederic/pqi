@@ -1,5 +1,6 @@
 class StatsController < ApplicationController
-before_action :logged_in_user, 	only: [:show, :create]
+  before_action :logged_in_user, 	only: [:show, :create]
+  before_action :benev_user,      only: [:show, :create]
 
   def show
     if session.has_key?('groupe')

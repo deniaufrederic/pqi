@@ -1,6 +1,7 @@
 class UsagersController < ApplicationController
   before_action :logged_in_user,  only: [:new, :show, :index, :create, :edit, :update, :destroy, :pqi, :fiche, :fiche_jour, :edit_comp, :post_comp]
   before_action :admin_user,      only: :destroy
+  before_action :benev_user,      only: [:edit, :update, :destroy, :fiche, :fiche_jour, :edit_comp, :post_comp]
 
   def new
     if session.has_key?('groupe')

@@ -1,6 +1,7 @@
 class MaraudesController < ApplicationController
-  before_action :logged_in_user, only: [:new, :create, :index, :show, :villes, :post_villes, :destroy]
-  before_action :admin_user, only: [:destroy]
+  before_action :logged_in_user,  only: [:new, :create, :index, :show, :villes, :post_villes, :destroy]
+  before_action :admin_user,      only: :destroy
+  before_action :benev_user,      only: [:new, :create, :villes, :post_villes, :destroy]
 
   def index
     if session.has_key?('groupe')
