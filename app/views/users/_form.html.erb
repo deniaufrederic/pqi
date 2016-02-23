@@ -10,11 +10,19 @@
   <%= f.label :identifiant %>
   <%= f.text_field :identifiant, class: 'form-control' %><br>
 
-  <%= f.label :password, "Mot de passe" %>
-  <%= f.text_field :password, class: 'form-control' %><br>
+  <% if current_user.admin? %>
+    <%= f.label :password, "Mot de passe" %>
+    <%= f.text_field :password, class: 'form-control' %><br>
 
-  <%= f.label :password_confirmation, "Confirmation" %>
-  <%= f.text_field :password_confirmation, class: 'form-control' %><br>
+    <%= f.label :password_confirmation, "Confirmation" %>
+    <%= f.text_field :password_confirmation, class: 'form-control' %><br>
+  <% else %>
+    <%= f.label :password, "Mot de passe" %>
+    <%= f.password_field :password, class: 'form-control' %><br>
+
+    <%= f.label :password_confirmation, "Confirmation" %>
+    <%= f.password_field :password_confirmation, class: 'form-control' %><br>
+  <% end %>
 
   <% if logged_in? && current_user.admin? && !current_user?(@user) %>
       <div class="text-center form-inline">
