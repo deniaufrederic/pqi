@@ -22,7 +22,7 @@
     <th>Identité</th>
     <th>Adresse</th>
     <th>Dernières rencontres</th>
-    <% unless current_user.admin? %>
+    <% if current_user.admin? %>
       <th>Edition et Suppression (privilège admin)</th>
     <% end %>
   </tr>
