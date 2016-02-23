@@ -39,7 +39,7 @@ class RencontresController < ApplicationController
   def create
     @usager = Usager.find_by(id: session[:stored_id])
     @rencontre = @usager.rencontres.build(rencontre_params)
-    if session.has_key?('usagers_ids')
+    if session.has_key?('groupe')
       @rencontre.date = session[:date]
       @rencontre.type_renc = session[:type_renc]
     else
@@ -426,6 +426,7 @@ class RencontresController < ApplicationController
                                         :dnv,
                                         :nb_enf,
                                         :accomp,
-                                        :type_accomp)
+                                        :type_accomp,
+                                        :prestas)
     end
 end
