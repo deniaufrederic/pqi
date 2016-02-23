@@ -3,7 +3,7 @@ class StaticController < ApplicationController
 
   def guide
   	if session.has_key?('groupe')
-      session.delete(:usager_ids)
+      session.delete(:usagers_ids)
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)

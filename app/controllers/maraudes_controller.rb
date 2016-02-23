@@ -5,7 +5,7 @@ class MaraudesController < ApplicationController
 
   def index
     if session.has_key?('groupe')
-      session.delete(:usager_ids)
+      session.delete(:usagers_ids)
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
@@ -22,7 +22,7 @@ class MaraudesController < ApplicationController
 
   def show
     if session.has_key?('groupe')
-      session.delete(:usager_ids)
+      session.delete(:usagers_ids)
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
@@ -32,7 +32,7 @@ class MaraudesController < ApplicationController
 
   def new
     if session.has_key?('groupe')
-      session.delete(:usager_ids)
+      session.delete(:usagers_ids)
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
@@ -64,7 +64,7 @@ class MaraudesController < ApplicationController
 
   def villes
     if session.has_key?('groupe')
-      session.delete(:usager_ids)
+      session.delete(:usagers_ids)
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)

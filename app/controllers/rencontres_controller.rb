@@ -207,7 +207,7 @@ class RencontresController < ApplicationController
 
   def edit_form
     if session.has_key?('groupe')
-      session.delete(:usager_ids)
+      session.delete(:usagers_ids)
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
@@ -265,7 +265,7 @@ class RencontresController < ApplicationController
 
   def edit
     if session.has_key?('groupe')
-      session.delete(:usager_ids)
+      session.delete(:usagers_ids)
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
