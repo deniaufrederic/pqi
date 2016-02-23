@@ -39,10 +39,11 @@ class RencontresController < ApplicationController
   def create
     @usager = Usager.find_by(id: session[:stored_id])
     @rencontre = @usager.rencontres.build(rencontre_params)
-    @rencontre.date = params[:rencontre][:date].to_date.strftime("%F")
     if session.has_key?(':usagers_ids')
       @rencontre.date = session[:date]
       @rencontre.type_renc = session[:type_renc]
+    else
+      @rencontre.date = params[:rencontre][:date].to_date.strftime("%F")
     end
     if @rencontre.valid?
       if @rencontre.type_renc.split(' ').first == "Maraude" && !@rencontre.prev
