@@ -52,7 +52,8 @@ class UsagersController < ApplicationController
                 ["Vaujours", "Vaujours"],
                 ["Villemomble", "Villemomble"],
                 ["Villepinte", "Villepinte"],
-                ["Villetaneuse", "Villetaneuse"]]
+                ["Villetaneuse", "Villetaneuse"],
+                ["Ville inconnue", "Ville inconnue"]]
     gon.noms = []
     gon.prenoms = []
     Usager.all.each do |u|
@@ -168,7 +169,8 @@ class UsagersController < ApplicationController
                 ["Vaujours", "Vaujours"],
                 ["Villemomble", "Villemomble"],
                 ["Villepinte", "Villepinte"],
-                ["Villetaneuse", "Villetaneuse"]]
+                ["Villetaneuse", "Villetaneuse"],
+                ["Ville inconnue", "Ville inconnue"]]
   	@usager = Usager.find(params[:id])
   end
 
