@@ -41,6 +41,9 @@ class RencontresController < ApplicationController
     store_id
     @usager = Usager.find(session[:stored_id])
     @rencontre = @usager.rencontres.build(rencontre_params)
+    if current_user.benev?
+      @rencontre.prev = false
+    end
     if session.has_key?('groupe')
       @rencontre.date = session[:date]
       @rencontre.type_renc = session[:type_renc]
@@ -329,6 +332,9 @@ class RencontresController < ApplicationController
     else
       if @rencontre.update_attributes(rencontre_params)
         @rencontre.update_attribute(:date, params[:rencontre][:date].to_date.strftime("%F"))
+        if current_user.benev?
+          @rencontre.update_attribute(:prev, false)
+        end
         if @rencontre.type_renc.split(' ').first == "Maraude" && !@rencontre.prev
           mar = true
           if !Maraude.find_by(date: @rencontre.date, type_maraude: @rencontre.type_renc).present?
