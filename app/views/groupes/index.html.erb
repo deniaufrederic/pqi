@@ -2,30 +2,41 @@
 
 <h1>Index des groupes</h1>
 
-<% c = (@groupes.count / 4).floor %>
-<% r = @groupes.count % 4 %>
-<% i = 0 %>
-<% while i != c %>
-  <div class="row groupes">
-    <% @groupes[(4*i)..(4*(i+1) - 1)].each do |u| %>
-      <div class="col-md-3 col-sm-3 col-xs-3 lead">
-	      <%= link_to "#{u.nom}", u %>
-        <span class="badge"><%= u.usagers.count %></span>
-  	  </div>
-    <% end %>
-    <hr>
+<%= form_tag(groupes_path, :method => "get", id: "search-form", role: 'search', class: "navbar navbar-search") do %>
+  <div class="form-group col-md-4 col-sm-4 col-xs-4">
+    <%= text_field_tag :search, params[:search], placeholder: "Rechercher des groupes", class: 'form-control' %>
   </div>
-  <% i += 1 %>
+  <%= submit_tag "Rechercher", class: 'btn btn-default' %>
 <% end %>
-<% if r != 0 %>
-  <div class="row groupes">
-    <% @groupes[(4*c)..(4*c + r)].each do |u| %>
-      <div class="col-md-3 col-sm-3 col-xs-3 lead">
-        <%= link_to "#{u.nom}", u %>
-        <span class="badge"><%= u.usagers.count %></span>
-      </div>
-    <% end %>
-  </div>
+
+<% if !@groupes.empty? %>
+  <% c = (@groupes.count / 4).floor %>
+  <% r = @groupes.count % 4 %>
+  <% i = 0 %>
+  <% while i != c %>
+    <div class="row groupes">
+      <% @groupes[(4*i)..(4*(i+1) - 1)].each do |u| %>
+        <div class="col-md-3 col-sm-3 col-xs-3 lead">
+  	      <%= link_to "#{u.nom}", u %>
+          <span class="badge"><%= u.usagers.count %></span>
+    	  </div>
+      <% end %>
+      <hr>
+    </div>
+    <% i += 1 %>
+  <% end %>
+  <% if r != 0 %>
+    <div class="row groupes">
+      <% @groupes[(4*c)..(4*c + r)].each do |u| %>
+        <div class="col-md-3 col-sm-3 col-xs-3 lead">
+          <%= link_to "#{u.nom}", u %>
+          <span class="badge"><%= u.usagers.count %></span>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% else %>
+  <p>Aucune maraude correspondant au(x) terme(s) : "<%= params[:search] %>".</p>
 <% end %>
 
 <%= will_paginate %>

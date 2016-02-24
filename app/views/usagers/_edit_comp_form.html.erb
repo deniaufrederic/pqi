@@ -126,8 +126,13 @@
       </div>
       <hr style="border-top:1px solid #ddd;">
 
-      <div class="form-inline">
-        <%= f.check_box :pb_sante, class: 'form-control check' %><span> Problématique de santé</span>
+      <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-6 form-inline">
+          <%= f.check_box :pb_sante, class: 'form-control check' %><span> Problématique de santé</span>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6 form-inline">
+          <%= f.check_box :mobil, class: 'form-control check' %><span> Mobilité réduite</span>
+        </div>
       </div>
       <hr style="border-top:1px solid #ddd;">
 

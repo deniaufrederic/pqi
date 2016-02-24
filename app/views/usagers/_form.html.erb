@@ -74,6 +74,19 @@
 
   <% unless current_user.benev? %>
     <div class="part part-hover">
+      <h3>Référent</h3>
+
+      <div class="form-group">
+        <%= f.label :ref, "Nom", class: "control-label col-md-3 col-sm-3 col-xs-3" %>
+        <div class="col-md-9 col-sm-9 col-xs-9">
+          <%= f.text_field :ref, data: {autocomplete_source: Intervenant.where(ref: true).order(:nom).map(&:nom)}, class: 'form-control' %>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="part part-hover">
       <h3>Groupe</h3>
 
       <div class="form-group">

@@ -4,3 +4,6 @@
 jQuery ->
   $('#usager_groupe_nom').autocomplete
   	source: $('#usager_groupe_nom').data('autocomplete-source')
+
+  $('#usager_ref').autocomplete
+  	source: $('#usager_ref').data('autocomplete-source')

@@ -71,6 +71,9 @@ class UsagersController < ApplicationController
     end
     if params[:search]
       @usagers = Usager.search(params[:search]).paginate(page: params[:page], per_page: 50)
+      if @usagers.empty?
+        @usagers = Usager.search(params[:search].split('/').reverse.join('-')).paginate(page: params[:page], per_page: 50)
+      end
     else
       @usagers = Usager.paginate(page: params[:page], per_page: 50)
     end
@@ -391,6 +394,7 @@ class UsagersController < ApplicationController
                                       :groupe_nom,
                                       :ressources,
                                       :montant,
+                                      :ref,
                                       enfants_attributes: [ :id,
                                                             :nom,
                                                             :prenom,
@@ -415,6 +419,7 @@ class UsagersController < ApplicationController
                                       :medecin,
                                       :medecin_infos,
                                       :pb_sante,
+                                      :mobil,
                                       :infos_sante,
                                       :autres_infos)
     end

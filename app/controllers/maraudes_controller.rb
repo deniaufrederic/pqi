@@ -145,6 +145,7 @@ class MaraudesController < ApplicationController
                                       :type_maraude,
                                       :villes,
                                       intervenants_attributes: [:nom,
+                                                                :ref,
                                                                 :_destroy])
     end
 end

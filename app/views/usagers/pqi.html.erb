@@ -58,7 +58,6 @@
       <th class="adresse">Adresse</th>
       <th class="rencontres">Dernières rencontres</th>
       <th class="notes">Observations</th>
-      <th class="annotations">Annotations</th>
     </tr>
     <% @usagers.each do |usager| %>
       <tr id="table-pqi">
@@ -72,6 +71,9 @@
           <% end %>
           <% if usager.tel? %>
             <br><%= "#{usager.tel}" %>
+          <% end %>
+          <% if usager.ref.present? %>
+            <br><small>Référent : <%= usager.ref %></small>
           <% end %>
           <% if usager.groupe %>
             <br><%= link_to "#{usager.groupe.nom}", usager.groupe %>
@@ -94,7 +96,6 @@
           <%= link_to "Ajouter une rencontre", id_rencontre_path(:id => usager.id), id: 'ajout-rencontre', "data-no-turbolink" => true %>
         </td>
         <td><%= "#{usager.notes}" %></td>
-        <td></td>
       </tr>
     <% end %>
   <% end %>

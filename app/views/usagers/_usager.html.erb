@@ -17,6 +17,9 @@
     <% if usager.tel? %>
       <br><%= "#{usager.tel}" %>
     <% end %>
+    <% if usager.ref.present? %>
+      <br><small>Référent : <%= usager.ref %></small>
+    <% end %>
     <% if usager.groupe %>
       <br><%= link_to "#{usager.groupe.nom}", usager.groupe %>
     <% end %>

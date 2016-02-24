@@ -6,17 +6,20 @@
   <% provide(:title, "#{@usager.sexe} #{@usager.prenom}") %>
 <% end %>
 
-<h1>
-  <%= "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %>
-  <% unless current_user.benev? %>
-    <br>
+<h1><%= "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %></h1>
+  
+<% if @usager.ref.present? %>
+  <h2 class="text-center"><small>Référent : <%= @usager.ref %></small></h2>
+<% end %>
+<% unless current_user.benev? %>
+  <h2 class="text-center">
     <% if logged_in? && current_user.admin? %>
       <%= link_to "Supprimer", @usager, method: :delete,
                                         data: { confirm: "Etes-vous sûr(e) ?" } %>
     <% end %>
     | <%= link_to "Editer", edit_usager_path(@usager) %>
-  <% end %>
-</h1>
+  </h2>
+<% end %>
 
 <h2 class="text-center">
   <%= form_for(@usager, html: { class: 'form-inline' }) do |f| %>
@@ -320,6 +323,9 @@
             <p class="lead">Problématique de santé</p>
           <% else %>
             <p class="lead">Pas de problèmes de santé connus</p>
+          <% end %>
+          <% if @usager.mobil != "0" %>
+            <p class="lead">Mobilité réduite</p>
           <% end %>
           <% if @usager.infos_sante.present? %>
             <pre class="maraude-list lead"><%= @usager.infos_sante %></pre>
