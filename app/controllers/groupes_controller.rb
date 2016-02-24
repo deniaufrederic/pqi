@@ -10,7 +10,7 @@ class GroupesController < ApplicationController
       session.delete(:date)
       session.delete(:type_renc)
     end
-  	@groupes = Groupe.paginate(page: params[:page], per_page: 20)
+  	@groupes = Groupe.order('nom ASC').paginate(page: params[:page], per_page: 20)
   end
 
   def show
