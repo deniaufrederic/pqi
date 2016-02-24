@@ -128,7 +128,7 @@ tr.tr-center {
   padding: 50px;
 }
 
-/* usagers index */
+/* indexes */
 
 .table-hover tr.pqi:hover th,
 .table-hover tr.pqi:hover td {
@@ -138,6 +138,10 @@ tr.tr-center {
 .table-hover tr.no-pqi:hover th,
 .table-hover tr.no-pqi:hover td {
   background-color: rgba(205,92,92,0.25);
+}
+
+div.row.usagers, div.row.groupes {
+    margin-bottom: 20px;
 }
 
 /* pqi */
@@ -236,25 +240,35 @@ blockquote#enfants {
     font-size: 14px;
 }
 
-div.form-horizontal {
-    div.part {
-        padding: 10px 40px;
-        margin-bottom: 10px;
-        border: 1px solid white;
-        border-radius: 6px;
-        background-color: white;
-        transition: 0.4s;
-        h3 {
-            padding-bottom: 30px;
-        }
-        &.part-hover:hover {
-            border: 1px solid #eee;
-            background-color: #eee;
-        }
-        &.part-hover.focused {
-            border: 1px solid #ccc;
-            background-color: #ccc;
-        }
+div.part {
+    padding: 10px 40px;
+    margin-bottom: 10px;
+    border: 1px solid white;
+    border-radius: 6px;
+    background-color: white;
+    transition: 0.4s;
+    &.necessary {
+        border: 1px solid rgba(176,196,222,0.3);
+        background-color: rgba(176,196,222,0.3);
+    }
+    h3 {
+        padding-bottom: 30px;
+    }
+    &.part-hover:hover {
+        border: 1px solid #eee;
+        background-color: #eee;
+    }
+    &.part-hover.necessary:hover {
+        border: 1px solid rgb(176,196,222);
+        background-color: rgb(176,196,222);
+    }
+    &.part-hover.focused {
+        border: 1px solid #ccc;
+        background-color: #ccc;
+    }
+    &.part-hover.necessary.focused {
+        border: 1px solid rgb(176,196,222);
+        background-color: rgb(176,196,222);
     }
 }
 

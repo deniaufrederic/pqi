@@ -32,11 +32,18 @@ $(function() {
 		if($(this).is(":checked")) {
 			$(this).parent().children("input:not(:checked)").addClass("no-disp");
 			$(this).parent().children("input:not(:checked) + span").addClass("no-disp");
-       		$(this).parent().next().addClass("disp");
+       		$(this).parent().parent().children(".appear").addClass("disp");
      	} else {
      		$(this).parent().children("input:not(:checked)").removeClass("no-disp");
      		$(this).parent().children("input:not(:checked) + span").removeClass("no-disp");
-       		$(this).parent().next().removeClass("disp");
+       		$(this).parent().parent().children(".appear").removeClass("disp");
+     	}
+	});
+	$( ".check.sig" ).click(function() {
+		if($(this).is(":checked")) {
+       		$(this).parent().parent().children(".appear").addClass("disp");
+     	} else {
+       		$(this).parent().parent().children(".appear").removeClass("disp");
      	}
 	});
 });
@@ -46,10 +53,28 @@ $(function() {
 		if($(this).is(":checked")) {
 			$(this).parent().children("input:not(:checked)").addClass("no-disp");
 			$(this).parent().children("input:not(:checked) + span").addClass("no-disp");
-	   		$(this).parent().next().addClass("disp");
+	   		$(this).parent().parent().children(".appear").addClass("disp");
      	}
 	});
+	$( ".check.sig" ).each(function() {
+		if($(this).is(":checked")) {
+	   		$(this).parent().parent().children(".appear").addClass("disp");
+	   		if($("#rencontre_signalement").val() == "Signalement tiers") {
+				$(this).parent().parent().parent().children(".appear").addClass("disp");
+			}
+		} 
+	});
 });
+
+$(document).ready(function() {
+	$("#rencontre_signalement").change(function() {
+		if($(this).val() == "Signalement tiers") {
+			$(this).parent().parent().parent().children(".appear").addClass("disp");
+		} else {
+			$(this).parent().parent().parent().children(".appear").removeClass("disp");
+		}
+	})
+})
 
 $(function() {
 	$("input").focus(function() {
@@ -57,12 +82,6 @@ $(function() {
 	});
 	$("input").blur(function() {
 		$(this).parent().parent().parent(".part").removeClass("focused");
-	});
-	$("input.check").focus(function() {
-		$(this).parent().parent(".part").addClass("focused");
-	});
-	$("input.check").blur(function() {
-		$(this).parent().parent(".part").removeClass("focused");
 	});
 	$("textarea").focus(function() {
 		$(this).parent().parent().parent(".part").addClass("focused");
@@ -75,6 +94,18 @@ $(function() {
 	});
 	$("select").blur(function() {
 		$(this).parent().parent().parent(".part").removeClass("focused");
+	});
+	$(".five-lv").focus(function() {
+		$(this).parent().parent().parent().parent().parent(".part").addClass("focused");
+	});
+	$(".five-lv").blur(function() {
+		$(this).parent().parent().parent().parent().parent(".part").removeClass("focused");
+	});
+	$(".two-lv").focus(function() {
+		$(this).parent().parent(".part").addClass("focused");
+	});
+	$(".two-lv").blur(function() {
+		$(this).parent().parent(".part").removeClass("focused");
 	});
 });
 

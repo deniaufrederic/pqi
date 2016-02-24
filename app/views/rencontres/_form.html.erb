@@ -9,124 +9,152 @@
 
 
 <% unless session[:groupe] %>
-  <div class="row">
-    <div class="form-inline col-md-6 col-sm-6 col-xs-6">
-      <h3>Date</h3>
-      <div class="input-group date" id="datepicker">
-        <%= f.text_field :date, class: 'form-control', data: { date_format: 'DD/MM/YYYY', locale: 'fr' }, value: Date.today.strftime("%d/%m/%Y") %>
-        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+  <div class="form-horizontal">
+    <div class="part part-hover necessary">
+      <h3>Informations nécessaires</h3>
+
+      <div class="form-group">
+        <%= f.label :date, class: "control-label col-md-3 col-sm-3 col-xs-3" %>
+        <div class="col-md-9 col-sm-9 col-xs-9 input-group date" id="datepicker">
+          <%= f.text_field :date, class: 'form-control', data: { date_format: 'DD/MM/YYYY', locale: 'fr' }, value: Date.today.strftime("%d/%m/%Y") %>
+          <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <%= f.label :type_renc, "Type", class: "control-label col-md-3 col-sm-3 col-xs-3" %>
+        <div class="col-md-9 col-sm-9 col-xs-9">
+          <% unless current_user.benev? %>
+            <%= f.select :type_renc, @types, prompt: "Quel type de rencontre ?", class: 'form-control' %>
+          <% else %>
+            <%= f.select :type_renc, ["Maraude bénévoles", "Maraude bénévoles"], disabled: true, class: 'form-control' %>
+          <% end %>
+        </div>
+      </div>
+      <div class="form-group">
+        <%= f.label :ville, class: "control-label col-md-3 col-sm-3 col-xs-3" %>
+        <div class="col-md-9 col-sm-9 col-xs-9">
+          <%= f.select :ville, @villes, class: 'form-control', selected: @usager.ville %>
+        </div>
       </div>
     </div>
-    <div class="col-md-6 col-sm-6 col-xs-6">
-      <h3>Type</h3>
-      <% unless current_user.benev? %>
-        <%= f.select :type_renc, @types, prompt: "Quel type de rencontre ?", class: 'form-control' %>
-      <% else %>
-        <%= f.select :type_renc, ["Maraude bénévoles", "Maraude bénévoles"], disabled: true, class: 'form-control' %>
-      <% end %>
-    </div>
-    <div class="col-md-6 col-sm-6 col-xs-6">
-      <h3>Ville</h3>
-      <%= f.select :ville, @villes, class: 'form-control', selected: @usager.ville %>
-    </div>
   </div>
 
   <hr>
 <% end %>
 
-<h3>Signalement</h3>
+<div class="part part-hover">
+  <h3>Signalement</h3>
 
-<div class="row form-inline">
-  <div class="col-md-6 col-sm-6 col-xs-6">
-    <% if @usager.rencontres.empty? %>
-      <%= f.label :signale, "Non connu(e) du service avant" %>
-    <% else %>  
+  <div class="row">
+    <div class="col-md-6 col-sm-6 col-xs-6 form-inline">
       <%= f.label :signale, "Nouveau signalement" %>
-    <% end %>
+      <%= f.check_box :signale, class: 'form-control check sig' %>
+    </div>
 
-    <%= f.check_box :signale, class: 'form-control check' %>
+    <div class="col-md-6 col-sm-6 col-xs-6 appear form-inline">
+      <%= f.label :signalement, "Type" %>
+      <%= f.select :signalement,  [ ["Signalement 115", "Signalement 115"],
+                                    ["Signalement tiers", "Signalement tiers"]],
+                                    prompt: "Quel type de signalement ?",
+                                    class: 'form-control' %>
+    </div>
   </div>
 
-  <div class="col-md-6 col-sm-6 col-xs-6 appear">
-    <%= f.label :signalement, "Type" %>
-
-    <% if @usager.rencontres.empty? %>
-      <%= f.select :signalement,  @signalements,
-                                  prompt: "Quel type de signalement ?",
-                                  class: 'form-control' %>
-    <% else %>
-      <%= f.select :signalement,	[	["Signalement 115", "Signalement 115"],
-                        				  ["Signalement tiers", "Signalement tiers"]],
-                        			    prompt: "Quel type de signalement ?",
-                        			    class: 'form-control' %>
-    <% end %>
-  </div>
-</div>
-
-<hr>
-
-<h3>Accompagnement</h3>
-
-<div class="row form-inline">
-  <div class="col-md-6 col-sm-6 col-xs-6">
-    <%= f.label :accomp, "Accompagnement" %>
-    <%= f.check_box :accomp, checked: false, class: 'form-control check' %>
-  </div>
-
-  <div class="col-md-6 col-sm-6 col-xs-6 appear">
-    <%= f.label :type_accomp, "Type" %>
-    <%= f.select :type_accomp, @accomps, prompt: "Quel type d'accompagnement ?", class: 'form-control' %>
+  <div class="appear" style="margin-top:20px">
+    <div class="form-horizontal">
+      <div class="form-group">
+        <%= f.label :sig_contact, "Contact/Structure", class: "control-label col-md-3 col-sm-3 col-xs-3" %>
+        <div class="col-md-9 col-sm-9 col-xs-9">
+          <%= f.text_field :sig_contact, class: 'form-control five-lv' %>
+        </div>
+      </div>
+      <div class="form-group">
+        <%= f.label :sig_coords, "Coordonnées", class: "control-label col-md-3 col-sm-3 col-xs-3" %>
+        <div class="col-md-9 col-sm-9 col-xs-9">
+          <%= f.text_area :sig_coords, class: 'form-control five-lv', rows: 2 %>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
 <hr>
 
-<h3>Options</h3>
+<div class="part part-hover">
+  <h3>Accompagnement</h3>
 
-<div class="form-inline">
-  <%= f.label :dnv, "Maraude déplacée mais personne non vue" %>
-  <%= f.check_box :dnv, checked: false, class: 'form-control' %>
+  <div class="row form-inline">
+    <div class="col-md-6 col-sm-6 col-xs-6">
+      <%= f.label :accomp, "Accompagnement" %>
+      <%= f.check_box :accomp, checked: false, class: 'form-control check' %>
+    </div>
+
+    <div class="col-md-6 col-sm-6 col-xs-6 appear">
+      <%= f.label :type_accomp, "Type" %>
+      <%= f.select :type_accomp, @accomps, prompt: "Quel type d'accompagnement ?", class: 'form-control' %>
+    </div>
+  </div>
 </div>
 
-<% unless current_user.benev? %>
+<hr>
+
+<div class="part part-hover">
+  <h3>Options</h3>
+
   <div class="form-inline">
-    <%= f.label :prev, "Rencontre prévisionnelle" %>
-    <%= f.check_box :prev, checked: false, class: 'form-control' %>
+    <%= f.label :dnv, "Maraude déplacée mais personne non vue" %>
+    <%= f.check_box :dnv, checked: false, class: 'form-control two-lv' %>
   </div>
-<% end %>
 
-  <hr>
-
-<h3>Détails</h3>
-
-  <%= f.text_area :details, class: 'form-control', html: {style: 'text-align:center'}, rows: 10 %>
-
-<% if @usager.enfants.any? %>
-  <br><%= f.label :nb_enf, "Nombre d'enfants vus" %>
-  <%= f.select :nb_enf, @nb_enf, class: 'form-control' %><br>
-<% end %>
-
-  <hr>
-
-<h3>Prestations</h3>
-
-<div>
-  <% for presta in @prestas do %>
-    <%= f.check_box :prestas, { :multiple => true }, "#{presta.first}" %>
-    <%= presta.first %><br>
+  <% unless current_user.benev? %>
+    <div class="form-inline">
+      <%= f.label :prev, "Rencontre prévisionnelle" %>
+      <%= f.check_box :prev, checked: false, class: 'form-control two-lv' %>
+    </div>
   <% end %>
-
-  <hr>
 </div>
 
-<div class="btn-group">
-  <%= f.submit "Valider la rencontre", class: 'btn btn-primary', id: 'submit' %>
+<hr>
 
-  <% if Usager.maximum("id") == @usager.id %>
-    <button type="button" class="btn btn-danger">
-      <%= link_to "Pas besoin", @usager, id: 'no-styling' %>
-    </button>
+<div class="part part-hover">
+  <h3>Détails</h3>
+  <div class="form-group">
+    <%= f.text_area :details, class: 'form-control two-lv', html: {style: 'text-align:center'}, rows: 10 %>
+  </div>
+
+  <% if @usager.enfants.any? %>
+    <div class="form-group">
+      <%= f.label :nb_enf, "Nombre d'enfants vus" %>
+      <%= f.select :nb_enf, @nb_enf, class: 'form-control two-lv' %>
+    </div>
   <% end %>
+</div>
+
+<hr>
+
+<div class="part part-hover">
+  <h3>Prestations</h3>
+
+  <div>
+    <% for presta in @prestas do %>
+      <%= f.check_box :prestas, { :multiple => true }, "#{presta.first}", class: "two-lv" %>
+      <%= presta.first %><br>
+    <% end %>
+  </div>
+</div>
+
+<hr>
+
+<div class="text-center">
+  <div class="btn-group">
+    <%= f.submit "Valider la rencontre", class: 'btn btn-primary', id: 'submit' %>
+
+    <% if Usager.maximum("id") == @usager.id %>
+      <button type="button" class="btn btn-danger">
+        <%= link_to "Pas besoin", @usager, id: 'no-styling' %>
+      </button>
+    <% end %>
+  </div>
 </div>
 
 <% end %>

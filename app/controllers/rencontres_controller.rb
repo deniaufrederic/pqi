@@ -107,6 +107,11 @@ class RencontresController < ApplicationController
       rencontre_u = "// #{@rencontre.type_renc} [#{@rencontre.date.strftime("%d/%m/%y")}] //"
       if @rencontre.signale && !@rencontre.signalement.empty?
         rencontre_u << "\n#{@rencontre.signalement}"
+        if @rencontre.signalement == "Signalement tiers" && @rencontre.sig_contact.present?
+          rencontre_u << " (Contact : #{@rencontre.sig_contact}"
+          rencontre_u << " / Coordonnées : #{@rencontre.sig_coords}" unless @rencontre.sig_coords.empty?
+          rencontre_u << ")"
+        end
       end
       if @rencontre.accomp && !@rencontre.type_accomp.empty?
         rencontre_u << "\n#{@rencontre.type_accomp}"
@@ -430,10 +435,15 @@ class RencontresController < ApplicationController
           end
         end
         rencontre_u = "// #{@rencontre.type_renc} [#{@rencontre.date.strftime("%d/%m/%y")}] //"
-        if @rencontre.signale && !@rencontre.signalement.empty?
+        if @rencontre.signale && @rencontre.signalement.present?
           rencontre_u << "\n#{@rencontre.signalement}"
+          if @rencontre.signalement == "Signalement tiers" && @rencontre.sig_contact.present?
+            rencontre_u << " (Contact : #{@rencontre.sig_contact}"
+            rencontre_u << " / Coordonnées : #{@rencontre.sig_coords}" unless @rencontre.sig_coords.empty?
+            rencontre_u << ")"
+          end
         end
-        if @rencontre.accomp && !@rencontre.type_accomp.empty?
+        if @rencontre.accomp && @rencontre.type_accomp.present?
           rencontre_u << "\n#{@rencontre.type_accomp}"
         end
         rencontre_p = params[:rencontre][:prestas].reject{ |a| a == '0' }.join(' #')
@@ -533,6 +543,8 @@ class RencontresController < ApplicationController
                                         :details,
                                         :signale,
                                         :signalement,
+                                        :sig_contact,
+                                        :sig_coords,
                                         :prev,
                                         :dnv,
                                         :nb_enf,
