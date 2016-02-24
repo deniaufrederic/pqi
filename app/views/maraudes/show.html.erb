@@ -24,7 +24,7 @@
 <% m_renc = [] %>
 <% rencontres.each do |r| %>
   <% u = Usager.find_by(id: r.usager_id) %>
-  <% m_renc << "#{u.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
+  <% m_renc << "#{r.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
   <% if u.enfants.any? %>
     <% m_renc.last << " et #{pluralize(r.nb_enf, "enfant")}" %>
   <% end %>
@@ -53,7 +53,7 @@
 <% m_dnv = [] %>
 <% dnv.each do |r| %>
   <% u = Usager.find_by(id: r.usager_id) %>
-  <% m_dnv << "#{u.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
+  <% m_dnv << "#{r.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
 <% end %>
 <% arr = m_dnv.sort %>
 <% liste_villes_dnv = [] %>
@@ -94,7 +94,7 @@
 <% m_sig = [] %>
 <% sigs.each do |r| %>
   <% u = Usager.find_by(id: r.usager_id) %>
-  <% m_sig << "#{u.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
+  <% m_sig << "#{r.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
   <% if u.enfants.any? %>
     <% m_sig.last << " et #{pluralize(r.nb_enf, "enfant")}" %>
   <% end %>
@@ -123,7 +123,7 @@
 <% m_accomp = [] %>
 <% accomps.each do |r| %>
   <% u = Usager.find_by(id: r.usager_id) %>
-  <% m_accomp << "#{u.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
+  <% m_accomp << "#{r.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
   <% if u.enfants.any? %>
     <% m_accomp.last << " et #{pluralize(r.nb_enf, "enfant")}" %>
   <% end %>
@@ -394,7 +394,7 @@
   <% m_cr = [] %>
   <% rencontres.each do |r| %>
     <% u = Usager.find_by(id: r.usager_id) %>
-    <% m_cr << "#{u.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
+    <% m_cr << "#{r.ville} @#{u.sexe} #{u.nom} #{u.prenom}" %>
     <% if u.enfants.any? %>
       <% m_cr.last << " et #{pluralize(r.nb_enf, "enfant")}" %>
     <% end %>

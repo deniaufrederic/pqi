@@ -7,4 +7,5 @@ class Rencontre < ActiveRecord::Base
   						uniqueness: { scope: [:date, :type_renc] }
   validates :date, presence: true
   validates :type_renc, presence: true
+  validates :ville, presence: true
 end

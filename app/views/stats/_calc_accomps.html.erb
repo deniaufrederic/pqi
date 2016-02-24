@@ -1,17 +1,15 @@
 <% h = 0 %>
 <% f = 0 %>
 <% e = 0 %>
-<% @usagers.each do |u| %>
-  <% u_renc = Rencontre.where(usager_id: u.id, date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), accomp: true) %>
+<% @rencs.each do |r| %>
+  <% u = Usager.find(r.usager_id) %>
   <% if u.sexe == "Mr" %>
-  	<% h = h + u_renc.count %>
+    <% h += 1 %>
   <% else %>
-  	<% f = f + u_renc.count %>
+    <% f += 1 %>
   <% end %>
-  <% u_renc.each do |r| %>
-    <% if r.nb_enf %>
-      <% e = e + r.nb_enf %>
-    <% end %>
+  <% if r.nb_enf %>
+    <% e = e + r.nb_enf %>
   <% end %>
 <% end %>
 

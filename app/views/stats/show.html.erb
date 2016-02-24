@@ -65,31 +65,31 @@
           <%= n %>
         </td>
         <td>
-          <% @usagers = Usager.where(ville: ville) %>
+          <% @rencs = Rencontre.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, prev: false, dnv: false) %>
           <%= render 'calc_rencontres' %>
         </td>
         <td>
-          <% @usagers = Usager.where(ville: ville) %>
+          <% @rencs = Rencontre.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, prev: false, dnv: false) %>
           <%= render 'calc_rencontres_diff' %>
         </td>
         <td>
-          <% @usagers = Usager.where(ville: ville) %>
+          <% @rencs = Rencontre.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, prev: false, dnv: true) %>
           <%= render 'calc_dnv' %>
         </td>
         <td>
-          <% @usagers = Usager.where(ville: ville) %>
+          <% @rencs = Rencontre.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, signale: true) %>
           <%= render 'calc_signalements' %>
         </td>
         <td>
-          <% @usagers = Usager.where(ville: ville) %>
+          <% @rencs = Rencontre.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, signale: true, dnv: true) %>
           <%= render 'calc_sig_dnv' %>
         </td>
         <td>
-          <% @usagers = Usager.where(ville: ville) %>
+          <% @rencs = Rencontre.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, accomp: true) %>
           <%= render 'calc_accomps' %>
         </td>
         <td>
-          <% @usagers = Usager.where(ville: ville) %>
+          <% @rencs = Rencontre.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, prev: false, dnv: false) %>
           <%= render 'calc_prestas' %>
         </td>
       </tr>

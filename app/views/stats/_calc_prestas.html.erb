@@ -2,23 +2,21 @@
 <% v = 0 %>
 <% d = 0 %>
 <% h = 0 %>
-<% @usagers.each do |u| %>
-  <% u_renc = Rencontre.where(usager_id: u.id, date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), prev: false, dnv: false) %>
-  <% u_renc.each do |r| %>
-    <% if r.prestas && !r.prestas.empty? %>
-      <% prestas = r.prestas.split(' #') %>
-      <% if prestas.include?("Prestation alimentaire") %>
-        <% a += 1 %>
-      <% end %>
-      <% if prestas.include?("Vestiaire") %>
-        <% v += 1 %>
-      <% end %>
-      <% if prestas.include?("Duvet") %>
-        <% d += 1 %>
-      <% end %>
-      <% if prestas.include?("Hygiène") %>
-        <% h += 1 %>
-      <% end %>
+<% @rencs.each do |r| %>
+  <% u = Usager.find(r.usager_id) %>
+  <% if r.prestas && !r.prestas.empty? %>
+    <% prestas = r.prestas.split(' #') %>
+    <% if prestas.include?("Prestation alimentaire") %>
+      <% a += 1 %>
+    <% end %>
+    <% if prestas.include?("Vestiaire") %>
+      <% v += 1 %>
+    <% end %>
+    <% if prestas.include?("Duvet") %>
+      <% d += 1 %>
+    <% end %>
+    <% if prestas.include?("Hygiène") %>
+      <% h += 1 %>
     <% end %>
   <% end %>
 <% end %>

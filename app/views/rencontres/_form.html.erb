@@ -25,6 +25,10 @@
         <%= f.select :type_renc, ["Maraude bénévoles", "Maraude bénévoles"], disabled: true, class: 'form-control' %>
       <% end %>
     </div>
+    <div class="col-md-6 col-sm-6 col-xs-6">
+      <h3>Ville</h3>
+      <%= f.select :ville, @villes, class: 'form-control', selected: @usager.ville %>
+    </div>
   </div>
 
   <hr>
@@ -84,14 +88,12 @@
   <%= f.check_box :dnv, checked: false, class: 'form-control' %>
 </div>
 
-<div class="form-inline">
-  <%= f.label :prev, "Rencontre prévisionnelle" %>
-  <% unless current_user.benev? %>
+<% unless current_user.benev? %>
+  <div class="form-inline">
+    <%= f.label :prev, "Rencontre prévisionnelle" %>
     <%= f.check_box :prev, checked: false, class: 'form-control' %>
-  <% else %>
-    <%= f.check_box :prev, checked: false, class: 'form-control', disabled: true %>
-  <% end %>
-</div>
+  </div>
+<% end %>
 
   <hr>
 

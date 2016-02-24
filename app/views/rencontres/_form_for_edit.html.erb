@@ -1,14 +1,19 @@
 <%= simple_form_for(@rencontre) do |f| %>
 
 <h1>
-  Modifier la rencontre avec <%= "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %><br>
-  <small><%= @rencontre.type_renc %> du <%= @rencontre.date.strftime("%d/%m/%y") %></small>
-  <br><button type="button" class="btn btn-danger">
-    <%= link_to "Supprimer la rencontre", @rencontre,
-                                          method: :delete,
-                                          data: { confirm: "Etes-vous sûr(e) ?" },
-                                          id: 'no-styling' %>
-  </button>
+  <% unless current_user.benev? %>
+    Modifier la rencontre avec <%= "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %><br>
+    <small><%= @rencontre.type_renc %> du <%= @rencontre.date.strftime("%d/%m/%y") %></small>
+    <br><button type="button" class="btn btn-danger">
+      <%= link_to "Supprimer la rencontre", @rencontre,
+                                            method: :delete,
+                                            data: { confirm: "Etes-vous sûr(e) ?" },
+                                            id: 'no-styling' %>
+    </button>
+  <% else %>
+    Confirmer la rencontre avec <%= "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %><br>
+    <small>Maraude bénévoles du <%= Date.today.strftime("%d/%m/%y") %></small>
+  <% end %>
 </h1>
 
 <div class="row">
@@ -22,10 +27,14 @@
   <div class="col-md-6 col-sm-6 col-xs-6">
     <h3>Type</h3>
     <% unless current_user.benev? %>
-      <%= f.select :type_renc, @types, prompt: "Quel type de rencontre ?", class: 'form-control' %>
+      <%= f.select :type_renc, @types, class: 'form-control' %>
     <% else %>
       <%= f.select :type_renc, ["Maraude bénévoles", "Maraude bénévoles"], disabled: true, class: 'form-control' %>
     <% end %>
+  </div>
+  <div class="col-md-6 col-sm-6 col-xs-6">
+    <h3>Ville</h3>
+    <%= f.select :ville, @villes, class: 'form-control' %>
   </div>
 </div>
 
