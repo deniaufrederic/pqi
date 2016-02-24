@@ -19,16 +19,14 @@
       <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
     </div>
   </div>
-  <% unless current_user.benev? %>
-    <div class="col-md-6 col-sm-6 col-xs-6">
-      <h3>Type</h3>
-      <% unless current_user.benev? %>
-        <%= f.select :type_renc, @types, prompt: "Quel type de rencontre ?", class: 'form-control' %>
-      <% else %>
-        <%= f.select :type_renc, ["Maraude bénévoles"], disabled: true, class: 'form-control' %>
-      <% end %>
-    </div>
-  <% end %>
+  <div class="col-md-6 col-sm-6 col-xs-6">
+    <h3>Type</h3>
+    <% unless current_user.benev? %>
+      <%= f.select :type_renc, @types, prompt: "Quel type de rencontre ?", class: 'form-control' %>
+    <% else %>
+      <%= f.select :type_renc, ["Maraude bénévoles", "Maraude bénévoles"], disabled: true, class: 'form-control' %>
+    <% end %>
+  </div>
 </div>
 
 <hr>
@@ -75,18 +73,20 @@
   <%= f.check_box :dnv, checked: false, class: 'form-control' %>
 </div>
 
-<% unless current_user.benev? %>
-  <div class="form-inline">
-    <%= f.label :prev, "Toujours rencontre prévisionnelle" %>
+<div class="form-inline">
+  <%= f.label :prev, "Toujours rencontre prévisionnelle" %>
+  <% unless current_user.benev? %>
     <%= f.check_box :prev, checked: false, class: 'form-control' %>
-  </div>
-<% end %>
+  <% else %>
+    <%= f.check_box :prev, checked: false, class: 'form-control', disabled: true %>
+  <% end %>
+</div>
 
   <hr>
 
 <h3>Détails</h3>
 
-  <%= f.text_area :details, class: 'form-control', html: {style: 'text-align:center'} %>
+  <%= f.text_area :details, class: 'form-control', html: {style: 'text-align:center'}, rows:10 %>
 
 <% if @usager.enfants.any? %>
   <br><%= f.label :nb_enf, "Nombre d'enfants vus" %>

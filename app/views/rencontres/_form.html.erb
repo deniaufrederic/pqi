@@ -1,4 +1,4 @@
-<%= simple_form_for(@rencontre) do |f| %>
+<%= form_for(@rencontre, url: id_rencontre_create_path(id: @usager.id), method: :post) do |f| %>
 
 <h1>
   Ajouter une rencontre avec <%= "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %>
@@ -22,7 +22,7 @@
       <% unless current_user.benev? %>
         <%= f.select :type_renc, @types, prompt: "Quel type de rencontre ?", class: 'form-control' %>
       <% else %>
-        <%= f.select :type_renc, ["Maraude bénévoles"], disabled: true, class: 'form-control' %>
+        <%= f.select :type_renc, ["Maraude bénévoles", "Maraude bénévoles"], disabled: true, class: 'form-control' %>
       <% end %>
     </div>
   </div>
@@ -84,12 +84,14 @@
   <%= f.check_box :dnv, checked: false, class: 'form-control' %>
 </div>
 
-<% unless current_user.benev? %>
-  <div class="form-inline">
-    <%= f.label :prev, "Rencontre prévisionnelle" %>
+<div class="form-inline">
+  <%= f.label :prev, "Rencontre prévisionnelle" %>
+  <% unless current_user.benev? %>
     <%= f.check_box :prev, checked: false, class: 'form-control' %>
-  </div>
-<% end %>
+  <% else %>
+    <%= f.check_box :prev, checked: false, class: 'form-control', disabled: true %>
+  <% end %>
+</div>
 
   <hr>
 

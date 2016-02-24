@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   get 'stats'         =>  'stats#show'
   post 'stats'        =>  'stats#create'
   resources :maraudes, only: [:index, :show, :destroy, :new, :create]
-  resources :rencontres, only: [:create, :edit, :update, :destroy]
+  resources :rencontres, only: [:edit, :update, :destroy]
   post 'new_groupe'   =>  'rencontres#post_groupe'
   resources :groupes
 
@@ -25,6 +25,11 @@ Rails.application.routes.draw do
     :controller => 'rencontres',
     :action     => 'new',
     :as         => :id_rencontre
+
+  post 'rencontres/:id',
+    :controller => 'rencontres',
+    :action     => 'create',
+    :as         => :id_rencontre_create
 
   get 'rencontres/edit/:id',
     :controller => 'rencontres',

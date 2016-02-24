@@ -20,7 +20,7 @@ class RencontresController < ApplicationController
     @accomps = [["Accompagnement 115", "Accompagnement 115"],
                 ["Accompagnement SIAO", "Accompagnement SIAO"],
                 ["Autre", "Autre"]]
-    @usager = Usager.find_by(id: session[:stored_id])
+    @usager = Usager.find(session[:stored_id])
     @nb_enf = []
     i = 0
     until i == @usager.enfants.count + 1 do
@@ -34,12 +34,13 @@ class RencontresController < ApplicationController
       end
     end
     @rencontre = @usager.rencontres.build
+    session.delete(:stored_id)
   end
 
   def create
-    @usager = Usager.find_by(id: session[:stored_id])
+    store_id
+    @usager = Usager.find(session[:stored_id])
     @rencontre = @usager.rencontres.build(rencontre_params)
-    @rencontre.user_id = current_user.id
     if session.has_key?('groupe')
       @rencontre.date = session[:date]
       @rencontre.type_renc = session[:type_renc]
@@ -156,7 +157,6 @@ class RencontresController < ApplicationController
         else
           redirect_to id_rencontre_path(:id => session[:usagers_ids].pop)
         end
-        session.delete(:stored_id)
       else
         redirect_to id_rencontre_path(:id => @usager.id)
       end
@@ -170,6 +170,7 @@ class RencontresController < ApplicationController
       flash[:danger] = "Cette rencontre existe déjà"
       redirect_to id_rencontre_path(:id => @usager.id)
     end
+    session.delete(:stored_id)
   end
 
   def new_groupe
