@@ -102,6 +102,11 @@ class UsagersController < ApplicationController
       @usager.prenom = "Inconnu(e)" if @usager.sexe == ""
     end
     if @usager.save
+      if @usager.ref.present?
+        interv = Intervenant.find_or_create_by(nom: @usager.ref)
+        interv.ref = true
+        interv.save
+      end
       if @usager.pqi
         @usager.pqi_histo = ""
         @usager.pqi_histo << Date.today.strftime("%d/%m/%y")
@@ -202,6 +207,11 @@ class UsagersController < ApplicationController
           @usager.pqi_histo << Date.today.strftime("%d/%m/%y") unless @usager.pqi_histo.nil?
         end
         @usager.update_attributes(usager_params)
+        if @usager.update_attribute(:ref, params[:usager][:ref])
+          interv = Intervenant.find_or_create_by(nom: @usager.ref)
+          interv.ref = true
+          interv.save
+        end
         if params[:usager][:groupe_nom] == ""
           @usager.update_attribute(:groupe_id, nil)
         end
@@ -228,6 +238,11 @@ class UsagersController < ApplicationController
       flash[:success] = "Fiche de suivi jour usager éditée"
       redirect_to @usager
     elsif @usager.update_attributes(usager_params)
+      if @usager.update_attribute(:ref, params[:usager][:ref])
+        interv = Intervenant.find_or_create_by(nom: @usager.ref)
+        interv.ref = true
+        interv.save
+      end
       if params[:usager][:groupe_nom] == ""
         @usager.update_attribute(:groupe_id, nil)
       end

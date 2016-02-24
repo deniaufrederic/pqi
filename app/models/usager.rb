@@ -8,7 +8,6 @@ class Usager < ActiveRecord::Base
 
   before_save { nom.upcase! }
   before_save { self.prenom = prenom.split(' ').map(&:capitalize).join(' ').split('-').map(&:capitalize).join('-') }
-  before_save :update_ref
 
   default_scope -> { order(pqi: :desc, nom: :asc) }
   
@@ -42,13 +41,5 @@ class Usager < ActiveRecord::Base
   	  if self.prenom.blank? && self.nom.blank?
   	    self.errors.add(:base, "Please fill at least the name or surname")
   	  end
-    end
-
-    def update_ref
-      if ref.present?
-        interv = Intervenant.find_or_create_by(nom: ref)
-        interv.ref = true
-        interv.save
-      end
     end
 end
