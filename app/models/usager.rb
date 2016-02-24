@@ -21,12 +21,7 @@ class Usager < ActiveRecord::Base
   end
 
   def groupe_nom=(nom)
-    if nom.present?
-      self.groupe = Groupe.find_by(nom: nom.split(' ').map(&:capitalize).join(' ').split('-').map(&:capitalize).join('-'))
-      if self.groupe.nil?
-        self.groupe = Groupe.create(nom: nom)
-      end
-    end
+    self.groupe = Groupe.find_or_create_by(nom: nom.split(' ').map(&:capitalize).join(' ').split('-').map(&:capitalize).join('-')) if nom.present?
   end
 
     def self.search(search)
