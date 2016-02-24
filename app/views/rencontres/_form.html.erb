@@ -120,9 +120,9 @@
 <div class="btn-group">
   <%= f.submit "Valider la rencontre", class: 'btn btn-primary', id: 'submit' %>
 
-  <% if !@usager.rencontres %>
+  <% if Usager.maximum("id") == @usager.id %>
     <button type="button" class="btn btn-danger">
-      <%= link_to "Pas besoin", usagers_path, id: 'no-styling' %>
+      <%= link_to "Pas besoin", @usager, id: 'no-styling' %>
     </button>
   <% end %>
 </div>

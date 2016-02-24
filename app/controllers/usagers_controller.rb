@@ -239,7 +239,10 @@ class UsagersController < ApplicationController
       redirect_to @usager
     elsif @usager.update_attributes(usager_params)
       if @usager.update_attribute(:ref, params[:usager][:ref])
-        interv = Intervenant.find_or_create_by(nom: @usager.ref)
+        interv = Intervenant.find_by(nom: @usager.ref)
+        if interv.nil?
+          interv = Intervenant.create(nom: @usager.ref)
+        end
         interv.ref = true
         interv.save
       end
