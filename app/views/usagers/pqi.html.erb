@@ -1,7 +1,7 @@
 <% provide(:title, 'PQI') %>
 
 <div id="no-print">
-  <h1>PQI (<%= pluralize(Usager.where(pqi: true).count, "usager") %>)</h1>
+  <h1>PQI <span class="label label-default"><%= Usager.where(pqi: true).count %></span></h1>
 
   <% renc_prev = Rencontre.where(prev: true) %>
   <% if renc_prev.any? %>
@@ -47,7 +47,8 @@
 
 <div id="pqi-print">
   <h3 id="ville-actuelle">
-    <%= "#{@ville_actuelle} (#{pluralize(Usager.where(pqi: true, ville: @ville_actuelle).count, "usager")})" %>
+    <%= "#{@ville_actuelle}" %>
+    <span class="label label-default"><%= Usager.where(pqi: true, ville: @ville_actuelle).count %></span>
     <%= link_to image_tag("print.png", alt: "Imprimer", width: 30, length: 30), '#', onclick: "printpage()", id: 'print-link', class: "btn" %>
   </h3>
 
