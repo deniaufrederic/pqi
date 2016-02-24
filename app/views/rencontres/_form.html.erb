@@ -137,7 +137,7 @@
 
   <div>
     <% for presta in @prestas do %>
-      <%= f.check_box :prestas, { :multiple => true }, "#{presta.first}", class: "two-lv" %>
+      <%= f.check_box :prestas, { :multiple => true }, "#{presta.first}" %>
       <%= presta.first %><br>
     <% end %>
   </div>

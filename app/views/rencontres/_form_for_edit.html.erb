@@ -146,10 +146,10 @@
   <div>
     <% for presta in @prestas do %>
       <% if @rencontre.prestas.present? && @rencontre.prestas.split(" #").include?("#{presta.first}") %>
-        <%= f.check_box :prestas, { :multiple => true, :checked => true }, "#{presta.first}", class: "two-lv" %>
+        <%= f.check_box :prestas, { :multiple => true, :checked => true }, "#{presta.first}" %>
         <%= presta.first %><br>
       <% else %>
-        <%= f.check_box :prestas, { :multiple => true, :checked => false }, "#{presta.first}", class: "two-lv" %>
+        <%= f.check_box :prestas, { :multiple => true, :checked => false }, "#{presta.first}" %>
         <%= presta.first %><br>
       <% end %>
     <% end %>
