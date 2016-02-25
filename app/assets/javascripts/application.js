@@ -121,6 +121,15 @@ $(document).ready(function() {
 	});
 });
 
+$(document).ready(function() {
+  $('form')
+    .on('cocoon:after-insert', function() {
+        $(".intervenant-nom").autocomplete({
+	    	source: $('.intervenant-nom').data('autocomplete-source')
+	    });
+	});
+});
+
 $(function() {
     $( "#navtop-icon" ).click(function() {
       	$( ".navtop" ).toggleClass( "responsive" );
