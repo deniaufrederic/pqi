@@ -10,6 +10,7 @@ class UsersController < ApplicationController
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
+      session.delete(:ville)
     end
   	@users = User.paginate(page: params[:page], per_page: 10)
   end
@@ -20,6 +21,7 @@ class UsersController < ApplicationController
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
+      session.delete(:ville)
     end
   	@user = User.find(params[:id])
   end
@@ -30,6 +32,7 @@ class UsersController < ApplicationController
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
+      session.delete(:ville)
     end
   	@user = User.new
   	if logged_in?

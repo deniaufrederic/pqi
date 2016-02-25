@@ -9,6 +9,7 @@ class MaraudesController < ApplicationController
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
+      session.delete(:ville)
     end
     if params[:search]
       @maraudes = Maraude.search(params[:search]).paginate(page: params[:page], per_page: 5)
@@ -26,6 +27,7 @@ class MaraudesController < ApplicationController
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
+      session.delete(:ville)
     end
   	@maraude = Maraude.find(params[:id])
   end
@@ -36,6 +38,7 @@ class MaraudesController < ApplicationController
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
+      session.delete(:ville)
     end
     @maraude = Maraude.new
     @types =  [ ["Maraude salariés 1", "Maraude salariés 1"],
@@ -68,6 +71,7 @@ class MaraudesController < ApplicationController
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
+      session.delete(:ville)
     end
     store_id
     @villes = [ ["Aubervilliers", "Aubervilliers"],

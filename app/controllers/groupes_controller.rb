@@ -9,6 +9,7 @@ class GroupesController < ApplicationController
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
+      session.delete(:ville)
     end
     if params[:search]
       @groupes = Groupe.search(params[:search]).order('nom ASC').paginate(page: params[:page], per_page: 20)
@@ -23,6 +24,7 @@ class GroupesController < ApplicationController
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
+      session.delete(:ville)
     end
   	@groupe = Groupe.find(params[:id])
   	@usagers = @groupe.usagers
@@ -34,6 +36,7 @@ class GroupesController < ApplicationController
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
+      session.delete(:ville)
     end
   	@groupe = Groupe.find(params[:id])
   end

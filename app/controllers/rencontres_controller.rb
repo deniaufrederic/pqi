@@ -88,6 +88,7 @@ class RencontresController < ApplicationController
     if session.has_key?('groupe')
       @rencontre.date = session[:date]
       @rencontre.type_renc = session[:type_renc]
+      @rencontre.ville = session[:ville]
     else
       @rencontre.date = params[:rencontre][:date].to_date.strftime("%F")
     end
@@ -189,6 +190,7 @@ class RencontresController < ApplicationController
         else
           session.delete(:date)
           session.delete(:type_renc)
+          session.delete(:ville)
         end
         @rencontre.save
         flash[:success] = "Rencontre ajoutée avec #{@usager.sexe} #{@usager.nom} #{@usager.prenom}"
@@ -196,6 +198,7 @@ class RencontresController < ApplicationController
           if @usager.groupe && @usager.groupe.usagers.count > 1 && !session[:groupe]
             session[:type_renc] = @rencontre.type_renc
             session[:date] = @rencontre.date
+            session[:ville] = @rencontre.ville
             redirect_to id_groupe_path(:id => @usager.id)
           else
             redirect_to @usager
@@ -214,6 +217,9 @@ class RencontresController < ApplicationController
       redirect_to id_rencontre_path(:id => @usager.id)
     elsif params[:rencontre][:type_renc].empty?
       flash[:danger] = "Précisez un type de rencontre"
+      redirect_to id_rencontre_path(:id => @usager.id)
+    elsif params[:rencontre][:ville].empty?
+      flash[:danger] = "Précisez une ville de rencontre"
       redirect_to id_rencontre_path(:id => @usager.id)
     elsif Rencontre.where(usager_id: @usager.id, date: params[:rencontre][:date], type_renc: params[:rencontre][:type_renc])
       flash[:danger] = "Cette rencontre existe déjà"
@@ -267,6 +273,7 @@ class RencontresController < ApplicationController
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
+      session.delete(:ville)
     end
     store_id
     @types =  [ ["Maraude salariés 1", "Maraude salariés 1"],
@@ -330,6 +337,7 @@ class RencontresController < ApplicationController
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
+      session.delete(:ville)
     end
     @rencontre = Rencontre.find(params[:id])
     @usager = Usager.find(@rencontre.usager_id)
@@ -528,7 +536,7 @@ class RencontresController < ApplicationController
           redirect_to id_rencontre_path(:id => @usager.id)
         end
       else
-        flash[:danger] = "Mise à jour impossible. Veillez à remplir les informations nécessaires (Date, type de rencontre). La rencontre existe peut-être déjà (mêmes date et type de rencontre avec l'usager)."
+        flash[:danger] = "Mise à jour impossible. Veillez à remplir les informations nécessaires (Date, type de rencontre, ville). La rencontre existe peut-être déjà (mêmes date et type de rencontre avec l'usager)."
         render 'edit'
       end
     end

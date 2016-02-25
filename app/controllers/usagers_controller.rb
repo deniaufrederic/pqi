@@ -9,6 +9,7 @@ class UsagersController < ApplicationController
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
+      session.delete(:ville)
     end
     session[:stored] = "new"
     @usager = Usager.new
@@ -68,6 +69,7 @@ class UsagersController < ApplicationController
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
+      session.delete(:ville)
     end
     if params[:search]
       @usagers = Usager.search(params[:search]).paginate(page: params[:page], per_page: 50)
@@ -85,6 +87,7 @@ class UsagersController < ApplicationController
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
+      session.delete(:ville)
     end
   	@usager = Usager.find(params[:id])
   end
@@ -135,6 +138,7 @@ class UsagersController < ApplicationController
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
+      session.delete(:ville)
     end
     session[:stored] = "edit"
     @villes = [ ["Aubervilliers", "Aubervilliers"],
@@ -271,6 +275,7 @@ class UsagersController < ApplicationController
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
+      session.delete(:ville)
     end
     store_ville
     @villes = [ ["Aubervilliers", "Aubervilliers"],
@@ -325,6 +330,7 @@ class UsagersController < ApplicationController
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
+      session.delete(:ville)
     end
     store_last
     store_id
@@ -338,6 +344,7 @@ class UsagersController < ApplicationController
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
+      session.delete(:ville)
     end
     store_last
     store_id
@@ -351,6 +358,7 @@ class UsagersController < ApplicationController
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
+      session.delete(:ville)
     end
     store_id
     session[:stored] = "edit_comp"

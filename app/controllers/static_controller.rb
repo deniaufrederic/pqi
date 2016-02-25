@@ -7,6 +7,7 @@ class StaticController < ApplicationController
       session.delete(:groupe)
       session.delete(:date)
       session.delete(:type_renc)
+      session.delete(:ville)
     end
   end
 end
