@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160224153255) do
+ActiveRecord::Schema.define(version: 20160225152013) do
 
   create_table "enfants", force: :cascade do |t|
     t.integer  "usager_id"
@@ -69,8 +69,8 @@ ActiveRecord::Schema.define(version: 20160224153255) do
     t.boolean  "signale"
     t.string   "signalement"
     t.text     "details"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.boolean  "prev"
     t.boolean  "dnv"
     t.integer  "nb_enf"
@@ -80,10 +80,30 @@ ActiveRecord::Schema.define(version: 20160224153255) do
     t.string   "ville"
     t.string   "sig_contact"
     t.text     "sig_coords"
+    t.string   "sig_structure"
+    t.string   "accomp_structure"
   end
 
   add_index "rencontres", ["usager_id", "date", "type_renc"], name: "index_rencontres_on_usager_id_and_date_and_type_renc", unique: true
   add_index "rencontres", ["usager_id"], name: "index_rencontres_on_usager_id"
+
+  create_table "structures", force: :cascade do |t|
+    t.string   "nom"
+    t.string   "ville"
+    t.string   "adresse"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "structures", ["nom"], name: "index_structures_on_nom", unique: true
+
+  create_table "structures_usagers", id: false, force: :cascade do |t|
+    t.integer "structure_id"
+    t.integer "usager_id"
+  end
+
+  add_index "structures_usagers", ["structure_id"], name: "index_structures_usagers_on_structure_id"
+  add_index "structures_usagers", ["usager_id"], name: "index_structures_usagers_on_usager_id"
 
   create_table "usagers", force: :cascade do |t|
     t.string   "nom"

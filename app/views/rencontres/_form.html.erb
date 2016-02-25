@@ -63,7 +63,13 @@
   <div class="appear" style="margin-top:20px">
     <div class="form-horizontal">
       <div class="form-group">
-        <%= f.label :sig_contact, "Contact/Structure", class: "control-label col-md-3 col-sm-3 col-xs-3" %>
+        <%= f.label :sig_structure, "Structure (le cas échéant)", class: "control-label col-md-3 col-sm-3 col-xs-3" %>
+        <div class="col-md-9 col-sm-9 col-xs-9">
+          <%= f.text_field :sig_structure, data: {autocomplete_source: Structure.order(:nom).map(&:nom)}, class: 'form-control five-lv' %>
+        </div>
+      </div>
+      <div class="form-group">
+        <%= f.label :sig_contact, "Contact", class: "control-label col-md-3 col-sm-3 col-xs-3" %>
         <div class="col-md-9 col-sm-9 col-xs-9">
           <%= f.text_field :sig_contact, class: 'form-control five-lv' %>
         </div>
@@ -92,6 +98,17 @@
     <div class="col-md-6 col-sm-6 col-xs-6 appear">
       <%= f.label :type_accomp, "Type" %>
       <%= f.select :type_accomp, @accomps, prompt: "Quel type d'accompagnement ?", class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="appear" style="margin-top:20px">
+    <div class="form-horizontal">
+      <div class="form-group">
+        <%= f.label :accomp_structure, "Structure", class: "control-label col-md-3 col-sm-3 col-xs-3" %>
+        <div class="col-md-9 col-sm-9 col-xs-9">
+          <%= f.text_field :accomp_structure, data: {autocomplete_source: Structure.order(:nom).map(&:nom)}, class: 'form-control five-lv' %>
+        </div>
+      </div>
     </div>
   </div>
 </div>

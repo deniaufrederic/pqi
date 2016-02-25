@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :rencontres, only: [:edit, :update, :destroy]
   post 'new_groupe'   =>  'rencontres#post_groupe'
   resources :groupes
+  resources :structures
 
   get	'pqi/:ville',
   	:controller => 'usagers',

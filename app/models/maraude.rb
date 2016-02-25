@@ -26,7 +26,7 @@ class Maraude < ActiveRecord::Base
   private
     def get_intervenants
       self.intervenants = self.intervenants.collect do |interv|
-        Intervenant.find_or_create_by(nom: interv.nom)
+        Intervenant.find_or_create_by(nom: interv.nom.split(' ').map(&:capitalize).join(' ').split('-').map(&:capitalize).join('-'))
       end
     end
 end

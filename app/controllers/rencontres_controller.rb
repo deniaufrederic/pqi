@@ -137,6 +137,9 @@ class RencontresController < ApplicationController
       u_fiche = rencontre_u
       if @rencontre.signale
         if !@rencontre.signalement.empty?
+          if @rencontre.signalement == "Signalement tiers" && @rencontre.sig_structure.present?
+            struc = Structure.find_or_create_by(nom: @rencontre.sig_structure.split(' ').map(&:capitalize).join(' ').split('-').map(&:capitalize).join('-'))
+          end
           if !mar && !@rencontre.prev
             errb = true
             if err
@@ -158,6 +161,9 @@ class RencontresController < ApplicationController
       end
       if @rencontre.accomp
         if !@rencontre.type_accomp.empty?
+          if @rencontre.accomp_structure.present?
+            struc = Structure.find_or_create_by(nom: @rencontre.accomp_structure.split(' ').map(&:capitalize).join(' ').split('-').map(&:capitalize).join('-'))
+          end
           if @rencontre.dnv
             errc = true
             if err || errb
@@ -472,6 +478,9 @@ class RencontresController < ApplicationController
         rencontre_u << "\n\n\n" unless !@usager.fiche
         if @rencontre.signale
           if !@rencontre.signalement.empty?
+            if @rencontre.signalement == "Signalement tiers" && @rencontre.sig_structure.present?
+              struc = Structure.find_or_create_by(nom: @rencontre.sig_structure.split(' ').map(&:capitalize).join(' ').split('-').map(&:capitalize).join('-'))
+            end
             if !mar && !@rencontre.prev
               errb = true
               if err
@@ -493,6 +502,9 @@ class RencontresController < ApplicationController
         end
         if @rencontre.accomp
           if !@rencontre.type_accomp.empty?
+            if @rencontre.accomp_structure.present?
+              struc = Structure.find_or_create_by(nom: @rencontre.accomp_structure.split(' ').map(&:capitalize).join(' ').split('-').map(&:capitalize).join('-'))
+            end
             if @rencontre.dnv
               errc = true
               if err || errb
@@ -551,6 +563,7 @@ class RencontresController < ApplicationController
                                         :details,
                                         :signale,
                                         :signalement,
+                                        :sig_structure,
                                         :sig_contact,
                                         :sig_coords,
                                         :prev,
@@ -558,6 +571,7 @@ class RencontresController < ApplicationController
                                         :nb_enf,
                                         :accomp,
                                         :type_accomp,
+                                        :accomp_structure,
                                         :prestas)
     end
 end

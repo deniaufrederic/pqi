@@ -1,0 +1,47 @@
+<% provide(:title, @structure.nom) %>
+
+<h1>
+  Structure "<%= @structure.nom %>"
+  <% unless current_user.benev? %>
+    <br><div class="btn-group">
+      <%= link_to "Editer", edit_structure_path(@structure), class: "btn btn-info" %>
+      <%= link_to "Supprimer", @structure, method: :delete, data: { confirm: "Etes-vous sûr(e) ?" }, class: "btn btn-danger" unless !current_user.admin? %>
+    </div>
+  <% end %>
+</h1>
+
+<div id="accordion">
+	<% if @sigs.present? %>
+		<h3>Signalements <span class="badge"><%= @sigs.count %></span></h3>
+
+		<div><ul>
+			<% @sigs.each do |s| %>
+				<% u = Usager.find(s.usager_id) %>
+				<%= "#{u.sexe} #{u.nom} #{u.prenom}, signalement du #{s.date.strftime('%d/%m/%y')} [#{s.type_renc}]" %>
+				<% if s.sig_contact.present? %>
+					<br>Contact : <%= s.sig_contact %>
+				<% end %>
+				<% if s.sig_coords.present? %>
+					<br>Coordonnées : <%= s.sig_coords %>
+				<% end %>
+			<% end %>
+		</ul></div>
+	<% end %>
+
+	<% if @accomps.present? %>
+		<h3>Accompagnements <span class="badge"><%= @accomps.count %></span></h3>
+
+		<div><ul>
+			<% @accomps.each do |s| %>
+				<% u = Usager.find(s.usager_id) %>
+				<%= "#{u.sexe} #{u.nom} #{u.prenom}, accompagnement du #{s.date.strftime('%d/%m/%y')} [#{s.type_renc}]" %>
+			<% end %>
+		</ul></div>
+	<% end %>
+
+		<h3>Statistiques</h3>
+
+		<div>
+			
+		</div>
+</div>

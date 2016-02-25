@@ -2,6 +2,7 @@ class Usager < ActiveRecord::Base
   has_many :rencontres, :dependent => :destroy
   has_many :enfants, :dependent => :destroy
   belongs_to :groupe
+  has_and_belongs_to_many :structures
 
   accepts_nested_attributes_for :enfants, reject_if: lambda { |a| a[:nom].blank? && a[:prenom].blank? },
                                           allow_destroy: true

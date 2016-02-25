@@ -7,6 +7,7 @@
           <li><%= link_to "Ajouter usager", new_usager_path, "data-no-turbolink" => true %></li>
           <li><%= link_to "PQI", pqi_path %></li>
           <li><%= link_to "Maraudes", maraudes_path %></li>
+          <li><%= link_to "Structures", structures_path %></li>
           <li><%= link_to "Statistiques", stats_path unless current_user.benev? %></li>
           <li class="navtop-icon">
             <%= link_to '☰', "javascript:void(0);", id: "navtop-icon" %>

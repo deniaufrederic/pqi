@@ -76,6 +76,16 @@ $(document).ready(function() {
 	})
 })
 
+$(document).ready(function() {
+	$("#rencontre_type_accomp").change(function() {
+		if($(this).val() != "") {
+			$(this).parent().parent().parent().children(".appear").addClass("disp");
+		} else {
+			$(this).parent().parent().parent().children(".appear").removeClass("disp");
+		}
+	})
+})
+
 $(function() {
 	$("input").focus(function() {
 		$(this).parent().parent().parent(".part").addClass("focused");

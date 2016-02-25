@@ -35,9 +35,6 @@ class UsersController < ApplicationController
       session.delete(:ville)
     end
   	@user = User.new
-  	if logged_in?
-  		admin_user
-  	end
   end
 
   def create
