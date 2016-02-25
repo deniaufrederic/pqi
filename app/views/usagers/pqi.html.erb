@@ -13,7 +13,7 @@
           <% renc_prev.each do |r| %>
             <% u = Usager.find(r.usager_id) %>
             <li class="lead">
-              <%= link_to "#{u.sexe} #{u.nom} #{u.prenom}", u %>
+              <%= link_to "#{u.sexe} #{u.nom} #{u.prenom} (#{r.ville})", u %>
               : <%= link_to "#{r.type_renc}", edit_rencontre_path(r), "data-no-turbolink" => true %>
               du <%= link_to "#{r.date.strftime("%d/%m/%y")}", edit_rencontre_path(r), "data-no-turbolink" => true %>
               <% if r.signale %>
