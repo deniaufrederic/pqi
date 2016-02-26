@@ -149,7 +149,18 @@ class StructuresController < ApplicationController
 
   def update
     @structure = Structure.find(params[:id])
+    nom = @structure.nom
+    @sigs = Rencontre.where(signale: true, sig_structure: @structure.nom)
+    @accomps = Rencontre.where(accomp: true, accomp_structure: @structure.nom)
     if @structure.update_attributes(structure_params)
+      if @structure.nom != nom
+        @sigs.each do |s|
+          s.update_attribute(sig_structure: @structure.nom)
+        end
+        @accomps.each do |a|
+          a.update_attribute(accomp_structure: @structure.nom)
+        end
+      end
       flash[:success] = "Structure éditée"
       redirect_to @structure
     else
