@@ -154,11 +154,15 @@ class StructuresController < ApplicationController
     @accomps = Rencontre.where(accomp: true, accomp_structure: @structure.nom)
     if @structure.update_attributes(structure_params)
       if @structure.nom != nom
-        @sigs.each do |s|
-          s.update_attribute(sig_structure: @structure.nom)
+        if @sigs.present?
+          @sigs.each do |s|
+            s.update_attribute(:sig_structure, @structure.nom)
+          end
         end
-        @accomps.each do |a|
-          a.update_attribute(accomp_structure: @structure.nom)
+        if @accomps.present?
+          @accomps.each do |a|
+            a.update_attribute(:accomp_structure, @structure.nom)
+          end
         end
       end
       flash[:success] = "Structure éditée"
