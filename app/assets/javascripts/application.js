@@ -42,6 +42,9 @@ $(function() {
 	$( ".check.sig" ).click(function() {
 		if($(this).is(":checked")) {
        		$(this).parent().parent().children(".appear").addClass("disp");
+       		if($("#rencontre_signalement").val() == "Signalement tiers") {
+				$(this).parent().parent().parent().children(".appear").addClass("disp");
+			}
      	} else {
        		$(this).parent().parent().children(".appear").removeClass("disp");
        		$(this).parent().parent().parent().children(".appear").removeClass("disp");
