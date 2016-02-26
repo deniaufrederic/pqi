@@ -44,6 +44,7 @@ $(function() {
        		$(this).parent().parent().children(".appear").addClass("disp");
      	} else {
        		$(this).parent().parent().children(".appear").removeClass("disp");
+       		$(this).parent().parent().parent().children(".appear").removeClass("disp");
      	}
 	});
 });
