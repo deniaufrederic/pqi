@@ -79,6 +79,7 @@ class StaticController < ApplicationController
     end
 
     def ville_params
-      params.require(:ville).permit(:nom)
+      params.require(:ville).permit(:nom,
+                                    :ville_93)
     end
 end
