@@ -5,35 +5,17 @@ class UsersController < ApplicationController
   before_action :benev_user,      only: [:new, :create, :destroy]
 
   def index
-    if session.has_key?('groupe')
-      session.delete(:usagers_ids)
-      session.delete(:groupe)
-      session.delete(:date)
-      session.delete(:type_renc)
-      session.delete(:ville)
-    end
+    delete_groupe
   	@users = User.paginate(page: params[:page], per_page: 10)
   end
 
   def show
-    if session.has_key?('groupe')
-      session.delete(:usagers_ids)
-      session.delete(:groupe)
-      session.delete(:date)
-      session.delete(:type_renc)
-      session.delete(:ville)
-    end
+    delete_groupe
   	@user = User.find(params[:id])
   end
 
   def new
-    if session.has_key?('groupe')
-      session.delete(:usagers_ids)
-      session.delete(:groupe)
-      session.delete(:date)
-      session.delete(:type_renc)
-      session.delete(:ville)
-    end
+    delete_groupe
   	@user = User.new
   end
 

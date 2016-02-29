@@ -4,13 +4,7 @@ class StructuresController < ApplicationController
   before_action :benev_user,      only: [:new, :create, :edit, :update, :destroy]
 
   def index
-    if session.has_key?('groupe')
-      session.delete(:usagers_ids)
-      session.delete(:groupe)
-      session.delete(:date)
-      session.delete(:type_renc)
-      session.delete(:ville)
-    end
+    delete_groupe
     if params[:search]
       @structures = Structure.search(params[:search]).order('nom ASC').paginate(page: params[:page], per_page: 20)
     else
@@ -19,13 +13,7 @@ class StructuresController < ApplicationController
   end
 
   def show
-    if session.has_key?('groupe')
-      session.delete(:usagers_ids)
-      session.delete(:groupe)
-      session.delete(:date)
-      session.delete(:type_renc)
-      session.delete(:ville)
-    end
+    delete_groupe
     @structure = Structure.find(params[:id])
     @sigs = Rencontre.where(signale: true, sig_structure: @structure.nom)
     @accomps = Rencontre.where(accomp: true, accomp_structure: @structure.nom)
@@ -74,13 +62,7 @@ class StructuresController < ApplicationController
                 ["Villepinte", "Villepinte"],
                 ["Villetaneuse", "Villetaneuse"],
                 ["Autre (hors 93)", "Autre (hors 93)"]]
-    if session.has_key?('groupe')
-      session.delete(:usagers_ids)
-      session.delete(:groupe)
-      session.delete(:date)
-      session.delete(:type_renc)
-      session.delete(:ville)
-    end
+    delete_groupe
     @structure = Structure.new
   end
 
@@ -137,13 +119,7 @@ class StructuresController < ApplicationController
                 ["Villepinte", "Villepinte"],
                 ["Villetaneuse", "Villetaneuse"],
                 ["Autre (hors 93)", "Autre (hors 93)"]]
-    if session.has_key?('groupe')
-      session.delete(:usagers_ids)
-      session.delete(:groupe)
-      session.delete(:date)
-      session.delete(:type_renc)
-      session.delete(:ville)
-    end
+    delete_groupe
     @structure = Structure.find(params[:id])
   end
 

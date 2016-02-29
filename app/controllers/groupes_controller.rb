@@ -4,13 +4,7 @@ class GroupesController < ApplicationController
   before_action :benev_user,      only: [:edit, :update, :destroy]
 
   def index
-    if session.has_key?('groupe')
-      session.delete(:usagers_ids)
-      session.delete(:groupe)
-      session.delete(:date)
-      session.delete(:type_renc)
-      session.delete(:ville)
-    end
+    delete_groupe
     if params[:search]
       @groupes = Groupe.search(params[:search]).order('nom ASC').paginate(page: params[:page], per_page: 20)
     else
@@ -19,25 +13,13 @@ class GroupesController < ApplicationController
   end
 
   def show
-    if session.has_key?('groupe')
-      session.delete(:usagers_ids)
-      session.delete(:groupe)
-      session.delete(:date)
-      session.delete(:type_renc)
-      session.delete(:ville)
-    end
+    delete_groupe
   	@groupe = Groupe.find(params[:id])
   	@usagers = @groupe.usagers
   end
 
   def edit
-    if session.has_key?('groupe')
-      session.delete(:usagers_ids)
-      session.delete(:groupe)
-      session.delete(:date)
-      session.delete(:type_renc)
-      session.delete(:ville)
-    end
+    delete_groupe
   	@groupe = Groupe.find(params[:id])
   end
 

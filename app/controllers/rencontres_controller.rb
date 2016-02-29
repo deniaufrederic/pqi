@@ -274,13 +274,7 @@ class RencontresController < ApplicationController
   end
 
   def edit_form
-    if session.has_key?('groupe')
-      session.delete(:usagers_ids)
-      session.delete(:groupe)
-      session.delete(:date)
-      session.delete(:type_renc)
-      session.delete(:ville)
-    end
+    delete_groupe
     store_id
     @types =  [ ["Maraude salariés 1", "Maraude salariés 1"],
                 ["Maraude salariés 2", "Maraude salariés 2"],
@@ -338,13 +332,7 @@ class RencontresController < ApplicationController
 
 
   def edit
-    if session.has_key?('groupe')
-      session.delete(:usagers_ids)
-      session.delete(:groupe)
-      session.delete(:date)
-      session.delete(:type_renc)
-      session.delete(:ville)
-    end
+    delete_groupe
     @rencontre = Rencontre.find(params[:id])
     @usager = Usager.find(@rencontre.usager_id)
     if current_user.benev? && @rencontre.type_renc != "Maraude bénévoles"

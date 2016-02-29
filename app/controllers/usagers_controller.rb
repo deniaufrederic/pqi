@@ -4,13 +4,7 @@ class UsagersController < ApplicationController
   before_action :benev_user,      only: [:edit, :update, :destroy, :fiche, :fiche_jour, :edit_comp, :post_comp]
 
   def new
-    if session.has_key?('groupe')
-      session.delete(:usagers_ids)
-      session.delete(:groupe)
-      session.delete(:date)
-      session.delete(:type_renc)
-      session.delete(:ville)
-    end
+    delete_groupe
     session[:stored] = "new"
     @usager = Usager.new
     @villes = [ ["Aubervilliers", "Aubervilliers"],
@@ -64,13 +58,7 @@ class UsagersController < ApplicationController
   end
 
   def index
-    if session.has_key?('groupe')
-      session.delete(:usagers_ids)
-      session.delete(:groupe)
-      session.delete(:date)
-      session.delete(:type_renc)
-      session.delete(:ville)
-    end
+    delete_groupe
     if params[:search]
       @usagers = Usager.search(params[:search]).paginate(page: params[:page], per_page: 50)
       if @usagers.empty?
@@ -82,13 +70,7 @@ class UsagersController < ApplicationController
   end
 
   def show
-    if session.has_key?('groupe')
-      session.delete(:usagers_ids)
-      session.delete(:groupe)
-      session.delete(:date)
-      session.delete(:type_renc)
-      session.delete(:ville)
-    end
+    delete_groupe
   	@usager = Usager.find(params[:id])
   end
 
@@ -133,13 +115,7 @@ class UsagersController < ApplicationController
   end
 
   def edit
-    if session.has_key?('groupe')
-      session.delete(:usagers_ids)
-      session.delete(:groupe)
-      session.delete(:date)
-      session.delete(:type_renc)
-      session.delete(:ville)
-    end
+    delete_groupe
     session[:stored] = "edit"
     @villes = [ ["Aubervilliers", "Aubervilliers"],
                 ["Aulnay-sous-Bois", "Aulnay-sous-Bois"],
@@ -270,13 +246,7 @@ class UsagersController < ApplicationController
   end
 
   def pqi
-    if session.has_key?('groupe')
-      session.delete(:usagers_ids)
-      session.delete(:groupe)
-      session.delete(:date)
-      session.delete(:type_renc)
-      session.delete(:ville)
-    end
+    delete_groupe
     store_ville
     @villes = [ ["Aubervilliers", "Aubervilliers"],
                 ["Aulnay-sous-Bois", "Aulnay-sous-Bois"],
@@ -325,13 +295,7 @@ class UsagersController < ApplicationController
   end
 
   def fiche
-    if session.has_key?('groupe')
-      session.delete(:usagers_ids)
-      session.delete(:groupe)
-      session.delete(:date)
-      session.delete(:type_renc)
-      session.delete(:ville)
-    end
+    delete_groupe
     store_last
     store_id
     @usager = Usager.find(session[:stored_id])
@@ -339,13 +303,7 @@ class UsagersController < ApplicationController
   end
 
   def fiche_jour
-    if session.has_key?('groupe')
-      session.delete(:usagers_ids)
-      session.delete(:groupe)
-      session.delete(:date)
-      session.delete(:type_renc)
-      session.delete(:ville)
-    end
+    delete_groupe
     store_last
     store_id
     @usager = Usager.find(session[:stored_id])
@@ -353,13 +311,7 @@ class UsagersController < ApplicationController
   end
 
   def edit_comp
-    if session.has_key?('groupe')
-      session.delete(:usagers_ids)
-      session.delete(:groupe)
-      session.delete(:date)
-      session.delete(:type_renc)
-      session.delete(:ville)
-    end
+    delete_groupe
     store_id
     session[:stored] = "edit_comp"
     @usager = Usager.find(session[:stored_id])

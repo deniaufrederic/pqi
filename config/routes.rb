@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   root                    'sessions#new'
   get 'guide'         =>  'static#guide'
+  get 'listes'        =>  'static#listes'
+  post 'listes'       =>  'static#listes_create'
   get 'signup'        =>  'users#new'
   post 'login' 		    =>  'sessions#create'
   delete 'logout'     =>  'sessions#destroy'
@@ -86,4 +88,14 @@ Rails.application.routes.draw do
     :controller => 'stats',
     :action     => 'show',
     :as         => :stats_dates_ville
+
+  get 'listes/:choix',
+    :controller => 'static',
+    :action     => 'listes',
+    :as         => :listes_choix
+
+  delete 'listes/Intervenants/:id',
+    :controller => 'static',
+    :action     => 'interv_destroy',
+    :as         => :interv_destroy
 end

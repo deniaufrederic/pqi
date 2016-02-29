@@ -3,13 +3,7 @@ class StatsController < ApplicationController
   before_action :benev_user,      only: [:show, :create]
 
   def show
-    if session.has_key?('groupe')
-      session.delete(:usagers_ids)
-      session.delete(:groupe)
-      session.delete(:date)
-      session.delete(:type_renc)
-      session.delete(:ville)
-    end
+    delete_groupe
   	@ville = nil
   	@dates = nil
   	stats_ville
