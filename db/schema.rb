@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160229151554) do
+ActiveRecord::Schema.define(version: 20160229163139) do
 
   create_table "enfants", force: :cascade do |t|
     t.integer  "usager_id"
@@ -167,6 +167,7 @@ ActiveRecord::Schema.define(version: 20160229151554) do
     t.string   "nom"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean  "ville_93"
   end
 
   add_index "villes", ["nom"], name: "index_villes_on_nom", unique: true

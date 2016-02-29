@@ -68,6 +68,10 @@
 									<%= f.submit "Nouvelle ville", class: "btn btn-primary" %>
 								</div>
 							</div>
+							<div class="form-group text-center form-inline">
+								<%= f.check_box :ville_93, checked: false, class: "form-control" %>
+								<%= f.label :ville_93, "Ville du département de Seine-Saint-Denis (93)" %>
+							</div>
 						<% end %>
 					</li>
 				</ul>
