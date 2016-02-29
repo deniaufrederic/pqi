@@ -67,11 +67,8 @@ class StaticController < ApplicationController
     elsif @ville.nom.blank?
       flash[:danger] = "Problème rencontré : veuillez rentrer le nom de la ville à ajouter"
       redirect_to listes_choix_path(choix: "Villes")
-    elsif Ville.find_by(nom: @ville.nom)
-      flash[:danger] = "Problème rencontré : cette ville existe déjà"
-      redirect_to listes_choix_path(choix: "Villes")
     else
-      flash[:danger] = "Problème rencontré : veuillez réessayer"
+      flash[:danger] = "Problème rencontré : cette ville existe déjà"
       redirect_to listes_choix_path(choix: "Villes")
     end
   end
