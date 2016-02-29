@@ -1,9 +1,11 @@
 <%= form_for(:liste, url: listes_path) do |f| %>
-	<div class="form">
+	<div class="form-horizontal">
 		<div class="part part-hover">
-	    <div class="form-group text-center">
-	      <%= f.label :choix, class: "control-label" %>
-	      <%= f.select :choix, @liste_choix, prompt: "Liste à modifier", class: 'form-control two-lv' %>
+	    <div class="form-group">
+	      <%= f.label :choix, class: "control-label col-md-4 col-sm-4 col-xs-4" %>
+	      <div class="col-md-8 col-sm-8 col-xs-8 text-center">
+	      	<%= f.select :choix, @liste_choix, prompt: "Liste à modifier", class: 'form-control' %>
+	      </div>
 	    </div>
 	    <div class="form-group text-center">
 		  	<%= f.submit "Valider", class: "btn btn-primary" %>
