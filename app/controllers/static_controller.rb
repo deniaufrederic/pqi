@@ -1,6 +1,6 @@
 class StaticController < ApplicationController
-  before_action :logged_in_user,  only: [:guide, :listes, :listes_create, :interv_destroy, :interv_create]
-  before_action :admin_user,      only: [:listes, :listes_create, :interv_destroy, :interv_create]
+  before_action :logged_in_user,  only: [:guide, :listes, :listes_create, :interv_destroy, :interv_create, :ville_destroy, :ville_create]
+  before_action :admin_user,      only: [:listes, :listes_create, :interv_destroy, :interv_create, :ville_destroy, :ville_create]
 
   def guide
   	delete_groupe
