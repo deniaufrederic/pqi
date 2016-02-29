@@ -47,7 +47,14 @@
 				<ul>
 					<% @villes.each do |v| %>
 						<li><div class="row">
-							<div class="col-md-6 col-sm-6 col-xs-6 text-center lead"><%= v.nom %></div>
+							<div class="col-md-6 col-sm-6 col-xs-6 text-center lead">
+								<%= v.nom %>
+								<% if v.ville_93? %>
+									<%= " (93)" %>
+								<% else %>
+									<%= " (hors 93)" %>
+								<% end %>
+							</div>
 							<div class="col-md-6 col-sm-6 col-xs-6 text-center">
 								<%= link_to "Retirer", 	ville_destroy_path(id: v.id),
 																				method: :delete,
