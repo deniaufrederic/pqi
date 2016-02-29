@@ -11,10 +11,10 @@
 <hr>
 
 <div class="row">
-	<div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2">
+	<div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2 liste">
 		<% if @choix == "Intervenants" %>
-			<h3 class="text-center" style="margin-bottom: 50px">Liste des intervenants</h3>
-			<ul style="list-style: none">
+			<h3 class="text-center">Liste des intervenants</h3>
+			<ul>
 				<% @intervs.each do |i| %>
 					<li><div class="row">
 						<div class="col-md-6 col-sm-6 col-xs-6 text-center lead"><%= i.nom %></div>
@@ -27,6 +27,48 @@
 					</div></li>
 					<hr>
 				<% end %>
+				<li>
+					<%= form_for(:interv, url: interv_create_path, hmtl: {class: "form-horizontal"}) do |f| %>
+						<div class="form-group">
+	    				<%= f.label :nom, class: "control-label col-md-2 col-sm-2 col-xs-2" %>
+	    				<div class="col-md-6 col-sm-6 col-xs-6">
+	      				<%= f.text_field :nom, class: 'form-control' %>
+	    				</div>
+	    				<div class="col-md-4 col-sm-4 col-xs-4 text-center">
+								<%= f.submit "Nouvel intervenant", class: "btn btn-primary" %>
+							</div>
+						</div>
+					<% end %>
+				</li>
+			</ul>
+		<% elsif @choix == "Villes" %>
+			<h3 class="text-center">Liste des villes</h3>
+			<ul>
+				<% @villes.each do |v| %>
+					<li><div class="row">
+						<div class="col-md-6 col-sm-6 col-xs-6 text-center lead"><%= v.nom %></div>
+						<div class="col-md-6 col-sm-6 col-xs-6 text-center">
+							<%= link_to "Retirer", 	ville_destroy_path(id: v.id),
+																			method: :delete,
+																			data: { confirm: "Etes-vous sûr(e) ?" },
+																			class: "btn btn-danger" %>
+						</div>
+					</div></li>
+					<hr>
+				<% end %>
+				<li>
+					<%= form_for(:ville, url: ville_create_path, hmtl: {class: "form-horizontal"}) do |f| %>
+						<div class="form-group">
+	    				<%= f.label :nom, class: "control-label col-md-2 col-sm-2 col-xs-2" %>
+	    				<div class="col-md-6 col-sm-6 col-xs-6">
+	      				<%= f.text_field :nom, class: 'form-control' %>
+	    				</div>
+	    				<div class="col-md-4 col-sm-4 col-xs-4 text-center">
+								<%= f.submit "Nouvelle ville", class: "btn btn-primary" %>
+							</div>
+						</div>
+					<% end %>
+				</li>
 			</ul>
 		<% end %>
 	</div>

@@ -20,48 +20,11 @@ class StructuresController < ApplicationController
   end
 
   def new
-    @villes = [ ["Aubervilliers", "Aubervilliers"],
-                ["Aulnay-sous-Bois", "Aulnay-sous-Bois"],
-                ["Bagnolet", "Bagnolet"],
-                ["Bobigny", "Bobigny"],
-                ["Bondy", "Bondy"],
-                ["Clichy-sous-Bois", "Clichy-sous-Bois"],
-                ["Coubron", "Coubron"],
-                ["Drancy", "Drancy"],
-                ["Dugny", "Dugny"],
-                ["Epinay-sur-Seine", "Epinay-sur-Seine"],
-                ["Gagny", "Gagny"],
-                ["Gournay-sur-Marne", "Gournay-sur-Marne"],
-                ["L'Ile-Saint-Denis", "L'Ile-Saint-Denis"],
-                ["La Courneuve", "La Courneuve"],
-                ["La Plaine Saint-Denis", "La Plaine Saint-Denis"],
-                ["Le Blanc-Mesnil", "Le Blanc-Mesnil"],
-                ["Le Bourget", "Le Bourget"],
-                ["Le Pré-Saint-Gervais", "Le Pré-Saint-Gervais"],
-                ["Le Raincy", "Le Raincy"],
-                ["Les Lilas", "Les Lilas"],
-                ["Les Pavillons-sous-Bois", "Les Pavillons-sous-Bois"],
-                ["Livry-Gargan", "Livry-Gargan"],
-                ["Montfermeil", "Montfermeil"],
-                ["Montreuil", "Montreuil"],
-                ["Neuilly-Plaisance", "Neuilly-Plaisance"],
-                ["Neuilly-sur-Marne", "Neuilly-sur-Marne"],
-                ["Noisy-le-Grand", "Noisy-le-Grand"],
-                ["Noisy-le-Sec", "Noisy-le-Sec"],
-                ["Pantin", "Pantin"],
-                ["Pierrefitte", "Pierrefitte"],
-                ["Romainville", "Romainville"],
-                ["Rosny-sous-Bois", "Rosny-sous-Bois"],
-                ["Saint-Denis", "Saint-Denis"],
-                ["Saint-Ouen", "Saint-Ouen"],
-                ["Sevran", "Sevran"],
-                ["Stains", "Stains"],
-                ["Tremblay-en-France", "Tremblay-en-France"],
-                ["Vaujours", "Vaujours"],
-                ["Villemomble", "Villemomble"],
-                ["Villepinte", "Villepinte"],
-                ["Villetaneuse", "Villetaneuse"],
-                ["Autre (hors 93)", "Autre (hors 93)"]]
+    @villes = []
+    Ville.all.order('nom ASC').each do |v|
+      @villes << ["#{v.nom}"]
+    end,
+    @villes << ["Autre (hors 93)"]
     delete_groupe
     @structure = Structure.new
   end
@@ -77,48 +40,11 @@ class StructuresController < ApplicationController
   end
 
   def edit
-    @villes = [ ["Aubervilliers", "Aubervilliers"],
-                ["Aulnay-sous-Bois", "Aulnay-sous-Bois"],
-                ["Bagnolet", "Bagnolet"],
-                ["Bobigny", "Bobigny"],
-                ["Bondy", "Bondy"],
-                ["Clichy-sous-Bois", "Clichy-sous-Bois"],
-                ["Coubron", "Coubron"],
-                ["Drancy", "Drancy"],
-                ["Dugny", "Dugny"],
-                ["Epinay-sur-Seine", "Epinay-sur-Seine"],
-                ["Gagny", "Gagny"],
-                ["Gournay-sur-Marne", "Gournay-sur-Marne"],
-                ["L'Ile-Saint-Denis", "L'Ile-Saint-Denis"],
-                ["La Courneuve", "La Courneuve"],
-                ["La Plaine Saint-Denis", "La Plaine Saint-Denis"],
-                ["Le Blanc-Mesnil", "Le Blanc-Mesnil"],
-                ["Le Bourget", "Le Bourget"],
-                ["Le Pré-Saint-Gervais", "Le Pré-Saint-Gervais"],
-                ["Le Raincy", "Le Raincy"],
-                ["Les Lilas", "Les Lilas"],
-                ["Les Pavillons-sous-Bois", "Les Pavillons-sous-Bois"],
-                ["Livry-Gargan", "Livry-Gargan"],
-                ["Montfermeil", "Montfermeil"],
-                ["Montreuil", "Montreuil"],
-                ["Neuilly-Plaisance", "Neuilly-Plaisance"],
-                ["Neuilly-sur-Marne", "Neuilly-sur-Marne"],
-                ["Noisy-le-Grand", "Noisy-le-Grand"],
-                ["Noisy-le-Sec", "Noisy-le-Sec"],
-                ["Pantin", "Pantin"],
-                ["Pierrefitte", "Pierrefitte"],
-                ["Romainville", "Romainville"],
-                ["Rosny-sous-Bois", "Rosny-sous-Bois"],
-                ["Saint-Denis", "Saint-Denis"],
-                ["Saint-Ouen", "Saint-Ouen"],
-                ["Sevran", "Sevran"],
-                ["Stains", "Stains"],
-                ["Tremblay-en-France", "Tremblay-en-France"],
-                ["Vaujours", "Vaujours"],
-                ["Villemomble", "Villemomble"],
-                ["Villepinte", "Villepinte"],
-                ["Villetaneuse", "Villetaneuse"],
-                ["Autre (hors 93)", "Autre (hors 93)"]]
+    @villes = []
+    Ville.all.order('nom ASC').each do |v|
+      @villes << ["#{v.nom}"]
+    end,
+    @villes << ["Autre (hors 93)"]
     delete_groupe
     @structure = Structure.find(params[:id])
   end

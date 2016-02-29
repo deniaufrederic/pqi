@@ -7,48 +7,11 @@ class UsagersController < ApplicationController
     delete_groupe
     session[:stored] = "new"
     @usager = Usager.new
-    @villes = [ ["Aubervilliers", "Aubervilliers"],
-                ["Aulnay-sous-Bois", "Aulnay-sous-Bois"],
-                ["Bagnolet", "Bagnolet"],
-                ["Bobigny", "Bobigny"],
-                ["Bondy", "Bondy"],
-                ["Clichy-sous-Bois", "Clichy-sous-Bois"],
-                ["Coubron", "Coubron"],
-                ["Drancy", "Drancy"],
-                ["Dugny", "Dugny"],
-                ["Epinay-sur-Seine", "Epinay-sur-Seine"],
-                ["Gagny", "Gagny"],
-                ["Gournay-sur-Marne", "Gournay-sur-Marne"],
-                ["L'Ile-Saint-Denis", "L'Ile-Saint-Denis"],
-                ["La Courneuve", "La Courneuve"],
-                ["La Plaine Saint-Denis", "La Plaine Saint-Denis"],
-                ["Le Blanc-Mesnil", "Le Blanc-Mesnil"],
-                ["Le Bourget", "Le Bourget"],
-                ["Le Pré-Saint-Gervais", "Le Pré-Saint-Gervais"],
-                ["Le Raincy", "Le Raincy"],
-                ["Les Lilas", "Les Lilas"],
-                ["Les Pavillons-sous-Bois", "Les Pavillons-sous-Bois"],
-                ["Livry-Gargan", "Livry-Gargan"],
-                ["Montfermeil", "Montfermeil"],
-                ["Montreuil", "Montreuil"],
-                ["Neuilly-Plaisance", "Neuilly-Plaisance"],
-                ["Neuilly-sur-Marne", "Neuilly-sur-Marne"],
-                ["Noisy-le-Grand", "Noisy-le-Grand"],
-                ["Noisy-le-Sec", "Noisy-le-Sec"],
-                ["Pantin", "Pantin"],
-                ["Pierrefitte", "Pierrefitte"],
-                ["Romainville", "Romainville"],
-                ["Rosny-sous-Bois", "Rosny-sous-Bois"],
-                ["Saint-Denis", "Saint-Denis"],
-                ["Saint-Ouen", "Saint-Ouen"],
-                ["Sevran", "Sevran"],
-                ["Stains", "Stains"],
-                ["Tremblay-en-France", "Tremblay-en-France"],
-                ["Vaujours", "Vaujours"],
-                ["Villemomble", "Villemomble"],
-                ["Villepinte", "Villepinte"],
-                ["Villetaneuse", "Villetaneuse"],
-                ["Ville inconnue", "Ville inconnue"]]
+    @villes = []
+    Ville.all.order('nom ASC').each do |v|
+      @villes << ["#{v.nom}"]
+    end
+    @villes << ["Ville inconnue"]
     gon.noms = []
     gon.prenoms = []
     Usager.all.each do |u|
@@ -117,48 +80,11 @@ class UsagersController < ApplicationController
   def edit
     delete_groupe
     session[:stored] = "edit"
-    @villes = [ ["Aubervilliers", "Aubervilliers"],
-                ["Aulnay-sous-Bois", "Aulnay-sous-Bois"],
-                ["Bagnolet", "Bagnolet"],
-                ["Bobigny", "Bobigny"],
-                ["Bondy", "Bondy"],
-                ["Clichy-sous-Bois", "Clichy-sous-Bois"],
-                ["Coubron", "Coubron"],
-                ["Drancy", "Drancy"],
-                ["Dugny", "Dugny"],
-                ["Epinay-sur-Seine", "Epinay-sur-Seine"],
-                ["Gagny", "Gagny"],
-                ["Gournay-sur-Marne", "Gournay-sur-Marne"],
-                ["L'Ile-Saint-Denis", "L'Ile-Saint-Denis"],
-                ["La Courneuve", "La Courneuve"],
-                ["La Plaine Saint-Denis", "La Plaine Saint-Denis"],
-                ["Le Blanc-Mesnil", "Le Blanc-Mesnil"],
-                ["Le Bourget", "Le Bourget"],
-                ["Le Pré-Saint-Gervais", "Le Pré-Saint-Gervais"],
-                ["Le Raincy", "Le Raincy"],
-                ["Les Lilas", "Les Lilas"],
-                ["Les Pavillons-sous-Bois", "Les Pavillons-sous-Bois"],
-                ["Livry-Gargan", "Livry-Gargan"],
-                ["Montfermeil", "Montfermeil"],
-                ["Montreuil", "Montreuil"],
-                ["Neuilly-Plaisance", "Neuilly-Plaisance"],
-                ["Neuilly-sur-Marne", "Neuilly-sur-Marne"],
-                ["Noisy-le-Grand", "Noisy-le-Grand"],
-                ["Noisy-le-Sec", "Noisy-le-Sec"],
-                ["Pantin", "Pantin"],
-                ["Pierrefitte", "Pierrefitte"],
-                ["Romainville", "Romainville"],
-                ["Rosny-sous-Bois", "Rosny-sous-Bois"],
-                ["Saint-Denis", "Saint-Denis"],
-                ["Saint-Ouen", "Saint-Ouen"],
-                ["Sevran", "Sevran"],
-                ["Stains", "Stains"],
-                ["Tremblay-en-France", "Tremblay-en-France"],
-                ["Vaujours", "Vaujours"],
-                ["Villemomble", "Villemomble"],
-                ["Villepinte", "Villepinte"],
-                ["Villetaneuse", "Villetaneuse"],
-                ["Ville inconnue", "Ville inconnue"]]
+    @villes = []
+    Ville.all.order('nom ASC').each do |v|
+      @villes << ["#{v.nom}"]
+    end
+    @villes << ["Ville inconnue"]
   	@usager = Usager.find(params[:id])
   end
 
@@ -248,47 +174,10 @@ class UsagersController < ApplicationController
   def pqi
     delete_groupe
     store_ville
-    @villes = [ ["Aubervilliers", "Aubervilliers"],
-                ["Aulnay-sous-Bois", "Aulnay-sous-Bois"],
-                ["Bagnolet", "Bagnolet"],
-                ["Bobigny", "Bobigny"],
-                ["Bondy", "Bondy"],
-                ["Clichy-sous-Bois", "Clichy-sous-Bois"],
-                ["Coubron", "Coubron"],
-                ["Drancy", "Drancy"],
-                ["Dugny", "Dugny"],
-                ["Epinay-sur-Seine", "Epinay-sur-Seine"],
-                ["Gagny", "Gagny"],
-                ["Gournay-sur-Marne", "Gournay-sur-Marne"],
-                ["L'Ile-Saint-Denis", "L'Ile-Saint-Denis"],
-                ["La Courneuve", "La Courneuve"],
-                ["La Plaine Saint-Denis", "La Plaine Saint-Denis"],
-                ["Le Blanc-Mesnil", "Le Blanc-Mesnil"],
-                ["Le Bourget", "Le Bourget"],
-                ["Le Pré-Saint-Gervais", "Le Pré-Saint-Gervais"],
-                ["Le Raincy", "Le Raincy"],
-                ["Les Lilas", "Les Lilas"],
-                ["Les Pavillons-sous-Bois", "Les Pavillons-sous-Bois"],
-                ["Livry-Gargan", "Livry-Gargan"],
-                ["Montfermeil", "Montfermeil"],
-                ["Montreuil", "Montreuil"],
-                ["Neuilly-Plaisance", "Neuilly-Plaisance"],
-                ["Neuilly-sur-Marne", "Neuilly-sur-Marne"],
-                ["Noisy-le-Grand", "Noisy-le-Grand"],
-                ["Noisy-le-Sec", "Noisy-le-Sec"],
-                ["Pantin", "Pantin"],
-                ["Pierrefitte", "Pierrefitte"],
-                ["Romainville", "Romainville"],
-                ["Rosny-sous-Bois", "Rosny-sous-Bois"],
-                ["Saint-Denis", "Saint-Denis"],
-                ["Saint-Ouen", "Saint-Ouen"],
-                ["Sevran", "Sevran"],
-                ["Stains", "Stains"],
-                ["Tremblay-en-France", "Tremblay-en-France"],
-                ["Vaujours", "Vaujours"],
-                ["Villemomble", "Villemomble"],
-                ["Villepinte", "Villepinte"],
-                ["Villetaneuse", "Villetaneuse"]]
+    @villes = []
+    Ville.all.order('nom ASC').each do |v|
+      @villes << ["#{v.nom}"]
+    end
     @usagers = Usager.where(pqi: true, ville: session[:stored_ville]).order('adresse ASC, adresse_précis ASC, nom ASC') unless session[:stored_ville] == "pqi"
     @ville_actuelle = session[:stored_ville]
     session.delete(:stored_ville)

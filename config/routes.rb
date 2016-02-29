@@ -98,4 +98,19 @@ Rails.application.routes.draw do
     :controller => 'static',
     :action     => 'interv_destroy',
     :as         => :interv_destroy
+
+  post 'listes/Intervenants',
+    :controller => 'static',
+    :action     => 'interv_create',
+    :as         => :interv_create
+
+  delete 'listes/Villes/:id',
+    :controller => 'static',
+    :action     => 'ville_destroy',
+    :as         => :ville_destroy
+
+  post 'listes/Villes',
+    :controller => 'static',
+    :action     => 'ville_create',
+    :as         => :ville_create
 end
