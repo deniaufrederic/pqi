@@ -16,9 +16,7 @@ class StaticController < ApplicationController
     @intervs = Intervenant.all.order('nom ASC')
     @interv = Intervenant.new
     @villes = []
-    Ville.all.order('nom ASC').each do |v|
-      @villes << ["#{v.nom}"]
-    end
+    @villes = Ville.all.order('nom ASC')
     @ville = Ville.new
     session.delete(:stored_choix)
   end
