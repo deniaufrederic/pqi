@@ -230,7 +230,7 @@
     <% @villes.each do |ville| %>
       <tr>
         <th><%= "#{ville.first}" %></th>
-        <% if TypeRenc.find_by(nom: @type).mar? %>
+        <% if @type = "Maraude salariés (toutes)" || TypeRenc.find_by(nom: @type).mar? %>
           <td>
             <% n = 0 %>
             <% mar = Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), type_maraude: @type) %>
@@ -303,7 +303,7 @@
       <%= render 'table_h' %>
     </tr>
     <tr>
-      <% if TypeRenc.find_by(nom: @type).mar? %>
+      <% if @type = "Maraude salariés (toutes)" || TypeRenc.find_by(nom: @type).mar? %>
         <td>
           <% n = 0 %>
           <% mar = Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), type_maraude: @type) %>

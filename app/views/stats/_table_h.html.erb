@@ -1,4 +1,4 @@
-<% if @type.nil? || (!@type.nil? && TypeRenc.find_by(nom: @type).mar?) %>
+<% if @type.nil? || @type == "Maraude salariés (toutes)" || (!@type.nil? && TypeRenc.find_by(nom: @type).mar?) %>
 	<th>Nb maraudes passées sur la ville</th>
 <% end %>
 <th>Nb tot rencontres</th>
