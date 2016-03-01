@@ -7,12 +7,10 @@ class UsagersController < ApplicationController
     delete_groupe
     session[:stored] = "new"
     @usager = Usager.new
-    @villes = []
+    @villes = [["Ville inconnue"], ["Autre (hors 93)"]]
     Ville.where(ville_93: true).order('nom ASC').each do |v|
       @villes << ["#{v.nom}"]
     end
-    @villes << ["Ville inconnue"]
-    @villes << ["Autre (hors 93)"]
     gon.noms = []
     gon.prenoms = []
     Usager.all.each do |u|
@@ -81,12 +79,10 @@ class UsagersController < ApplicationController
   def edit
     delete_groupe
     session[:stored] = "edit"
-    @villes = []
+    @villes = [["Ville inconnue"], ["Autre (hors 93)"]]
     Ville.where(ville_93: true).order('nom ASC').each do |v|
       @villes << ["#{v.nom}"]
     end
-    @villes << ["Ville inconnue"]
-    @villes << ["Autre (hors 93)"]
   	@usager = Usager.find(params[:id])
   end
 

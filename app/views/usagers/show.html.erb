@@ -324,7 +324,7 @@
           <% else %>
             <p class="lead">Pas de problèmes de santé connus</p>
           <% end %>
-          <% if @usager.mobil != "0" %>
+          <% if @usager.mobil %>
             <p class="lead">Mobilité réduite</p>
           <% end %>
           <% if @usager.infos_sante.present? %>
