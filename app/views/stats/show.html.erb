@@ -60,7 +60,7 @@
           <% mar = Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last))) %>
           <% mar.each do |m| %>
             <% t = m.type_maraude.split(' ').last %>
-            <% if m.villes.include?("#{ville.first} ☑") %>
+            <% if m.villes.include?("#{ville.first}") %>
               <% if t == "1" || t == "2" %>
                 <% s += 1 %>
               <% elsif t == "bénévoles" %>
@@ -144,7 +144,7 @@
         <% mar = Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last))) %>
         <% mar.each do |m| %>
           <% t = m.type_maraude.split(' ').last %>
-          <% if m.villes.include?("#{@ville} ☑") %>
+          <% if m.villes.include?("#{@ville}") %>
             <% if t == "1" || t == "2" %>
               <% s += 1 %>
             <% elsif t == "bénévoles" %>
