@@ -84,10 +84,20 @@ Rails.application.routes.draw do
     :action     => 'show',
     :as         => :stats_dates
 
-  get 'stats/:date_deb/:date_fin/:ville',
+  get 'stats/:date_deb/:date_fin/ville/:ville',
     :controller => 'stats',
     :action     => 'show',
     :as         => :stats_dates_ville
+
+  get 'stats/:date_deb/:date_fin/type/:type',
+    :controller => 'stats',
+    :action     => 'show',
+    :as         => :stats_dates_type
+
+  get 'stats/:date_deb/:date_fin/:type/:ville',
+    :controller => 'stats',
+    :action     => 'show',
+    :as         => :stats_dates_type_ville
 
   get 'listes/:choix',
     :controller => 'static',

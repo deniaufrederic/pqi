@@ -12,7 +12,7 @@
   </div>
 </div>
 
-<% if @ville.nil? && !@dates.nil? %>
+<% if @ville.nil? && @type.nil? %>
 <div id="pqi-print">
   <h3 class="text-center">
     <%= "Statistiques sur le département du #{@dates.first.split('-').reverse.join('/')} au #{@dates.last.split('-').reverse.join('/')}" %>
@@ -121,7 +121,7 @@
   </table>
 </tr>
 
-<% elsif !@ville.nil? && !@dates.nil? %>
+<% elsif !@ville.nil? && @type.nil? %>
 <div id="pqi-print">
   <h3 class="text-center">
     <%= "Statistiques sur #{@ville} du #{@dates.first.split('-').reverse.join('/')} au #{@dates.last.split('-').reverse.join('/')}" %>
@@ -190,4 +190,19 @@
   </table>
 </div>
 
+<% elsif @ville.nil? && !@type.nil? %>
+<div id="pqi-print">
+  <h3 class="text-center">
+    <%= "Statistiques : #{@type} du #{@dates.first.split('-').reverse.join('/')} au #{@dates.last.split('-').reverse.join('/')}" %>
+    <%= link_to image_tag("print.png", alt: "Imprimer", width: 30, length: 30), '#', onclick: "printpage()", id: 'print-link', class: "btn" %>
+  </h3>
+</div>
+
+<% else %>
+<div id="pqi-print">
+  <h3 class="text-center">
+    <%= "Statistiques : #{@type} sur #{@ville} du #{@dates.first.split('-').reverse.join('/')} au #{@dates.last.split('-').reverse.join('/')}" %>
+    <%= link_to image_tag("print.png", alt: "Imprimer", width: 30, length: 30), '#', onclick: "printpage()", id: 'print-link', class: "btn" %>
+  </h3>
+</div>
 <% end %>
