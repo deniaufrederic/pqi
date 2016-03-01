@@ -118,8 +118,8 @@
       <td><%= "#{@h_sig_dnv + @f_sig_dnv} (#{@h_sig_dnv}/#{@f_sig_dnv})" %></td>
       <td><%= "#{@h_acc + @f_acc} (#{@h_acc}/#{@f_acc} ; #{@e_acc})" %></td>
       <td><%= "#{@pa_tot}/#{@pv_tot}/#{@pd_tot}/#{@ph_tot}" %></td>
-  </table>
-</tr>
+  </tr>
+</table>
 
 <% elsif !@ville.nil? && @type.nil? %>
 <div id="pqi-print">
@@ -196,6 +196,96 @@
     <%= "Statistiques : #{@type} du #{@dates.first.split('-').reverse.join('/')} au #{@dates.last.split('-').reverse.join('/')}" %>
     <%= link_to image_tag("print.png", alt: "Imprimer", width: 30, length: 30), '#', onclick: "printpage()", id: 'print-link', class: "btn" %>
   </h3>
+
+  <h5>Entre parenthèses : (Nb d'hommes/Nb de femmes ; Nb d'enfants)</h5>
+  <h5>Pour les prestations : Alimentaire/Vestiaire/Duvet/Hygiène</h5>
+  <h5>Le nombre total de maraudes n'est pas la somme des chiffres de la colonne ! Il s'agit bien du nombre total de maraudes effectuées sur la période</h5>
+
+  <table class="stats table table-responsive table-striped">
+    <tr id="table-head">
+      <th>Ville</th>
+      <%= render 'table_h' %>
+    </tr>
+    
+    <% @f_tot = 0 %>
+    <% @h_tot = 0 %>
+    <% @e_tot = 0 %>
+    <% @f_dif = 0 %>
+    <% @h_dif = 0 %>
+    <% @f_dnv = 0 %>
+    <% @h_dnv = 0 %>
+    <% @f_sig = 0 %>
+    <% @h_sig = 0 %>
+    <% @e_sig = 0 %>
+    <% @f_sig_dnv = 0 %>
+    <% @h_sig_dnv = 0 %>
+    <% @f_acc = 0 %>
+    <% @h_acc = 0 %>
+    <% @e_acc = 0 %>
+    <% @pa_tot = 0 %>
+    <% @pv_tot = 0 %>
+    <% @pd_tot = 0 %>
+    <% @ph_tot = 0 %>
+
+    <% @villes.each do |ville| %>
+      <tr>
+        <th><%= "#{ville.first}" %></th>
+        <% if TypeRenc.find_by(nom: @type).mar? %>
+          <td>
+            <% n = 0 %>
+            <% mar = Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), type_maraude: @type) %>
+            <% mar.each do |m| %>
+              <% if m.villes.include?("#{ville.first}") %>
+                <% n += 1 %>
+              <% end %>
+            <% end %>
+            <%= n %>
+          </td>
+        <% end %>
+        <% rencs = Rencontre.where(type_renc: @type) %>
+        <td>
+          <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, prev: false, dnv: false) %>
+          <%= render 'calc_rencontres' %>
+        </td>
+        <td>
+          <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, prev: false, dnv: false) %>
+          <%= render 'calc_rencontres_diff' %>
+        </td>
+        <td>
+          <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, prev: false, dnv: true) %>
+          <%= render 'calc_dnv' %>
+        </td>
+        <td>
+          <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, signale: true) %>
+          <%= render 'calc_signalements' %>
+        </td>
+        <td>
+          <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, signale: true, dnv: true) %>
+          <%= render 'calc_sig_dnv' %>
+        </td>
+        <td>
+          <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, accomp: true) %>
+          <%= render 'calc_accomps' %>
+        </td>
+        <td>
+          <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, prev: false, dnv: false) %>
+          <%= render 'calc_prestas' %>
+        </td>
+      </tr>
+    <% end %>
+
+    <tr class="lead">
+      <th id="total">Total</th>
+      <td><%= Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), type_maraude: @type).count %></td>
+      <td><%= "#{@h_tot + @f_tot} (#{@h_tot}/#{@f_tot} ; #{@e_tot})" %></td>
+      <td><%= "#{@h_dif + @f_dif} (#{@h_dif}/#{@f_dif})" %></td>
+      <td><%= "#{@h_dnv + @f_dnv} (#{@h_dnv}/#{@f_dnv})" %></td>
+      <td><%= "#{@h_sig + @f_sig} (#{@h_sig}/#{@f_sig} ; #{@e_sig})" %></td>
+      <td><%= "#{@h_sig_dnv + @f_sig_dnv} (#{@h_sig_dnv}/#{@f_sig_dnv})" %></td>
+      <td><%= "#{@h_acc + @f_acc} (#{@h_acc}/#{@f_acc} ; #{@e_acc})" %></td>
+      <td><%= "#{@pa_tot}/#{@pv_tot}/#{@pd_tot}/#{@ph_tot}" %></td>
+    </tr>
+  </table>
 </div>
 
 <% else %>
@@ -204,5 +294,57 @@
     <%= "Statistiques : #{@type} sur #{@ville} du #{@dates.first.split('-').reverse.join('/')} au #{@dates.last.split('-').reverse.join('/')}" %>
     <%= link_to image_tag("print.png", alt: "Imprimer", width: 30, length: 30), '#', onclick: "printpage()", id: 'print-link', class: "btn" %>
   </h3>
+
+  <h5>Entre parenthèses : (Nb d'hommes/Nb de femmes)</h5>
+  <h5>Pour les prestations : Alimentaire/Vestiaire/Duvet/Hygiène</h5>
+
+  <table class="stats table table-responsive">
+    <tr id="table-head">
+      <%= render 'table_h' %>
+    </tr>
+    <tr>
+      <% if TypeRenc.find_by(nom: @type).mar? %>
+        <td>
+          <% n = 0 %>
+          <% mar = Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), type_maraude: @type) %>
+          <% mar.each do |m| %>
+            <% if m.villes.include?("#{ville.first}") %>
+              <% n += 1 %>
+            <% end %>
+          <% end %>
+          <%= n %>
+        </td>
+      <% end %>
+      <% rencs = Rencontre.where(type_renc: @type) %>
+      <td>
+        <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: @ville, prev: false, dnv: false) %>
+        <%= render 'calc_rencontres' %>
+      </td>
+      <td>
+        <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: @ville, prev: false, dnv: false) %>
+        <%= render 'calc_rencontres_diff' %>
+      </td>
+      <td>
+        <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: @ville, prev: false, dnv: true) %>
+        <%= render 'calc_dnv' %>
+      </td>
+      <td>
+        <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: @ville, signale: true) %>
+        <%= render 'calc_signalements' %>
+      </td>
+      <td>
+        <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: @ville, signale: true, dnv: true) %>
+        <%= render 'calc_sig_dnv' %>
+      </td>
+      <td>
+        <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: @ville, accomp: true) %>
+        <%= render 'calc_accomps' %>
+      </td>
+      <td>
+        <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: @ville, prev: false, dnv: false) %>
+        <%= render 'calc_prestas' %>
+      </td>
+    </tr>
+  </table>
 </div>
 <% end %>

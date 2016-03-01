@@ -1,4 +1,6 @@
-<th>Nb maraudes passées sur la ville</th>
+<% if @type.nil? || (!@type.nil? && TypeRenc.find_by(nom: @type).mar?) %>
+	<th>Nb maraudes passées sur la ville</th>
+<% end %>
 <th>Nb tot rencontres</th>
 <th>Nb personnes différentes rencontrées</th>
 <th>Nb non vus sur déplacement</th>
