@@ -10,31 +10,15 @@
 <% end %>
 
 <% if !@groupes.empty? %>
-  <% c = (@groupes.count / 4).floor %>
-  <% r = @groupes.count % 4 %>
-  <% i = 0 %>
-  <% while i != c %>
-    <div class="row groupes">
-      <% @groupes[(4*i)..(4*(i+1) - 1)].each do |u| %>
-        <div class="col-md-3 col-sm-3 col-xs-3 lead">
-  	      <%= link_to "#{u.nom}", u %>
-          <span class="badge"><%= u.usagers.count %></span>
-    	  </div>
-      <% end %>
-      <hr>
-    </div>
-    <% i += 1 %>
-  <% end %>
-  <% if r != 0 %>
-    <div class="row groupes">
-      <% @groupes[(4*c)..(4*c + r)].each do |u| %>
-        <div class="col-md-3 col-sm-3 col-xs-3 lead">
-          <%= link_to "#{u.nom}", u %>
-          <span class="badge"><%= u.usagers.count %></span>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
+  <div class="row groupes">
+    <% @groupes.each do |g| %>
+      <div class="col-md-3 col-sm-3 col-xs-3 lead">
+  	    <%= link_to "#{g.nom}", g %>
+        <span class="badge"><%= g.usagers.count %></span>
+      </div>
+    <% end %>
+    <hr>
+  </div>
 <% else %>
   <p>Aucun groupe correspondant au(x) terme(s) : "<%= params[:search] %>".</p>
 <% end %>
