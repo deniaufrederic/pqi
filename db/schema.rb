@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160229163139) do
+ActiveRecord::Schema.define(version: 20160301132821) do
 
   create_table "enfants", force: :cascade do |t|
     t.integer  "usager_id"
@@ -104,6 +104,13 @@ ActiveRecord::Schema.define(version: 20160229163139) do
 
   add_index "structures_usagers", ["structure_id"], name: "index_structures_usagers_on_structure_id"
   add_index "structures_usagers", ["usager_id"], name: "index_structures_usagers_on_usager_id"
+
+  create_table "type_rencs", force: :cascade do |t|
+    t.string   "nom"
+    t.boolean  "mar"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "usagers", force: :cascade do |t|
     t.string   "nom"

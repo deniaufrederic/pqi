@@ -82,6 +82,44 @@
 						<% end %>
 					</li>
 				</ul>
+			<% elsif @choix == "Types" %>
+				<h3 class="text-center">Liste des types de rencontre</h3>
+				<ul>
+					<% @types.each do |t| %>
+						<li><div class="row">
+							<div class="col-md-6 col-sm-6 col-xs-6 text-center lead">
+								<%= t.nom %>
+								<% if t.mar? %>
+									<%= " (Maraude)" %>
+								<% end %>
+							</div>
+							<div class="col-md-6 col-sm-6 col-xs-6 text-center">
+								<%= link_to "Retirer", 	type_destroy_path(id: t.id),
+																				method: :delete,
+																				data: { confirm: "Etes-vous sûr(e) ?" },
+																				class: "btn btn-danger" %>
+							</div>
+						</div></li>
+						<hr>
+					<% end %>
+					<li>
+						<%= form_for(:type, url: type_create_path, hmtl: {class: "form-horizontal"}) do |f| %>
+							<div class="form-group">
+		    				<%= f.label :nom, class: "control-label col-md-2 col-sm-2 col-xs-2" %>
+		    				<div class="col-md-6 col-sm-6 col-xs-6">
+		      				<%= f.text_field :nom, class: 'form-control' %>
+		    				</div>
+		    				<div class="col-md-4 col-sm-4 col-xs-4 text-center">
+									<%= f.submit "Nouveau type de rencontre", class: "btn btn-primary" %>
+								</div>
+							</div>
+							<div class="form-group text-center form-inline col-md-8 col-sm-8 col-xs-8">
+								<%= f.check_box :mar, checked: false, class: "form-control" %>
+								<%= f.label :mar, "Type de rencontre maraude" %>
+							</div>
+						<% end %>
+					</li>
+				</ul>
 			<% end %>
 		</div>
 	</div>

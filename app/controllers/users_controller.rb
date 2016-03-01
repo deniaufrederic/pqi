@@ -40,12 +40,7 @@ class UsersController < ApplicationController
   end
 
   def edit
-    if session.has_key?('groupe')
-      session.delete(:usagers_ids)
-      session.delete(:groupe)
-      session.delete(:date)
-      session.delete(:type_renc)
-    end
+    delete_groupe
   	@user = User.find(params[:id])
   end
 

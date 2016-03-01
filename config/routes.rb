@@ -113,4 +113,14 @@ Rails.application.routes.draw do
     :controller => 'static',
     :action     => 'ville_create',
     :as         => :ville_create
+
+  delete 'listes/Types/:id',
+    :controller => 'static',
+    :action     => 'type_destroy',
+    :as         => :type_destroy
+
+  post 'listes/Types',
+    :controller => 'static',
+    :action     => 'type_create',
+    :as         => :type_create
 end

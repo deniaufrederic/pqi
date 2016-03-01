@@ -6,13 +6,10 @@ class RencontresController < ApplicationController
     @signalements = [ ["Signalement 115", "Signalement 115"],
                       ["Signalement tiers", "Signalement tiers"],
                       ["Croisé(e) en maraude", "Croisé(e) en maraude"]]
-    @types =  [ ["Maraude salariés 1", "Maraude salariés 1"],
-                ["Maraude salariés 2", "Maraude salariés 2"],
-                ["Maraude bénévoles", "Maraude bénévoles"],
-                ["Maraude jour", "Maraude jour"],
-                ["Maraude médicale", "Maraude médicale"],
-                ["Rencontre pôle jour", "Rencontre pôle jour"],
-                ["Autre", "Autre"]]
+    @types = []
+    TypeRenc.all.each do |t|
+      @types << ["#{t.nom}"]
+    end
     @prestas = [["Prestation alimentaire", "Prestation alimentaire"],
                 ["Vestiaire", "Vestiaire"],
                 ["Duvet", "Duvet"],
@@ -56,7 +53,7 @@ class RencontresController < ApplicationController
       @rencontre.date = params[:rencontre][:date].to_date.strftime("%F")
     end
     if @rencontre.valid?
-      if @rencontre.type_renc.split(' ').first == "Maraude" && !@rencontre.prev
+      if TypeRenc.find_by(nom: @rencontre.type_renc).mar? && !@rencontre.prev
         mar = true
         if !Maraude.find_by(date: @rencontre.date, type_maraude: @rencontre.type_renc).present?
           @maraude = Maraude.create(date: @rencontre.date, type_maraude: @rencontre.type_renc, villes: "")
@@ -239,13 +236,10 @@ class RencontresController < ApplicationController
   def edit_form
     delete_groupe
     store_id
-    @types =  [ ["Maraude salariés 1", "Maraude salariés 1"],
-                ["Maraude salariés 2", "Maraude salariés 2"],
-                ["Maraude bénévoles", "Maraude bénévoles"],
-                ["Maraude jour", "Maraude jour"],
-                ["Maraude médicale", "Maraude médicale"],
-                ["Rencontre pôle jour", "Rencontre pôle jour"],
-                ["Autre", "Autre"]]
+    @types = []
+    TypeRenc.all.each do |t|
+      @types << ["#{t.nom}"]
+    end
     @usager = Usager.find_by(id: session[:stored_id])
     session.delete(:stored_id)
   end
@@ -311,13 +305,10 @@ class RencontresController < ApplicationController
       @signalements = [ ["Signalement 115", "Signalement 115"],
                         ["Signalement tiers", "Signalement tiers"],
                         ["Croisé(e) en maraude", "Croisé(e) en maraude"]]
-      @types =  [ ["Maraude salariés 1", "Maraude salariés 1"],
-                  ["Maraude salariés 2", "Maraude salariés 2"],
-                  ["Maraude bénévoles", "Maraude bénévoles"],
-                  ["Maraude jour", "Maraude jour"],
-                  ["Maraude médicale", "Maraude médicale"],
-                  ["Rencontre pôle jour", "Rencontre pôle jour"],
-                  ["Autre", "Autre"]]
+      @types = []
+      TypeRenc.all.each do |t|
+        @types << ["#{t.nom}"]
+      end
       @prestas = [["Prestation alimentaire", "Prestation alimentaire"],
                   ["Vestiaire", "Vestiaire"],
                   ["Duvet", "Duvet"],
@@ -350,7 +341,7 @@ class RencontresController < ApplicationController
         if current_user.benev?
           @rencontre.update_attribute(:prev, false)
         end
-        if @rencontre.type_renc.split(' ').first == "Maraude" && !@rencontre.prev
+        if TypeRenc.find_by(nom: @rencontre.type_renc).mar? && !@rencontre.prev
           mar = true
           if !Maraude.find_by(date: @rencontre.date, type_maraude: @rencontre.type_renc).present?
             @maraude = Maraude.create(date: @rencontre.date, type_maraude: @rencontre.type_renc, villes: "")

@@ -23,11 +23,10 @@ class MaraudesController < ApplicationController
   def new
     delete_groupe
     @maraude = Maraude.new
-    @types =  [ ["Maraude salariés 1", "Maraude salariés 1"],
-                ["Maraude salariés 2", "Maraude salariés 2"],
-                ["Maraude bénévoles", "Maraude bénévoles"],
-                ["Maraude jour", "Maraude jour"],
-                ["Maraude médicale", "Maraude médicale"]]
+    @types = []
+    TypeRenc.where(mar: true).each do |t|
+      @types << ["#{t.nom}"]
+    end
   end
 
   def create
