@@ -13,44 +13,20 @@
   <small><%= pluralize(@groupe.usagers.count, "membre") %></small>
 </h1>
 
-<% c = (@usagers.count / 4).floor %>
-<% r = @usagers.count % 4 %>
-<% i = 0 %>
-<% while i != c %>
-  <div class="row usagers">
-    <% @usagers[(4*i)..(4*(i+1) - 1)].each do |u| %>
-      <div class="col-md-3 col-sm-3 col-xs-3 lead">
-	      <%= link_to "#{u.sexe} #{u.nom} #{u.prenom}", u %>
-  	    <% if u.enfants.any? %>
-  	      <ul class="enfants">
-    	      <% u.enfants.each do |e| %>
-    	  	    <li>
-        	      <%= e.nom %> <%= e.prenom %>, <%= e.sexe.downcase %> 
-      	  	  </li>
-      	    <% end %>
-  	  	  </ul>
-  	    <% end %>
-  	  </div>
-    <% end %>
-    <hr>
-  </div>
-  <% i += 1 %>
-<% end %>
-<% if r != 0 %>
-  <div class="row usagers">
-    <% @usagers[(4*c)..(4*c + r)].each do |u| %>
-      <div class="col-md-3 col-sm-3 col-xs-3 lead">
-        <%= link_to "#{u.sexe} #{u.nom} #{u.prenom}", u %>
-        <% if u.enfants.any? %>
-          <ul class="enfants">
-            <% u.enfants.each do |e| %>
-              <li>
-                <%= e.nom %> <%= e.prenom %>, <%= e.sexe.downcase %> 
-              </li>
-            <% end %>
-          </ul>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-<% end %>
+<div class="row usagers">
+  <% @usagers.each do |u| %>
+    <div class="col-md-3 col-sm-3 col-xs-3 lead usager">
+	    <%= link_to "#{u.sexe} #{u.nom} #{u.prenom}", u %>
+  	  <% if u.enfants.any? %>
+        <ul class="enfants">
+  	      <% u.enfants.each do |e| %>
+    	  	  <li>
+        	    <%= e.nom %> <%= e.prenom %>, <%= e.sexe.downcase %> 
+      	 	  </li>
+          <% end %>
+  	 	  </ul>
+      <% end %>
+	  </div>
+  <% end %>
+  <hr>
+</div>
