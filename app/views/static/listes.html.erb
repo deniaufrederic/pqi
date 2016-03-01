@@ -14,7 +14,10 @@
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2 liste">
 			<% if @choix == "Intervenants" %>
-				<h3 class="text-center">Liste des intervenants</h3>
+				<h3 class="text-center">
+					Liste des intervenants
+					<br><small>On modifiera cette liste pour éviter doublons et fautes d'orthographe</small>
+				</h3>
 				<ul>
 					<% @intervs.each do |i| %>
 						<li><div class="row">
@@ -43,7 +46,10 @@
 					</li>
 				</ul>
 			<% elsif @choix == "Villes" %>
-				<h3 class="text-center">Liste des villes</h3>
+				<h3 class="text-center">
+					Liste des villes
+					<br><small>On modifiera cette liste pour y ajouter des villes hors 93 (sur lesquelles on pourra ajouter des structures par exemple) ou si un jour le département viendrait à voir sa répartition territoriale changée</small>
+				</h3>
 				<ul>
 					<% @villes.each do |v| %>
 						<li><div class="row">
@@ -83,7 +89,10 @@
 					</li>
 				</ul>
 			<% elsif @choix == "Types" %>
-				<h3 class="text-center">Liste des types de rencontre</h3>
+				<h3 class="text-center">
+					Liste des types de rencontre
+					<br><small>On modifiera cette liste uniquement a priori pour y ajouter un nouveau type de maraude (nouveau camion de maraude salariés ou bénévoles, nouveau type de rencontre en journée par exemple)</small>
+				</h3>
 				<ul>
 					<% @types.each do |t| %>
 						<li><div class="row">
