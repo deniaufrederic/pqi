@@ -12,7 +12,7 @@
 <% if !@groupes.empty? %>
   <div class="row groupes">
     <% @groupes.each do |g| %>
-      <div class="col-md-3 col-sm-3 col-xs-3 lead">
+      <div class="col-md-3 col-sm-3 col-xs-3 lead groupe">
   	    <%= link_to "#{g.nom}", g %>
         <span class="badge"><%= g.usagers.count %></span>
       </div>

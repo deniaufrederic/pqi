@@ -15,56 +15,29 @@
 <% end %>
 
 <% if !@structures.empty? %>
-  <% c = (@structures.count / 4).floor %>
-  <% r = @structures.count % 4 %>
-  <% i = 0 %>
-  <% while i != c %>
-    <div class="row structures">
-      <% @structures[(4*i)..(4*(i+1) - 1)].each do |u| %>
-        <div class="col-md-3 col-sm-3 col-xs-3 lead">
-  	      <%= link_to "#{u.nom}", u %>
-          <% if u.ville.present? %>
-            (<%= u.ville %>)
-          <% end %>
+  <div class="row structures">
+    <% @structures.each do |s| %>
+      <div class="col-md-3 col-sm-3 col-xs-3 lead structure">
+        <%= link_to "#{s.nom}", s %>
+        <% if s.ville.present? %>
+          (<%= s.ville %>)
+        <% end %>
 
-  	      <!--Nb signalements-->
-  	      <% s = Rencontre.where(signale: true, sig_structure: u.nom).count %>
-  	      <% if s != 0 %>
-  	      	<br><span class="label label-default"><%= pluralize(s, "signalement") %></span>
-  	      <% end %>
+        <!--Nb signalements-->
+        <% sig = Rencontre.where(signale: true, sig_structure: s.nom).count %>
+        <% if sig != 0 %>
+          <br><span class="label label-default"><%= pluralize(sig, "signalement") %></span>
+        <% end %>
 
-  	      <!--Nb accompagnements-->
-  	      <% a = Rencontre.where(accomp: true, accomp_structure: u.nom).count %>
-  	      <% if a != 0 %>
-  	      	<br><span class="label label-default"><%= pluralize(a, "accompagnement") %></span>
-  	      <% end %>
-    	  </div>
-      <% end %>
-      <hr>
-    </div>
-    <% i += 1 %>
-  <% end %>
-  <% if r != 0 %>
-    <div class="row structures">
-      <% @structures[(4*c)..(4*c + r)].each do |u| %>
-        <div class="col-md-3 col-sm-3 col-xs-3 lead">
-          <%= link_to "#{u.nom}", u %>
-
-  	      <!--Nb signalements-->
-  	      <% s = Rencontre.where(signale: true, sig_structure: u.nom).count %>
-  	      <% if s != 0 %>
-  	      	<br><span class="label label-default"><%= pluralize(s, "signalement") %></span>
-  	      <% end %>
-
-  	      <!--Nb accompagnements-->
-  	      <% a = Rencontre.where(accomp: true, accomp_structure: u.nom).count %>
-  	      <% if a != 0 %>
-  	      	<br><span class="label label-default"><%= pluralize(a, "accompagnement") %></span>
-  	      <% end %>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
+        <!--Nb accompagnements-->
+        <% a = Rencontre.where(accomp: true, accomp_structure: s.nom).count %>
+        <% if a != 0 %>
+          <br><span class="label label-default"><%= pluralize(a, "accompagnement") %></span>
+        <% end %>
+      </div>
+    <% end %>
+    <hr>
+  </div>
 <% else %>
   <p>Aucune structure correspondant au(x) terme(s) : "<%= params[:search] %>".</p>
 <% end %>
