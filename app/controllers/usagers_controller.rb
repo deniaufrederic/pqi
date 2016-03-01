@@ -8,10 +8,11 @@ class UsagersController < ApplicationController
     session[:stored] = "new"
     @usager = Usager.new
     @villes = []
-    Ville.all.order('nom ASC').each do |v|
+    Ville.where(ville_93: true).order('nom ASC').each do |v|
       @villes << ["#{v.nom}"]
     end
     @villes << ["Ville inconnue"]
+    @villes << ["Autre (hors 93)"]
     gon.noms = []
     gon.prenoms = []
     Usager.all.each do |u|
@@ -81,10 +82,11 @@ class UsagersController < ApplicationController
     delete_groupe
     session[:stored] = "edit"
     @villes = []
-    Ville.all.order('nom ASC').each do |v|
+    Ville.where(ville_93: true).order('nom ASC').each do |v|
       @villes << ["#{v.nom}"]
     end
     @villes << ["Ville inconnue"]
+    @villes << ["Autre (hors 93)"]
   	@usager = Usager.find(params[:id])
   end
 
@@ -175,7 +177,7 @@ class UsagersController < ApplicationController
     delete_groupe
     store_ville
     @villes = []
-    Ville.all.order('nom ASC').each do |v|
+    Ville.where(ville_93: true).order('nom ASC').each do |v|
       @villes << ["#{v.nom}"]
     end
     @usagers = Usager.where(pqi: true, ville: session[:stored_ville]).order('adresse ASC, adresse_précis ASC, nom ASC') unless session[:stored_ville] == "pqi"

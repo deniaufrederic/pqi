@@ -51,7 +51,7 @@ class MaraudesController < ApplicationController
     delete_groupe
     store_id
     @villes = []
-    Ville.all.order('nom ASC').each do |v|
+    Ville.where(ville_93: true).order('nom ASC').each do |v|
       @villes << ["#{v.nom}"]
     end
     @maraude = Maraude.find(session[:stored_id])

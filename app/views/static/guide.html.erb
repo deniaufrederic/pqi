@@ -13,6 +13,13 @@
 		On peut y consulter son propre profil, éditer ses informations (nom, prénom, identifiant, mot de passe), voir l'index des utilisateurs, voir le présent guide et se déconnecter.
 		</p></blockquote>
 
+		<% if current_user.admin? %>
+			<blockquote style="font-size:14px">
+				<h4>Pour les administrateurs : Listes</h4>
+				<p class="text-justify">On peut y modifier les listes qui apparaissent dans les menus déroulants dans certains formulaires : intervenants, villes, types de rencontre...</p>
+			</blockquote>
+		<% end %>
+
 		<h2>
 			Usagers
 			<br><small>Menu supérieur</small>
@@ -73,6 +80,12 @@
 				<li>Statistiques : quelques chiffres concernant les interventions et les déplacements</li>
 				<li>Compte-rendu : le compte-rendu de la maraude qui se génère automatiquement à partir des informations rentrées sur les rencontres</li>
 			</ul></blockquote></div>
+
+			<h3>Structures</h3>
+
+			<div><blockquote style="font-size:14px"><p class="text-justify">
+			Sur l'onglet Structures, on trouve un index des structures par 20 et où l'on voit en un coup d'oeil en-dessous du nom des structures les nombres de signalements qu'elles ont transmis et d'accompagnements qui y ont été faits.</p>
+			<p class="text-justify">En cliquant sur une structure, on accède à sa page dans laquelle sont détaillés les signalements et les accompagnements (Nom de l'usager, date et type de la maraude), ainsi que des statistiques sur ces derniers.</p>
 
 			<h3>Ajout d'un inconnu</h3>
 

@@ -9,7 +9,7 @@ class StatsController < ApplicationController
   	stats_ville
   	stats_dates
   	@villes = []
-    Ville.all.order('nom ASC').each do |v|
+    Ville.where(ville_93: true).order('nom ASC').each do |v|
       @villes << ["#{v.nom}"]
     end
     @ville = session[:stored_ville] unless session[:stored_ville].nil?

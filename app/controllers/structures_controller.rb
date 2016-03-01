@@ -24,7 +24,6 @@ class StructuresController < ApplicationController
     Ville.all.order('nom ASC').each do |v|
       @villes << ["#{v.nom}"]
     end
-    @villes << ["Autre (hors 93)"]
     delete_groupe
     @structure = Structure.new
   end
@@ -44,7 +43,6 @@ class StructuresController < ApplicationController
     Ville.all.order('nom ASC').each do |v|
       @villes << ["#{v.nom}"]
     end
-    @villes << ["Autre (hors 93)"]
     delete_groupe
     @structure = Structure.find(params[:id])
   end

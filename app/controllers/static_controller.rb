@@ -11,11 +11,11 @@ class StaticController < ApplicationController
     @choix = nil
     store_choix
     @liste_choix = [["Intervenants"],
-                    ["Villes"]]
+                    ["Villes"],
+                    ["Types de rencontre"]]
     @choix = session[:stored_choix] unless session[:stored_choix].nil?
     @intervs = Intervenant.all.order('nom ASC')
     @interv = Intervenant.new
-    @villes = []
     @villes = Ville.all.order('nom ASC')
     @ville = Ville.new
     session.delete(:stored_choix)

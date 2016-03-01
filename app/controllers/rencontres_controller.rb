@@ -21,7 +21,7 @@ class RencontresController < ApplicationController
                 ["Accompagnement SIAO", "Accompagnement SIAO"],
                 ["Autre", "Autre"]]
     @villes = []
-    Ville.all.order('nom ASC').each do |v|
+    Ville.where(ville_93: true).order('nom ASC').each do |v|
       @villes << ["#{v.nom}"]
     end
     @usager = Usager.find(session[:stored_id])
@@ -326,7 +326,7 @@ class RencontresController < ApplicationController
                   ["Accompagnement SIAO", "Accompagnement SIAO"],
                   ["Autre", "Autre"]]
       @villes = []
-      Ville.all.order('nom ASC').each do |v|
+      Ville.where(ville_93: true).order('nom ASC').each do |v|
         @villes << ["#{v.nom}"]
       end
       gon.renc = []
