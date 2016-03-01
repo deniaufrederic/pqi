@@ -23,6 +23,9 @@
       <% @structures[(4*i)..(4*(i+1) - 1)].each do |u| %>
         <div class="col-md-3 col-sm-3 col-xs-3 lead">
   	      <%= link_to "#{u.nom}", u %>
+          <% if u.ville.present? %>
+            (<%= u.ville %>)
+          <% end %>
 
   	      <!--Nb signalements-->
   	      <% s = Rencontre.where(signale: true, sig_structure: u.nom).count %>
