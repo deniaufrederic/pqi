@@ -113,6 +113,20 @@
     </div>
 
     <hr>
+
+    <div class="part part-hover">
+      <div class="form-group form-inline text-center lead">
+        <%= f.check_box :dmde, class: 'form-control check two-lv' %>
+        <%= f.label :dmde, "Demande d'hébergement" %>
+      </div>
+      <div class="form-group appear">
+        <%= f.label :date_dmde, "Date", class: "control-label col-md-3 col-sm-3 col-xs-3" %>
+        <div class="col-md-9 col-sm-9 col-xs-9 input-group date" id="datepicker">
+          <%= f.text_field :date_dmde, class: 'form-control', data: { date_format: 'DD/MM/YYYY', locale: 'fr' } %>
+          <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+        </div>
+      </div>
+    </div>
   <% end %>
 
   <div class="part">

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160301132821) do
+ActiveRecord::Schema.define(version: 20160302102358) do
 
   create_table "enfants", force: :cascade do |t|
     t.integer  "usager_id"
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 20160301132821) do
     t.text     "sig_coords"
     t.string   "sig_structure"
     t.string   "accomp_structure"
+    t.boolean  "tel"
   end
 
   add_index "rencontres", ["usager_id", "date", "type_renc"], name: "index_rencontres_on_usager_id_and_date_and_type_renc", unique: true
@@ -151,6 +152,8 @@ ActiveRecord::Schema.define(version: 20160301132821) do
     t.text     "infos_sante"
     t.string   "ref"
     t.boolean  "mobil"
+    t.boolean  "dmde"
+    t.date     "date_dmde"
   end
 
   add_index "usagers", ["groupe_id"], name: "index_usagers_on_groupe_id"

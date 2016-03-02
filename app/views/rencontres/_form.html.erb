@@ -123,6 +123,11 @@
     <%= f.check_box :dnv, checked: false, class: 'form-control two-lv' %>
   </div>
 
+  <div class="form-inline">
+    <%= f.label :tel, "Joint au téléphone" %>
+    <%= f.check_box :tel, checked: false, class: 'form-control two-lv' %>
+  </div>
+
   <% unless current_user.benev? %>
     <div class="form-inline">
       <%= f.label :prev, "Rencontre prévisionnelle" %>

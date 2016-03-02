@@ -6,27 +6,29 @@
   <% provide(:title, "#{@usager.sexe} #{@usager.prenom}") %>
 <% end %>
 
-<h1><%= "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %></h1>
-  
-<% if @usager.ref.present? %>
-  <h2 class="text-center"><small>Référent : <%= @usager.ref %></small></h2>
-<% end %>
 <% unless current_user.benev? %>
-  <h2 class="text-center">
-    <% if logged_in? && current_user.admin? %>
-      <%= link_to "Supprimer", @usager, method: :delete,
-                                        data: { confirm: "Etes-vous sûr(e) ?" } %> |
-    <% end %>
-    <%= link_to "Editer", edit_usager_path(@usager) %>
-  </h2>
+  <h1>
+    <%= link_to "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}",
+                edit_usager_path(@usager),
+                class: "btn btn-primary btn-lg",
+                'data-toggle' => "tooltip",
+                'data-placement' => "bottom",
+                title: "Editer" %>
+  </h1>
+<% else %>
+  <h1><%= "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %></h1>
 <% end %>
-
-<h2 class="text-center">
-  <%= form_for(@usager, html: { class: 'form-inline' }) do |f| %>
-    <%= f.check_box :pqi, class: 'form-control', disabled: true %>
-    <%= f.label :pqi, "PQI" %>
+  
+<h2 class="text-center"><small>
+  <% if @usager.ref.present? %>
+    Référent : <%= @usager.ref %><br>
   <% end %>
-</h2>
+  <% if !@usager.pqi? %>
+    Pas sur 
+  <% end %>
+  PQI
+</small></h2>
+
 <h2 class="text-center">
   <% if @usager.groupe %>
     <br>Groupe "<%= link_to "#{@usager.groupe.nom}", @usager.groupe %>"
@@ -343,23 +345,36 @@
 
     <h3>Suivi</h3>
 
-    <div class="row">
-      <div class="col-md-6 col-sm-6 col-xs-6">
-        <h3 class="text-center">
-          <%= link_to "Fiche de rencontres",  id_fiche_path(:id => @usager.id),
-                                              class: "btn btn-info btn-lg" %>
-        </h3>
+    <div>
+      <% if @usager.dmde? %>
+        <div class="lead text-center">
+          <span class="label label-success">
+            En demande d'hébergement
+            <% if @usager.date_dmde.present? %>
+              (<%= @usager.date_dmde.strftime("%d/%m/%y") %>)
+            <% end %>
+          </span>
+        </div>
+      <% end %>
 
-        <pre class="pre-scrollable text-justify"><%= @usager.fiche %></pre>
-      </div>
+      <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-6">
+          <h3 class="text-center">
+            <%= link_to "Fiche de rencontres",  id_fiche_path(:id => @usager.id),
+                                                class: "btn btn-info btn-lg" %>
+          </h3>
 
-      <div class="col-md-6 col-sm-6 col-xs-6">
-        <h3 class="text-center">
-          <%= link_to "Fiche de suivi jour",  id_fiche_jour_path(:id => @usager.id),
-                                              class: "btn btn-info btn-lg" %>
-        </h3>
+          <pre class="pre-scrollable text-justify"><%= @usager.fiche %></pre>
+        </div>
 
-        <pre class="pre-scrollable text-justify"><%= @usager.fiche_jour %></pre>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+          <h3 class="text-center">
+            <%= link_to "Fiche de suivi jour",  id_fiche_jour_path(:id => @usager.id),
+                                                class: "btn btn-info btn-lg" %>
+          </h3>
+
+          <pre class="pre-scrollable text-justify"><%= @usager.fiche_jour %></pre>
+        </div>
       </div>
     </div>
   <% end %>
@@ -369,4 +384,9 @@
 <div class="text-right lead">
   <% user = User.find(@usager.user_id) %>
   <%= "Usager ajouté par " %><%= link_to "#{user.identifiant}", user %><%= " (#{@usager.created_at})" %>
+  <% if logged_in? && current_user.admin? %>
+    <br><br><%= link_to "Supprimer cet usager", @usager,  method: :delete,
+                                                      data: { confirm: "Etes-vous sûr(e) ?" },
+                                                      class: "btn btn-danger" %>
+  <% end %>
 </div>

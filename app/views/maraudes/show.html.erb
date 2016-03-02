@@ -407,6 +407,9 @@
     <% if r.dnv %>
       <% m_cr.last << " [Maraude déplacée mais personne non vue]" %>
     <% end %>
+    <% if r.tel %>
+      <% m_cr.last << " [Joint au téléphone]"
+    <% end %>
     <% if r.prestas.present? %>
       <% m_cr.last << " {#{r.prestas.split(' #').join(' - ')}}" %>
     <% end %>

@@ -257,6 +257,8 @@ class UsagersController < ApplicationController
                                       :ressources,
                                       :montant,
                                       :ref,
+                                      :dmde,
+                                      :date_dmde,
                                       enfants_attributes: [ :id,
                                                             :nom,
                                                             :prenom,

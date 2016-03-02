@@ -84,6 +84,9 @@ class RencontresController < ApplicationController
       if @rencontre.dnv
         rencontre_u << "\nMaraude déplacée mais personne non vue."
       end
+      if @rencontre.tel
+        rencontre_u << "\nJoint au téléphone."
+      end
       if @usager.enfants.any? && !@rencontre.dnv
         rencontre_u << "\nAvec #{@rencontre.nb_enf} #{"enfant".pluralize(@rencontre.nb_enf)}."
       end
@@ -372,6 +375,9 @@ class RencontresController < ApplicationController
         if @rencontre.dnv
           rencontre_u << "\nMaraude déplacée mais personne non vue"
         end
+        if @rencontre.tel
+          rencontre_u << "\nJoint au téléphone."
+        end
         if @usager.enfants.any? && !@rencontre.dnv
           rencontre_u << "\nAvec #{@rencontre.nb_enf} #{"enfant".pluralize(@rencontre.nb_enf)}."
         end
@@ -473,6 +479,7 @@ class RencontresController < ApplicationController
                                         :sig_coords,
                                         :prev,
                                         :dnv,
+                                        :tel,
                                         :nb_enf,
                                         :accomp,
                                         :type_accomp,
