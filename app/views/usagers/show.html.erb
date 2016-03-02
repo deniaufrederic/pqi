@@ -199,13 +199,15 @@
       </div>
     </div>
 
-    <span><%= link_to "Ajouter une rencontre", id_rencontre_path(:id => @usager.id), id: 'ajout-rencontre', "data-no-turbolink" => true %></span>
+    <div class="text-center lead">
+      <span><%= link_to "Ajouter une rencontre", id_rencontre_path(:id => @usager.id), id: 'ajout-rencontre', "data-no-turbolink" => true %></span>
 
-    <% if @usager.rencontres.any? %>
-      <br><span>
-        <%= link_to "Editer ou supprimer une rencontre",  id_rencontre_edit_path(:id => @usager.id) %>
-      </span>
-    <% end %>
+      <% if @usager.rencontres.any? %>
+        <br><span>
+          <%= link_to "Editer ou supprimer une rencontre",  id_rencontre_edit_path(:id => @usager.id) %>
+        </span>
+      <% end %>
+    </div>
   </div>
 
 
