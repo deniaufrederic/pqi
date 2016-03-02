@@ -15,8 +15,8 @@ class StructuresController < ApplicationController
   def show
     delete_groupe
     @structure = Structure.find(params[:id])
-    @sigs = Rencontre.where(signale: true, sig_structure: @structure.nom)
-    @accomps = Rencontre.where(accomp: true, accomp_structure: @structure.nom)
+    @sigs = Rencontre.where(signale: true, sig_structure: @structure.nom).order('date DESC')
+    @accomps = Rencontre.where(accomp: true, accomp_structure: @structure.nom).order('date DESC')
   end
 
   def new
