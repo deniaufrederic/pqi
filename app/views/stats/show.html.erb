@@ -20,8 +20,8 @@
       <%= link_to image_tag("print.png", alt: "Imprimer", width: 30, length: 30), '#', onclick: "printpage()", id: 'print-link', class: "btn" %>
     </h3>
 
-    <h5>Entre parenthèses : (Nb d'hommes/Nb de femmes ; Nb d'enfants)</h5>
-    <h5>Pour les maraudes : (Maraude salariés/Maraude bénévoles/Maraude jour)</h5>
+    <h5>Entre parenthèses : (Nb d'hommes/de femmes ; d'enfants)</h5>
+    <h5>Pour les maraudes : (Salariés/Bénévoles/Jour/Médicale)</h5>
     <h5>Pour les prestations : Alimentaire/Vestiaire/Duvet/Hygiène</h5>
     <h5>Le nombre total de maraudes n'est pas la somme des chiffres de la colonne ! Il s'agit bien du nombre total de maraudes effectuées sur la période</h5>
 
@@ -58,6 +58,7 @@
             <% s = 0 %>
             <% b = 0 %>
             <% j = 0 %>
+            <% m = 0 %>
             <% mar = Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last))) %>
             <% mar.each do |m| %>
               <% t = m.type_maraude.split(' ').last %>
@@ -68,10 +69,16 @@
                   <% b += 1 %>
                 <% elsif t == "jour" %>
                   <% j += 1 %>
+                <% elsif t == "médicale" %>
+                  <% m += 1 %>
                 <% end %>
               <% end %>
             <% end %>
-            <%= "#{s+b+j} (#{s}/#{b}/#{j})" %>
+            <% if s+b+j+m = 0 %>
+              0
+            <% else %>
+              <%= "#{s+b+j+m} (#{s}/#{b}/#{j}/#{m})" %>
+            <% end %>
           </td>
           <% types = TypeRenc.where(mar: true) %>
           <% rencs = Rencontre.where(type_renc: types.map(&:nom)) %>
@@ -110,7 +117,13 @@
         <th id="total">Total</th>
         <td>
           <%= Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last))).count %>
-          (<%= Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), type_maraude: "Maraude salariés 1").count + Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), type_maraude: "Maraude salariés 2").count %>/<%= Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), type_maraude: "Maraude bénévoles").count %>/<%= Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), type_maraude: "Maraude jour").count %>)
+          <% if Rails.env.production? %>
+            <% types_sal = TypeRenc.where('nom ILIKE ?', "%salarié%") %>
+          <% else %>
+            <% types_sal = TypeRenc.where('nom LIKE ?', "%salarié%") %>
+          <% end %>
+          <% mar = Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last))) %>
+          <%= "(#{mar.where(type_maraude: types_sal.map(&:nom)).count}/#{mar.where(type_maraude: 'Maraude bénévoles').count}/#{mar.where(type_maraude: 'Maraude jour').count}/#{mar.where(type_maraude: 'Maraude médicale').count})" %>
         </td>
         <td><%= "#{@h_tot + @f_tot} (#{@h_tot}/#{@f_tot} ; #{@e_tot})" %></td>
         <td><%= "#{@h_dif + @f_dif} (#{@h_dif}/#{@f_dif})" %></td>
@@ -129,8 +142,8 @@
       <%= link_to image_tag("print.png", alt: "Imprimer", width: 30, length: 30), '#', onclick: "printpage()", id: 'print-link', class: "btn" %>
     </h3>
 
-    <h5>Entre parenthèses : (Nb d'hommes/Nb de femmes)</h5>
-    <h5>Pour les maraudes : (Maraude salariés/Maraude bénévoles/Maraude jour)</h5>
+    <h5>Entre parenthèses : (Nb d'hommes/de femmes ; d'enfants)</h5>
+    <h5>Pour les maraudes : (Salariés/Bénévoles/Jour/Médicale)</h5>
     <h5>Pour les prestations : Alimentaire/Vestiaire/Duvet/Hygiène</h5>
 
     <table class="stats table table-responsive">
@@ -142,6 +155,7 @@
           <% s = 0 %>
           <% b = 0 %>
           <% j = 0 %>
+          <% m = 0 %>
           <% mar = Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last))) %>
           <% mar.each do |m| %>
             <% t = m.type_maraude.split(' ').last %>
@@ -152,10 +166,12 @@
                 <% b += 1 %>
               <% elsif t == "jour" %>
                 <% j += 1 %>
+              <% elsif t == "médicale" %>
+                <% m += 1 %>
               <% end %>
             <% end %>
           <% end %>
-          <%= "#{s+b+j} (#{s}/#{b}/#{j})" %>
+          <%= "#{s+b+j+m} (#{s}/#{b}/#{j}/#{m})" %>
         </td>
         <% types = TypeRenc.where(mar: true) %>
         <% rencs = Rencontre.where(type_renc: types.map(&:nom)) %>
@@ -198,7 +214,7 @@
       <%= link_to image_tag("print.png", alt: "Imprimer", width: 30, length: 30), '#', onclick: "printpage()", id: 'print-link', class: "btn" %>
     </h3>
 
-    <h5>Entre parenthèses : (Nb d'hommes/Nb de femmes ; Nb d'enfants)</h5>
+    <h5>Entre parenthèses : (Nb d'hommes/de femmes ; d'enfants)</h5>
     <h5>Pour les prestations : Alimentaire/Vestiaire/Duvet/Hygiène</h5>
     <h5>Le nombre total de maraudes n'est pas la somme des chiffres de la colonne ! Il s'agit bien du nombre total de maraudes effectuées sur la période</h5>
 
@@ -319,7 +335,7 @@
       <%= link_to image_tag("print.png", alt: "Imprimer", width: 30, length: 30), '#', onclick: "printpage()", id: 'print-link', class: "btn" %>
     </h3>
 
-    <h5>Entre parenthèses : (Nb d'hommes/Nb de femmes)</h5>
+    <h5>Entre parenthèses : (Nb d'hommes/de femmes ; d'enfants)</h5>
     <h5>Pour les prestations : Alimentaire/Vestiaire/Duvet/Hygiène</h5>
 
     <table class="stats table table-responsive">

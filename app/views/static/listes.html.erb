@@ -13,7 +13,7 @@
 <% if @choix %>
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2 liste">
-			<% if @choix == "Intervenants" %>
+			<% if @choix == "intervs" %>
 				<h3 class="text-center">
 					Liste des intervenants
 					<br><small>On modifiera cette liste pour éviter doublons et fautes d'orthographe</small>
@@ -45,7 +45,7 @@
 						<% end %>
 					</li>
 				</ul>
-			<% elsif @choix == "Villes" %>
+			<% elsif @choix == "villes" %>
 				<h3 class="text-center">
 					Liste des villes
 					<br><small>On modifiera cette liste pour y ajouter des villes hors 93 (sur lesquelles on pourra ajouter des structures par exemple) ou si un jour le département viendrait à voir sa répartition territoriale changée</small>
@@ -88,7 +88,7 @@
 						<% end %>
 					</li>
 				</ul>
-			<% elsif @choix == "Types" %>
+			<% elsif @choix == "types" %>
 				<h3 class="text-center">
 					Liste des types de rencontre
 					<br><small>On modifiera cette liste uniquement a priori pour y ajouter un nouveau type de rencontre (nouveau camion de maraude salariés ou bénévoles, nouveau type de rencontre en journée par exemple). ON EVITERA D'EN SUPPRIMER (cela pourrait causer des disfonctionnements du logiciel).</small>

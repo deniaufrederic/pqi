@@ -10,9 +10,9 @@ class StaticController < ApplicationController
     delete_groupe
     @choix = nil
     store_choix
-    @liste_choix = [["Intervenants"],
-                    ["Villes"],
-                    ["Types de rencontre"]]
+    @liste_choix = [["Intervenants et référents", "intervs"],
+                    ["Villes", "villes"],
+                    ["Types de rencontre", "types"]]
     @choix = session[:stored_choix] unless session[:stored_choix].nil?
     @intervs = Intervenant.all.order('nom ASC')
     @interv = Intervenant.new
@@ -28,67 +28,67 @@ class StaticController < ApplicationController
       flash[:danger] = "Veuillez choisir une liste"
       redirect_to listes_path
     else
-      redirect_to listes_choix_path(choix: params[:liste][:choix].split(' ').first)
+      redirect_to listes_choix_path(choix: params[:liste][:choix])
     end
   end
 
   def interv_destroy
     Intervenant.find(params[:id]).destroy
     flash[:success] = "Intervenant supprimé"
-    redirect_to listes_choix_path(choix: "Intervenants")
+    redirect_to listes_choix_path(choix: "intervs")
   end
 
   def interv_create
     @interv = Intervenant.new(interv_params)
     if @interv.save
       flash[:success] = "Intervenant créé"
-      redirect_to listes_choix_path(choix: "Intervenants")
+      redirect_to listes_choix_path(choix: "intervs")
     elsif @interv.nom.blank?
       flash[:danger] = "Problème rencontré : veuillez rentrer le nom de l'intervenant à ajouter"
-      redirect_to listes_choix_path(choix: "Intervenants")
+      redirect_to listes_choix_path(choix: "intervs")
     else
       flash[:danger] = "Problème rencontré : cet intervenant existe déjà"
-      redirect_to listes_choix_path(choix: "Intervenants")
+      redirect_to listes_choix_path(choix: "intervs")
     end
   end
 
   def ville_destroy
     Ville.find(params[:id]).destroy
     flash[:success] = "Ville supprimée"
-    redirect_to listes_choix_path(choix: "Villes")
+    redirect_to listes_choix_path(choix: "villes")
   end
 
   def ville_create
     @ville = Ville.new(ville_params)
     if @ville.save
       flash[:success] = "Ville créée"
-      redirect_to listes_choix_path(choix: "Villes")
+      redirect_to listes_choix_path(choix: "villes")
     elsif @ville.nom.blank?
       flash[:danger] = "Problème rencontré : veuillez rentrer le nom de la ville à ajouter"
-      redirect_to listes_choix_path(choix: "Villes")
+      redirect_to listes_choix_path(choix: "villes")
     else
       flash[:danger] = "Problème rencontré : cette ville existe déjà"
-      redirect_to listes_choix_path(choix: "Villes")
+      redirect_to listes_choix_path(choix: "villes")
     end
   end
 
   def type_destroy
     TypeRenc.find(params[:id]).destroy
     flash[:success] = "Type de rencontre supprimé"
-    redirect_to listes_choix_path(choix: "Types")
+    redirect_to listes_choix_path(choix: "types")
   end
 
   def type_create
     @type = TypeRenc.new(type_params)
     if @type.save
       flash[:success] = "Type de rencontre créé"
-      redirect_to listes_choix_path(choix: "Types")
+      redirect_to listes_choix_path(choix: "types")
     elsif @type.nom.blank?
       flash[:danger] = "Problème rencontré : veuillez rentrer le nom du type de rencontre à ajouter"
-      redirect_to listes_choix_path(choix: "Types")
+      redirect_to listes_choix_path(choix: "types")
     else
       flash[:danger] = "Problème rencontré : ce type de rencontre existe déjà"
-      redirect_to listes_choix_path(choix: "Types")
+      redirect_to listes_choix_path(choix: "types")
     end
   end
 
