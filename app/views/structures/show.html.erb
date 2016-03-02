@@ -1,7 +1,11 @@
 <% provide(:title, @structure.nom) %>
 
 <h1>
-  <%= @structure.nom %>
+  <%= link_to @structure.nom, edit_structure_path(@structure),
+  														class: "btn btn-info btn-lg",
+  														'data-toggle' => "tooltip",
+                							'data-placement' => "bottom",
+                							title: "Editer" %>
   <small>
 		<% if @structure.ville.present? %>
 			<br><%= @structure.ville %>
@@ -12,8 +16,7 @@
   </small>
   <% unless current_user.benev? %>
 	<br><div class="btn-group">
-	  <%= link_to "Editer", edit_structure_path(@structure), class: "btn btn-info" %>
-	  <%= link_to "Supprimer", @structure, method: :delete, data: { confirm: "Etes-vous sûr(e) ?" }, class: "btn btn-danger" unless !current_user.admin? %>
+	  
 	</div>
   <% end %>
 </h1>
@@ -53,3 +56,9 @@
 			
 		</div>
 </div>
+
+<% if current_user.admin? %>
+	<div class="text-right lead">
+		<%= link_to "Supprimer la structure", @structure, method: :delete, data: { confirm: "Etes-vous sûr(e) ?" }, class: "btn btn-danger" %>
+	</div>
+<% end %>
