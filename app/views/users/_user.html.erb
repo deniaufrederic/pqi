@@ -1,12 +1,5 @@
 <li class="lead">
   <%= "#{user.nom} #{user.prenom}" %>
-  <% if current_user.admin? %>
-    | <%= link_to "Editer", edit_user_path(user) %>
-    <% if !current_user?(user) %>
-      | <%= link_to "Supprimer", user, method: :delete,
-                                       data: { confirm: "Etes-vous sûr(e) ?" } %>
-    <% end %>
-  <% end %><br>
   <% if user.benev? %>
     Bénévole<br>
   <% else %>
