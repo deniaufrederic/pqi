@@ -1,26 +1,41 @@
 <% provide(:title, @user.nom) %>
 
 <h1>
-  <%= @user.identifiant %> (<%= "#{@user.nom.upcase} #{@user.prenom}" %>)
-  <% if @user.benev? %>
-    <br>Bénévole
+  <% if !current_user.admin? && current_user?(@user) %>
+    <%= link_to "#{@user.identifiant} (#{@user.nom.upcase} #{@user.prenom})",
+                edit_user_path(@user),
+                class: "btn btn-lg btn-info",
+                'data-toggle' => "tooltip",
+                'data-placement' => "bottom",
+                title: "Editer" %>
+  <% elsif current_user.admin? %>
+    <%= link_to "#{@user.identifiant} (#{@user.nom.upcase} #{@user.prenom})",
+                edit_user_path(@user),
+                class: "btn btn-lg btn-info",
+                'data-toggle' => "tooltip",
+                'data-placement' => "bottom",
+                title: "Editer" %>
   <% else %>
-    <br>Salarié
+    <%= "#{@user.identifiant} (#{@user.nom.upcase} #{@user.prenom})" %>
   <% end %>
-  <% if @user.admin? %>
-    <br>Administrateur
-  <% end %>
-
-  <% if !current_user.admin? %>
-    <% if current_user?(@user) %>
-      <br><%= link_to "Editer", edit_user_path(@user) %>
+  <br>
+  <small>
+    <% if @user.benev? %>
+      <br>Bénévole
+    <% else %>
+      <br>Salarié
     <% end %>
-
-  <% else %>
-    <br><%= link_to "Editer", edit_user_path(@user) %>
-    <% if !current_user?(@user) %>
-      | <%= link_to "Supprimer", @user, method: :delete,
-                                     data: { confirm: "Etes-vous sûr(e) ?" } %>
+    <% if @user.admin? %>
+      <br>Administrateur
     <% end %>
-  <% end %>
+  </small>
 </h1>
+
+<% if current_user.admin? && !current_user?(@user) %>
+  <div class="text-right">
+    <%= link_to "Supprimer l'utilisateur",  @user,
+                              method: :delete,
+                              data: { confirm: "Etes-vous sûr(e) ?" },
+                              class: "btn btn-danger" %>
+  </div>
+<% end %>
