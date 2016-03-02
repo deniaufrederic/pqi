@@ -182,7 +182,7 @@ class RencontresController < ApplicationController
         redirect_to id_rencontre_path(:id => @usager.id)
       end
     elsif Rencontre.where(usager_id: @usager.id, date: params[:rencontre][:date], type_renc: params[:rencontre][:type_renc])
-      flash[:danger] = "Cette rencontre existe déjà"
+      flash[:danger] = "Cette rencontre existe déjà ou il manque des informations nécessaires"
       redirect_to id_rencontre_path(:id => @usager.id)
     elsif params[:rencontre][:date].blank?
       flash[:danger] = "Renseignez une date"
