@@ -167,9 +167,7 @@
     <%= f.submit "Valider la rencontre", class: 'btn btn-primary', id: 'submit' %>
 
     <% if Usager.maximum("id") == @usager.id %>
-      <button type="button" class="btn btn-danger">
-        <%= link_to "Pas besoin", @usager, id: 'no-styling' %>
-      </button>
+      <%= link_to "Pas besoin", @usager, id: 'no-styling', class: "btn btn-danger" %>
     <% end %>
   </div>
 </div>
