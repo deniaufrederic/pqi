@@ -2,20 +2,14 @@
 
 <div class="row">
 	<div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2">
-		<%= simple_form_for(@groupe) do |f| %>
-
-			<div class="form-horizontal">
-				<div class="form-group">
-		      <h1><%= f.label :nom, "Groupe", class: "control-label col-md-3 col-sm-3 col-xs-3" %></h1>
-		      <div class="col-md-9 col-sm-9 col-xs-9">
-		        <%= f.text_field :nom, class: 'form-control input-lg' %>
-		      </div>
+		<%= form_for(@groupe) do |f| %>
+				<div class="form-group text-center">
+		      <%= f.label :nom, "Groupe", class: "h1" %>
+		      <%= f.text_field :nom, class: 'form-control input-lg' %>
 		    </div>
 				<div class="text-center submit-btn">
 					<%= f.submit "Modifier nom", class: "btn btn-primary" %>
 				</div>
-			</div>
-
 		<% end %>
 	</div>
 </div>
