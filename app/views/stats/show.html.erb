@@ -231,10 +231,11 @@
       <% @villes.each do |ville| %>
         <tr>
           <th><%= "#{ville.first}" %></th>
-          <% if @type = "Maraude salariés (toutes)" || TypeRenc.find_by(nom: @type).mar? %>
+          <% rencs = Rencontre.where(type_renc: @type) %>
+          <% if @type == "Maraude salariés (toutes)" || TypeRenc.find_by(nom: @type).mar? %>
             <td>
               <% n = 0 %>
-              <% if @type = "Maraude salariés (toutes)" %>
+              <% if @type == "Maraude salariés (toutes)" %>
                 <% if Rails.env.production? %>
                   <% mar = Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last))).where('type_maraude ILIKE ?',  "%salariés%") %>
                   <% types = TypeRenc.where('nom ILIKE ?',  "%salariés%") %>
@@ -245,7 +246,6 @@
                 <% rencs = Rencontre.where(type_renc: types.map(&:nom)) %>
               <% else %>
                 <% mar = Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), type_maraude: @type) %>
-                <% rencs = Rencontre.where(type_renc: @type) %>
               <% end %>
               <% mar.each do |m| %>
                 <% if m.villes.include?("#{ville.first}") %>
@@ -288,7 +288,19 @@
 
       <tr class="lead">
         <th id="total">Total</th>
-        <td><%= Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), type_maraude: @type).count %></td>
+        <% if @type == "Maraude salariés (toutes)" || TypeRenc.find_by(nom: @type).mar? %>
+          <td>
+            <% if @type == "Maraude salariés (toutes)" %>
+              <% if Rails.env.production? %>
+                <%= Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last))).where('type_maraude ILIKE ?',  "%salariés%").count %>
+              <% else %>
+                <%= Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last))).where('type_maraude LIKE ?',  "%salariés%").count %>
+              <% end %>
+            <% else %>
+              <%= Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), type_maraude: @type).count %>
+            <% end %>
+          </td>
+        <% end %>
         <td><%= "#{@h_tot + @f_tot} (#{@h_tot}/#{@f_tot} ; #{@e_tot})" %></td>
         <td><%= "#{@h_dif + @f_dif} (#{@h_dif}/#{@f_dif})" %></td>
         <td><%= "#{@h_dnv + @f_dnv} (#{@h_dnv}/#{@f_dnv})" %></td>
@@ -315,10 +327,11 @@
         <%= render 'table_h' %>
       </tr>
       <tr>
-        <% if @type = "Maraude salariés (toutes)" || TypeRenc.find_by(nom: @type).mar? %>
+        <% rencs = Rencontre.where(type_renc: @type) %>
+        <% if @type == "Maraude salariés (toutes)" || TypeRenc.find_by(nom: @type).mar? %>
           <td>
             <% n = 0 %>
-            <% if @type = "Maraude salariés (toutes)" %>
+            <% if @type == "Maraude salariés (toutes)" %>
               <% if Rails.env.production? %>
                 <% mar = Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last))).where('type_maraude ILIKE ?',  "%salariés%") %>
                 <% types = TypeRenc.where('nom ILIKE ?',  "%salariés%") %>
@@ -329,8 +342,6 @@
               <% rencs = Rencontre.where(type_renc: types.map(&:nom)) %>
             <% else %>
               <% mar = Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), type_maraude: @type) %>
-              <% types = TypeRenc.where('nom LIKE ?',  "%salariés%") %>
-              <% rencs = Rencontre.where(type_renc: @type) %>
             <% end %>
             <% mar.each do |m| %>
               <% if m.villes.include?("#{ville.first}") %>
