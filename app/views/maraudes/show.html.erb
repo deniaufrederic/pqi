@@ -9,12 +9,6 @@
       <% end %>
     </small>
   <% end %>
-  <% if current_user.admin? %>
-    <br><%= button_to "Supprimer la maraude", @maraude,
-                                              method: :delete,
-                                              data: { confirm: "Etes-vous sûr(e) ? Cette maraude ne sera pas récupérable." },
-                                              class: "btn btn-danger btn-lg" %>
-  <% end %>
 </h1>
 
 
@@ -408,7 +402,7 @@
       <% m_cr.last << " [Maraude déplacée mais personne non vue]" %>
     <% end %>
     <% if r.tel %>
-      <% m_cr.last << " [Joint au téléphone]"
+      <% m_cr.last << " [Joint au téléphone]" %>
     <% end %>
     <% if r.prestas.present? %>
       <% m_cr.last << " {#{r.prestas.split(' #').join(' - ')}}" %>
@@ -452,3 +446,12 @@
 
   <h3 class="text-center">Accès restreint au compte-rendu</h3>
 <% end %>
+
+<div class="text-right lead">
+  <% if current_user.admin? %>
+    <br><%= link_to "Supprimer la maraude", @maraude,
+                                            method: :delete,
+                                            data: { confirm: "Etes-vous sûr(e) ? Cette maraude ne sera pas récupérable." },
+                                            class: "btn btn-danger" %>
+  <% end %>
+</div>
