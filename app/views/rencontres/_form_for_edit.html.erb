@@ -3,7 +3,10 @@
 <h1>
   <% unless current_user.benev? %>
     Modifier la rencontre avec <%= "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %><br>
-    <small><%= @rencontre.type_renc %> du <%= @rencontre.date.strftime("%d/%m/%y") %></small>
+    <small>
+      <%= "#{@rencontre.type_renc} du #{@rencontre.date.strftime("%d/%m/%y")}" %>
+      <br><%= "Rencontre créée par #{User.find(@rencontre.user_id).identifiant}" if @rencontre.user_id %>
+    </small>
     <br><button type="button" class="btn btn-danger">
       <%= link_to "Supprimer la rencontre", @rencontre,
                                             method: :delete,

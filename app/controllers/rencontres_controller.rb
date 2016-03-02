@@ -42,6 +42,7 @@ class RencontresController < ApplicationController
     store_id
     @usager = Usager.find(session[:stored_id])
     @rencontre = @usager.rencontres.build(rencontre_params)
+    @rencontre.user_id = current_user.id
     if current_user.benev?
       @rencontre.prev = false
     end

@@ -148,6 +148,10 @@
         <% if @usager.enfants.any? %>
           <% dates_renc.last << " [#{pluralize(r.nb_enf, "enfant")}]" %>
         <% end %>
+        <% if r.user_id %>
+          <% user = User.find(r.user_id) %>
+          <% dates_renc.last << " -> #{user.identifiant}" %>
+        <% end %>
       <% end %>
 
 
