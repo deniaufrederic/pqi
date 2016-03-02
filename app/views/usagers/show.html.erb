@@ -6,19 +6,19 @@
   <% provide(:title, "#{@usager.sexe} #{@usager.prenom}") %>
 <% end %>
 
-<% unless current_user.benev? %>
-  <h1>
+<h1>
+  <% unless current_user.benev? %>
     <%= link_to "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}",
                 edit_usager_path(@usager),
                 class: "btn btn-primary btn-lg",
                 'data-toggle' => "tooltip",
                 'data-placement' => "bottom",
                 title: "Editer" %>
-  </h1>
-<% else %>
-  <h1><%= "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %></h1>
-<% end %>
-  
+  <% else %>
+    <%= "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %>
+  <% end %>
+</h1>
+
 <h2 class="text-center"><small>
   <% if @usager.ref.present? %>
     Référent : <%= @usager.ref %><br>

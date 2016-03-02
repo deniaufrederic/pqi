@@ -1,12 +1,14 @@
 <% provide(:title, @groupe.nom) %>
 
 <h1>
-  Groupe "<%= @groupe.nom %>"
   <% unless current_user.benev? %>
-    <br><div class="btn-group">
-      <%= link_to "Editer", edit_groupe_path(@groupe), class: "btn btn-info" %>
-      <%= link_to "Supprimer", @groupe, method: :delete, data: { confirm: "Etes-vous sûr(e) ?" }, class: "btn btn-danger" unless !current_user.admin? %>
-    </div>
+    <%= link_to @groupe.nom,  edit_groupe_path(@groupe),
+                              class: "btn btn-info btn-lg",
+                              'data-toggle' => "tooltip",
+                              'data-placement' => "bottom",
+                              title: "Editer" %>
+  <% else %>
+    <%= @groupe.nom %>
   <% end %>
 </h1>
 <h1>
@@ -30,3 +32,12 @@
   <% end %>
   <hr>
 </div>
+
+<% if current_user.admin? %>
+  <div class="text-right lead">
+    <%= link_to "Supprimer le groupe",  @groupe,
+                                        method: :delete,
+                                        data: { confirm: "Etes-vous sûr(e) ?" },
+                                        class: "btn btn-danger" %>
+  </div>
+<% end %>

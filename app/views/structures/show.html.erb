@@ -1,11 +1,15 @@
 <% provide(:title, @structure.nom) %>
 
 <h1>
-  <%= link_to @structure.nom, edit_structure_path(@structure),
-  														class: "btn btn-info btn-lg",
-  														'data-toggle' => "tooltip",
-                							'data-placement' => "bottom",
-                							title: "Editer" %>
+	<% unless current_user.benev? %>
+	  <%= link_to @structure.nom, edit_structure_path(@structure),
+	  														class: "btn btn-info btn-lg",
+	  														'data-toggle' => "tooltip",
+	                							'data-placement' => "bottom",
+	                							title: "Editer" %>
+	<% else %>
+		<%= @structure.nom %>
+	<% end %>
   <small>
 		<% if @structure.ville.present? %>
 			<br><%= @structure.ville %>
@@ -14,11 +18,6 @@
 			<br><%= @structure.adresse %>
 		<% end %>
   </small>
-  <% unless current_user.benev? %>
-	<br><div class="btn-group">
-	  
-	</div>
-  <% end %>
 </h1>
 
 <div id="accordion">
