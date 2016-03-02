@@ -1,12 +1,12 @@
 <li class="lead">
   <%= "#{user.nom} #{user.prenom}" %>
   <% if user.benev? %>
-    Bénévole<br>
+    <br>Bénévole
   <% else %>
-    Salarié<br>
+    <br>Salarié
   <% end %>
   <% if user.admin? %>
-  	Administrateur<br>
+  	<br>Administrateur
   <% end %>
-  <%= link_to user.identifiant, user %>
+  <br><%= link_to user.identifiant, user %>
 </li>
