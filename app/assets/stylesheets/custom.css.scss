@@ -169,12 +169,16 @@ div#container-villes {
     ul.villes {
         padding: 0;
         margin: 0;
+        text-align: center;
         li {
             display: inline-block;
+            margin: 5px 0;
             a {
+                display: inline-block;
+                width: 160px;
+                text-align: center;
                 background-color: #bbb;
                 color: black;
-                padding: 10px 10px;
                 line-height: 3;
                 text-decoration: none;
                 border-radius: 4px 4px 0 0;
