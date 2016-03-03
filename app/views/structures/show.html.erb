@@ -27,7 +27,60 @@
   <%= submit_tag "Rechercher", class: 'btn btn-default' %>
 <% end %>
 
-<% if @sigs.present? || @accomps.present? %>
+<% if params[:search] && (@sigs.present? || @accomps.present?) %>
+	<h3 class="text-center">
+		<% if @sigs.empty? %>
+			<%= "#{pluralize(@accomps.count, "accompagnement")} #{'trouvé'.pluralize(@accomps.count)}" %>
+		<% elsif @accomps.empty? %>
+			<%= "#{pluralize(@sigs.count, "signalement")} #{'trouvé'.pluralize(@sigs.count)}" %>
+		<% else %>
+			<%= pluralize(@accomps.count + @sigs.count, "trouvé") %>
+		<% end %>
+	</h3>
+
+	<table class="table table-striped">
+		<tr>
+			<% unless @sigs.empty? || @accomps.empty? %>
+				<th>Type</th>
+			<% end %>
+			<%= render 'table_h' %>
+			<% if @sigs.present? %>
+				<th>Contact</th>
+			<% end %>
+		</tr>
+		<% @rencs.each do |r| %>
+			<tr>
+				<% unless @sigs.empty? || @accomps.empty? %>
+					<td>
+						<% if r.accomp? && r.signale? %>
+							Signalement et accompagnement
+						<% elsif r.accomp? %>
+							Accompagnement
+						<% elsif r.signale? %>
+							Signalement
+						<% end %>
+					</td>
+				<% end %>
+				<td><%= r.date.strftime('%d/%m/%y') %></td>
+				<% u = Usager.find(r.usager_id) %>
+				<td><%= "#{u.sexe} #{u.nom} #{u.prenom}" %></td>
+				<td><%= r.type_renc %></td>
+				<% if @sigs.present? %>
+					<td>
+						<%= r.sig_contact if r.sig_contact.present? %>-
+						<% if r.sig_coords.present? %>
+							<br>Coordonnées : <%= r.sig_coords %>
+						<% end %>
+					</td>
+				<% end %>
+			</tr>
+		<% end %>
+	</table>
+
+<% elsif params[:search] %>
+	<p class="lead text-center">Aucun usager signalé par ou accompagné sur la structure correspondant au(x) terme(s) : "<%= params[:search] %>".</p>
+
+<% else %>
 	<div id="accordion">
 		<% if @sigs.present? %>
 			<h3>Signalements <span class="badge"><%= @sigs.count %></span></h3>
@@ -75,17 +128,7 @@
 				</table>
 			</div>
 		<% end %>
-
-		<% unless params[:search] %>
-			<h3>Statistiques</h3>
-
-			<div>
-				
-			</div>
-		<% end %>
 	</div>
-<% else %>
-	<p class="lead text-center">Aucun usager signalé par ou accompagné sur la structure correspondant au(x) terme(s) : "<%= params[:search] %>".</p>
 <% end %>
 
 <% if current_user.admin? %>

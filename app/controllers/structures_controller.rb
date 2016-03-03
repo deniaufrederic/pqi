@@ -18,6 +18,7 @@ class StructuresController < ApplicationController
     if params[:search]
       @sigs = Rencontre.where(signale: true, sig_structure: @structure.nom).search(params[:search]).order('date DESC')
       @accomps = Rencontre.where(accomp: true, accomp_structure: @structure.nom).search(params[:search]).order('date DESC')
+      @rencs = @accomps.merge(@sigs).order('rencontres.date DESC')
     else
       @sigs = Rencontre.where(signale: true, sig_structure: @structure.nom).order('date DESC')
       @accomps = Rencontre.where(accomp: true, accomp_structure: @structure.nom).order('date DESC')
