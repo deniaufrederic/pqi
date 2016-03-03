@@ -20,60 +20,73 @@
   </small>
 </h1>
 
-<div id="accordion">
-	<% if @sigs.present? %>
-		<h3>Signalements <span class="badge"><%= @sigs.count %></span></h3>
+<%= form_tag(@structure, :method => "get", id: "search-form", role: 'search', class: "navbar navbar-search") do %>
+  <div class="form-group col-md-4 col-sm-4 col-xs-4">
+    <%= text_field_tag :search, params[:search], placeholder: "Rechercher des accompagnements/signalements", class: 'form-control' %>
+  </div>
+  <%= submit_tag "Rechercher", class: 'btn btn-default' %>
+<% end %>
 
-		<div>
-			<table class="table table-striped">
-				<tr>
-					<%= render 'table_h' %>
-					<th>Contact</th>
-				</tr>
-				<% @sigs.each do |s| %>
+<% if @sigs.present? || @accomps.present? %>
+	<div id="accordion">
+		<% if @sigs.present? %>
+			<h3>Signalements <span class="badge"><%= @sigs.count %></span></h3>
+
+			<div>
+				<table class="table table-striped">
 					<tr>
-						<td><%= s.date.strftime('%d/%m/%y') %></td>
-						<% u = Usager.find(s.usager_id) %>
-						<td><%= "#{u.sexe} #{u.nom} #{u.prenom}" %></td>
-						<td><%= s.type_renc %></td>
-						<td>
-							<% if s.sig_contact.present? %>
-								<%= s.sig_contact %>
-							<% end %>
-							<% if s.sig_coords.present? %>
-								<br>Coordonnées : <%= s.sig_coords %>
-							<% end %>
-						</td>
+						<%= render 'table_h' %>
+						<th>Contact</th>
 					</tr>
-				<% end %>
-			</table>
-		</div>
-	<% end %>
+					<% @sigs.each do |s| %>
+						<tr>
+							<td><%= s.date.strftime('%d/%m/%y') %></td>
+							<% u = Usager.find(s.usager_id) %>
+							<td><%= "#{u.sexe} #{u.nom} #{u.prenom}" %></td>
+							<td><%= s.type_renc %></td>
+							<td>
+								<% if s.sig_contact.present? %>
+									<%= s.sig_contact %>
+								<% end %>
+								<% if s.sig_coords.present? %>
+									<br>Coordonnées : <%= s.sig_coords %>
+								<% end %>
+							</td>
+						</tr>
+					<% end %>
+				</table>
+			</div>
+		<% end %>
 
-	<% if @accomps.present? %>
-		<h3>Accompagnements <span class="badge"><%= @accomps.count %></span></h3>
+		<% if @accomps.present? %>
+			<h3>Accompagnements <span class="badge"><%= @accomps.count %></span></h3>
 
-		<div>
-			<table class="table table-striped">
-				<tr><%= render 'table_h' %></tr>
-				<% @accomps.each do |s| %>
-					<tr>
-						<td><%= s.date.strftime('%d/%m/%y') %></td>
-						<% u = Usager.find(s.usager_id) %>
-						<td><%= "#{u.sexe} #{u.nom} #{u.prenom}" %></td>
-						<td><%= s.type_renc %></td>
-					</tr>
-				<% end %>
-			</table>
-		</div>
-	<% end %>
+			<div>
+				<table class="table table-striped">
+					<tr><%= render 'table_h' %></tr>
+					<% @accomps.each do |s| %>
+						<tr>
+							<td><%= s.date.strftime('%d/%m/%y') %></td>
+							<% u = Usager.find(s.usager_id) %>
+							<td><%= "#{u.sexe} #{u.nom} #{u.prenom}" %></td>
+							<td><%= s.type_renc %></td>
+						</tr>
+					<% end %>
+				</table>
+			</div>
+		<% end %>
 
-		<h3>Statistiques</h3>
+		<% unless params[:search] %>
+			<h3>Statistiques</h3>
 
-		<div>
-			
-		</div>
-</div>
+			<div>
+				
+			</div>
+		<% end %>
+	</div>
+<% else %>
+	<p class="lead text-center">Aucun usager signalé par ou accompagné sur la structure correspondant au(x) terme(s) : "<%= params[:search] %>".</p>
+<% end %>
 
 <% if current_user.admin? %>
 	<div class="text-right lead">

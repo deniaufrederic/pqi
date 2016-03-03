@@ -17,20 +17,20 @@
 
 <h4 class="text-right"><%= pluralize(@usagers.count, "usager") %></h4>
 
-<table class="usagers table table-responsive table-hover text-center">
-  <tr id="table_head">
-    <th>Identité</th>
-    <th>Adresse</th>
-    <th>Dernières rencontres</th>
-    <% if current_user.admin? %>
-      <th>Edition et Suppression (privilège admin)</th>
-    <% end %>
-  </tr>
-  <% if !@usagers.empty? %>
+<% if !@usagers.empty? %>
+  <table class="usagers table table-responsive table-hover text-center">
+    <tr id="table_head">
+      <th>Identité</th>
+      <th>Adresse</th>
+      <th>Dernières rencontres</th>
+      <% if current_user.admin? %>
+        <th>Edition et Suppression (privilège admin)</th>
+      <% end %>
+    </tr>
     <%= render @usagers %>
-  <% else %>
-    <p>Aucun usager correspondant au(x) terme(s) : "<%= params[:search] %>".</p>
-  <% end %>
-</table>
+  </table>
+<% else %>
+  <p class="lead text-center">Aucun usager correspondant au(x) terme(s) : "<%= params[:search] %>".</p>
+<% end %>
 
 <%= will_paginate %>
