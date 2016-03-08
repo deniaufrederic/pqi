@@ -216,7 +216,8 @@ class UsagersController < ApplicationController
                     ["Sans ressources", "Sans ressources"]]
     @prestas_med = [["CMU", "CMU"],
                     ["CMUC", "CMUC"],
-                    ["AME", "AME"]]
+                    ["AME", "AME"],
+                	["Régime général", "Régime général"]]
     session.delete(:stored_id)
   end
 
