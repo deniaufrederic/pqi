@@ -324,13 +324,9 @@
               Médecin traitant
               <%= " : #{@usager.medecin_infos}" if @usager.medecin_infos.present? %>
             </p>
-          <% else %>
-            <p class="lead">Pas de médecin traitant connu</p>
           <% end %>
           <% if @usager.pb_sante != "0" %>
             <p class="lead">Problématique de santé</p>
-          <% else %>
-            <p class="lead">Pas de problèmes de santé connus</p>
           <% end %>
           <% if @usager.mobil %>
             <p class="lead">Mobilité réduite</p>
