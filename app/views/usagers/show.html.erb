@@ -94,7 +94,7 @@
       <ul class="enfants">
         <% @usager.enfants.each do |e| %>
           <li>
-            <%= e.nom if e.nom %> <%= e.prenom if e.prenom %>, <%= e.sexe.downcase if e.sexe %> 
+            <%= e.nom if e.nom %> <%= e.prenom if e.prenom %> <%= ", #{e.sexe.downcase}" if e.sexe %> 
             <% if e.date_naissance %>
               <% if e.sexe == "Fille" %>
                 née 
