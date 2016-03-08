@@ -2,12 +2,14 @@
 
 <h3>Rencontre avec d'autres usagers du groupe "<%= @groupe.nom %>" sur la même intervention ?</h3>
 
-<%= form_for(:rencontre, url: new_groupe_path, method: "POST") do |f| %>
+<%= form_for(:rencontre, url: id_post_groupe_path(id: @usager.id), method: "POST") do |f| %>
 
   <% for usager in @usagers do %>
     <%= f.check_box :usagers, { :multiple => true, :checked => false }, usager.id %>
     <%= "#{usager.sexe} #{usager.nom} #{usager.prenom}" %><br>
   <% end %>
 
-  <%= f.submit "Valider", class: "btn btn-primary" %>
+  <div class="text-center" style="margin-top: 30px">
+  	<%= f.submit "Valider", class: "btn btn-primary" %>
+  </div>
 <% end %>

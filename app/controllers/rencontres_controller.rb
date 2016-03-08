@@ -200,16 +200,23 @@ class RencontresController < ApplicationController
 
   def new_groupe
     store_id
-    u = Usager.find(session[:stored_id])
-    @groupe = u.groupe
-    @usagers = @groupe.usagers.select{ |usager| usager.id != u.id }
+    @usager = Usager.find(session[:stored_id])
+    @groupe = @usager.groupe
+    @usagers = @groupe.usagers.select{ |usager| usager.id != @usager.id }
+    session.delete(:stored_id)
   end
 
   def post_groupe
+    store_id
+    u = Usager.find(session[:stored_id])
     session[:usagers_ids] = params[:rencontre][:usagers].reject{ |a| a == '0' }
-    session.delete(:stored_id)
     session[:groupe] = true
-    redirect_to id_rencontre_path(:id => session[:usagers_ids].pop)
+    if session[:usagers_ids].empty?
+      redirect_to u
+    else
+      redirect_to id_rencontre_path(:id => session[:usagers_ids].pop)
+    end
+    session.delete(:stored_id)
   end
 
   def destroy

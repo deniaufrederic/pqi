@@ -15,7 +15,6 @@ Rails.application.routes.draw do
   post 'stats'        =>  'stats#create'
   resources :maraudes, only: [:index, :show, :destroy, :new, :create]
   resources :rencontres, only: [:edit, :update, :destroy]
-  post 'new_groupe'   =>  'rencontres#post_groupe'
   resources :groupes
   resources :structures
 
@@ -48,6 +47,11 @@ Rails.application.routes.draw do
     :controller => 'rencontres',
     :action     => 'new_groupe',
     :as         => :id_groupe
+
+  post 'rencontres/groupe/:id',
+    :controller => 'rencontres',
+    :action     => 'post_groupe',
+    :as         => :id_post_groupe
 
   get 'maraude-villes/:id',
     :controller => 'maraudes',
