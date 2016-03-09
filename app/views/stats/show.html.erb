@@ -61,20 +61,20 @@
             <% m = 0 %>
             <% mar = Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last))) %>
             <% mar.each do |m| %>
-              <% t = m.type_maraude.split(' ').last %>
+              <% t = m.type_maraude.split(' ') %>
               <% if m.villes.include?("#{ville.first}") %>
-                <% if t == "1" || t == "2" %>
+                <% if t.include?("salariés") %>
                   <% s += 1 %>
-                <% elsif t == "bénévoles" %>
+                <% elsif t.include?("bénévoles") %>
                   <% b += 1 %>
-                <% elsif t == "jour" %>
+                <% elsif t.include?("jour") %>
                   <% j += 1 %>
-                <% elsif t == "médicale" %>
+                <% elsif t.include?("médicale") %>
                   <% m += 1 %>
                 <% end %>
               <% end %>
             <% end %>
-            <% if s+b+j+m = 0 %>
+            <% if s+b+j+m == 0 %>
               0
             <% else %>
               <%= "#{s+b+j+m} (#{s}/#{b}/#{j}/#{m})" %>
@@ -158,20 +158,24 @@
           <% m = 0 %>
           <% mar = Maraude.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last))) %>
           <% mar.each do |m| %>
-            <% t = m.type_maraude.split(' ').last %>
+            <% t = m.type_maraude.split(' ') %>
             <% if m.villes.include?("#{@ville}") %>
-              <% if t == "1" || t == "2" %>
+              <% if t.include?("salariés") %>
                 <% s += 1 %>
-              <% elsif t == "bénévoles" %>
+              <% elsif t.include?("bénévoles") %>
                 <% b += 1 %>
-              <% elsif t == "jour" %>
+              <% elsif t.include?("jour") %>
                 <% j += 1 %>
-              <% elsif t == "médicale" %>
+              <% elsif t.include?("médicale") %>
                 <% m += 1 %>
               <% end %>
             <% end %>
           <% end %>
-          <%= "#{s+b+j+m} (#{s}/#{b}/#{j}/#{m})" %>
+          <% if s+b+j+m == 0 %>
+            0
+          <% else %>
+            <%= "#{s+b+j+m} (#{s}/#{b}/#{j}/#{m})" %>
+          <% end %>
         </td>
         <% types = TypeRenc.where(mar: true) %>
         <% rencs = Rencontre.where(type_renc: types.map(&:nom)) %>
