@@ -10,8 +10,8 @@
     <% else %>
     	<% f += 1 %>
     <% end %>
-    <% if u.enfants.any? %>
-      <% e = e + u.enfants.count %>
+    <% if r.nb_enf %>
+      <% e = e + r.nb_enf %>
     <% end %>
     <% ids << u.id %>
   <% end %>

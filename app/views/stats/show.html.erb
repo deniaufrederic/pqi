@@ -134,7 +134,7 @@
           <%= "(#{mar.where(type_maraude: types_sal.map(&:nom)).count}/#{mar.where(type_maraude: 'Maraude bénévoles').count}/#{mar.where(type_maraude: 'Maraude jour').count}/#{mar.where(type_maraude: 'Maraude médicale').count})" %>
         </td>
         <td><%= "#{@h_tot + @f_tot + @e_tot} (#{@h_tot}/#{@f_tot} ; #{@e_tot})" %></td>
-        <td><%= "#{@h_dif + @f_dif} (#{@h_dif}/#{@f_dif})" %></td>
+        <td><%= "#{@h_dif + @f_dif + @e_dif} (#{@h_dif}/#{@f_dif} ; @e_dif)" %></td>
         <td><%= "#{@h_dnv + @f_dnv} (#{@h_dnv}/#{@f_dnv})" %></td>
         <td><%= "#{@h_sig + @f_sig + @e_sig} (#{@h_sig}/#{@f_sig} ; #{@e_sig})" %></td>
         <td><%= "#{@h_sig_dif + @f_sig_dif + @e_sig_dif} (#{@h_sig_dif}/#{@f_sig_dif} ; #{@e_sig_dif})" %></td>
@@ -343,7 +343,7 @@
           </td>
         <% end %>
         <td><%= "#{@h_tot + @f_tot + @e_tot} (#{@h_tot}/#{@f_tot} ; #{@e_tot})" %></td>
-        <td><%= "#{@h_dif + @f_dif} (#{@h_dif}/#{@f_dif})" %></td>
+        <td><%= "#{@h_dif + @f_dif + @e_dif} (#{@h_dif}/#{@f_dif} ; @e_dif)" %></td>
         <td><%= "#{@h_dnv + @f_dnv} (#{@h_dnv}/#{@f_dnv})" %></td>
         <td><%= "#{@h_sig + @f_sig + @e_sig} (#{@h_sig}/#{@f_sig} ; #{@e_sig})" %></td>
         <td><%= "#{@h_sig_dif + @f_sig_dif + @e_sig_dif} (#{@h_sig_dif}/#{@f_sig_dif} ; #{@e_sig_dif})" %></td>
