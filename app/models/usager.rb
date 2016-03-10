@@ -10,7 +10,7 @@ class Usager < ActiveRecord::Base
   before_save { nom.upcase! }
   before_save { self.prenom = prenom.split(' ').map(&:capitalize).join(' ').split('-').map(&:capitalize).join('-') }
 
-  default_scope -> { order(pqi: :desc, nom: :asc) }
+  default_scope -> { order(nom: :asc) }
   
   validate :at_least_one
   validates :user_id, presence: true
