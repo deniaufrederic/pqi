@@ -84,11 +84,11 @@
           <% types = TypeRenc.where(mar: true) %>
           <% rencs = Rencontre.where(type_renc: types.map(&:nom)) %>
           <td>
-            <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, prev: false, dnv: false) %>
+            <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, prev: false, dnv: false, tel: false) %>
             <%= render 'calc_rencontres' %>
           </td>
           <td>
-            <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, prev: false, dnv: false) %>
+            <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, prev: false, dnv: false, tel: false) %>
             <%= render 'calc_rencontres_diff' %>
           </td>
           <td>
@@ -185,11 +185,11 @@
         <% types = TypeRenc.where(mar: true) %>
         <% rencs = Rencontre.where(type_renc: types.map(&:nom)) %>
     	  <td>
-          <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: @ville, prev: false, dnv: false) %>
+          <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: @ville, prev: false, dnv: false, tel: false) %>
           <%= render 'calc_rencontres' %>
         </td>
         <td>
-          <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: @ville, prev: false, dnv: false) %>
+          <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: @ville, prev: false, dnv: false, tel: false) %>
           <%= render 'calc_rencontres_diff' %>
         </td>
         <td>
@@ -286,11 +286,11 @@
             </td>
           <% end %>
           <td>
-            <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, prev: false, dnv: false) %>
+            <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, prev: false, dnv: false, tel: false) %>
             <%= render 'calc_rencontres' %>
           </td>
           <td>
-            <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, prev: false, dnv: false) %>
+            <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, prev: false, dnv: false, tel: false) %>
             <%= render 'calc_rencontres_diff' %>
           </td>
           <td>
@@ -386,11 +386,11 @@
           </td>
         <% end %>
         <td>
-          <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: @ville, prev: false, dnv: false) %>
+          <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: @ville, prev: false, dnv: false, tel: false) %>
           <%= render 'calc_rencontres' %>
         </td>
         <td>
-          <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: @ville, prev: false, dnv: false) %>
+          <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: @ville, prev: false, dnv: false, tel: false) %>
           <%= render 'calc_rencontres_diff' %>
         </td>
         <td>
