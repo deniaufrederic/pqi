@@ -118,6 +118,9 @@
             <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, prev: false, dnv: false) %>
             <%= render 'calc_prestas' %>
           </td>
+          <td>
+            <%= Usager.where(date_dmde: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville).count %>
+          </td>
         </tr>
       <% end %>
 
@@ -141,6 +144,7 @@
         <td><%= "#{@h_sig_dnv + @f_sig_dnv} (#{@h_sig_dnv}/#{@f_sig_dnv})" %></td>
         <td><%= "#{@h_acc + @f_acc + @e_acc} (#{@h_acc}/#{@f_acc} ; #{@e_acc})" %></td>
         <td><%= "#{@pa_tot}/#{@pv_tot}/#{@pd_tot}/#{@ph_tot}" %></td>
+        <td><%= Usager.where(date_dmde: (Date.parse(@dates.first))..(Date.parse(@dates.last))).count %></td>
     </tr>
   </table>
 
@@ -219,6 +223,9 @@
         <td>
           <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: @ville, prev: false, dnv: false) %>
           <%= render 'calc_prestas' %>
+        </td>
+        <td>
+          <%= Usager.where(date_dmde: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: @ville).count %>
         </td>
       </tr>
     </table>
@@ -324,6 +331,9 @@
             <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville, prev: false, dnv: false) %>
             <%= render 'calc_prestas' %>
           </td>
+          <td>
+            <%= Usager.where(date_dmde: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: ville).count %>
+          </td>
         </tr>
       <% end %>
 
@@ -350,6 +360,7 @@
         <td><%= "#{@h_sig_dnv + @f_sig_dnv} (#{@h_sig_dnv}/#{@f_sig_dnv})" %></td>
         <td><%= "#{@h_acc + @f_acc + @e_acc} (#{@h_acc}/#{@f_acc} ; #{@e_acc})" %></td>
         <td><%= "#{@pa_tot}/#{@pv_tot}/#{@pd_tot}/#{@ph_tot}" %></td>
+        <td><%= Usager.where(date_dmde: (Date.parse(@dates.first))..(Date.parse(@dates.last))).count %></td>
       </tr>
     </table>
   </div>
@@ -424,6 +435,9 @@
         <td>
           <% @rencs = rencs.where(date: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: @ville, prev: false, dnv: false) %>
           <%= render 'calc_prestas' %>
+        </td>
+        <td>
+          <%= Usager.where(date_dmde: (Date.parse(@dates.first))..(Date.parse(@dates.last)), ville: @ville).count %>
         </td>
       </tr>
     </table>
