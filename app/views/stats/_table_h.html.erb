@@ -1,10 +1,10 @@
 <% if @type.nil? || @type == "sal_toutes" || ( !@type.nil? && TypeRenc.find_by(nom: @type).mar? ) %>
 	<th>Nb maraudes passées sur la ville</th>
 <% end %>
-<th>Nb tot rencontres</th>
-<th>Nb personnes différentes rencontrées</th>
-<th>Nb non vus sur déplacement</th>
-<th>Nb signalements</th>
-<th>Nb signalements non vus</th>
-<th>Nb accompagnements</th>
+<th>Nb total rencontres (PQI + signalés)</th>
+<th>Nb personnes différentes rencontrées (PQI + signalés)</th>
+<th>Nb non vus sur déplacement (PQI + signalés)</th>
+<th>Nb personnes signalées</th>
+<th>Nb signalés non vus</th>
+<th>Nb personnes accompagnées</th>
 <th>Nb de prestations</th>
