@@ -63,7 +63,7 @@
 				<% end %>
 				<td><%= r.date.strftime('%d/%m/%y') %></td>
 				<% u = Usager.find(r.usager_id) %>
-				<td><%= "#{u.sexe} #{u.nom} #{u.prenom}" %></td>
+				<td><%= link_to "#{u.sexe} #{u.nom} #{u.prenom}", u %></td>
 				<td><%= r.type_renc %></td>
 				<% if @sigs.present? %>
 					<td>
@@ -95,7 +95,7 @@
 						<tr>
 							<td><%= s.date.strftime('%d/%m/%y') %></td>
 							<% u = Usager.find(s.usager_id) %>
-							<td><%= "#{u.sexe} #{u.nom} #{u.prenom}" %></td>
+							<td><%= link_to "#{u.sexe} #{u.nom} #{u.prenom}", u %></td>
 							<td><%= s.type_renc %></td>
 							<td>
 								<% if s.sig_contact.present? %>
@@ -121,7 +121,7 @@
 						<tr>
 							<td><%= s.date.strftime('%d/%m/%y') %></td>
 							<% u = Usager.find(s.usager_id) %>
-							<td><%= "#{u.sexe} #{u.nom} #{u.prenom}" %></td>
+							<td><%= link_to "#{u.sexe} #{u.nom} #{u.prenom}", u %></td>
 							<td><%= s.type_renc %></td>
 						</tr>
 					<% end %>
