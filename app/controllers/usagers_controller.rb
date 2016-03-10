@@ -29,6 +29,15 @@ class UsagersController < ApplicationController
     else
       @usagers = Usager.paginate(page: params[:page], per_page: 50)
     end
+    @vus = Usager.where(vu: false).order('nom ASC')
+  end
+
+  def post_vus
+    usagers_vus = params[:usagers][:vus].reject{ |a| a == '0' }
+    usagers_vus.each do |v|
+      Usager.find(v).update_attribute(:vu, true)
+    end
+    redirect_to usagers_path
   end
 
   def show
@@ -39,6 +48,7 @@ class UsagersController < ApplicationController
   def create
     @usager = Usager.new(usager_params)
     @usager.user_id = current_user.id
+    @usager.vu = false
     if params[:add_inconnu]
       if !params[:usager][:sexe]
         @usager.sexe = ""
@@ -260,6 +270,7 @@ class UsagersController < ApplicationController
                                       :ref,
                                       :dmde,
                                       :date_dmde,
+                                      :vu,
                                       enfants_attributes: [ :id,
                                                             :nom,
                                                             :prenom,

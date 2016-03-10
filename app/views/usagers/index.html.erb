@@ -4,6 +4,58 @@
   <br><%= link_to "Index des groupes", groupes_path, class: 'btn btn-info' %>
 </h1>
 
+<% if current_user.admin? && @vus.present? %>
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 usagers-vus">
+      <h3 class="text-center">Nouveaux usagers</h3>
+      <%= form_tag(usagers_vus_path, method: :post) do %>
+        <% @vus.each do |usager| %>
+          <div class="row usager-vu">
+            <div class="col-md-4 col-sm-4 col-xs-4">
+              <%= link_to "#{usager.sexe} #{usager.nom} #{usager.prenom}", usager %>
+              <% if usager.enfants.any? %>
+                <br><%= pluralize(usager.enfants.count, 'enfant') %>
+              <% end %>
+              <% if usager.date_naissance? %>
+                <br><%= "#{usager.date_naissance.strftime("%d/%m/%Y")}" %>
+              <% end %>
+              <% if usager.tel? %>
+                <br><%= "#{usager.tel}" %>
+              <% end %>
+              <% if usager.ref.present? %>
+                <br><small>Référent : <%= usager.ref %></small>
+              <% end %>
+              <% if usager.groupe %>
+                <br><%= link_to "#{usager.groupe.nom}", usager.groupe %>
+              <% end %>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-4">
+              <%= "#{usager.ville.upcase}" %>
+              <% if usager.adresse %>
+                <br><%= "#{usager.adresse}" %>
+              <% end %>
+              <% if usager.adresse_précis %>
+                <br><%= "#{usager.adresse_précis}" %>
+              <% end %>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3">
+              <% user = User.find(usager.user_id) %>
+              <%= link_to "#{user.identifiant}", user %><%= " (#{usager.created_at.strftime("%d/%m/%Y, %H:%M")})" %>
+            </div>
+            <div class="col-md-1 col-sm-1 col-xs-1">
+              <%= check_box_tag 'usagers[vus][]', "#{usager.id}" %>
+            </div>
+          </div>
+        <% end %>
+        <div class="text-center">
+          <span class="lead">Les usagers cochés seront déclarés comme vus</span>
+          <br><br><%= submit_tag "OK", class: 'btn btn-lg btn-info' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
 <%= will_paginate %>
 
 <%= form_tag(usagers_path, :method => "get", id: "search-form", role: 'search', class: "navbar navbar-search") do %>

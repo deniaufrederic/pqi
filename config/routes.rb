@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   resources :users
   post 'add'		      =>	'usagers#create'
   get 'pqi'			      =>	'usagers#pqi'
-  get 'new_inconnu'   =>  'usagers#new_inconnu'
+  post 'usagers_vus'  =>  'usagers#post_vus'
   resources :usagers
   get 'stats'         =>  'stats#show'
   post 'stats'        =>  'stats#create'

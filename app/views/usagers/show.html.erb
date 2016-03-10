@@ -79,7 +79,7 @@
       <td class="ville"><%= "#{@usager.ville}" %></td>
       <td class="adresse"><%= "#{@usager.adresse}" %></td>
       <td class="comp_adr"><%= "#{@usager.adresse_précis}" %></td>
-      <td class="date_naissance"><%= "#{@usager.date_naissance.strftime("%d/%m/%y")}" unless @usager.date_naissance.nil? %></td>
+      <td class="date_naissance"><%= "#{@usager.date_naissance.strftime("%d/%m/%Y")}" unless @usager.date_naissance.nil? %></td>
       <td class="tel"><%= "#{@usager.tel}" %></td>
     </tr>
   </table>
@@ -101,7 +101,7 @@
               <% else %>
                 né 
               <% end %>
-              le <%= e.date_naissance.strftime("%d/%m/%y") %>
+              le <%= e.date_naissance.strftime("%d/%m/%Y") %>
             <% end %>
           </li>
         <% end %>
@@ -385,7 +385,7 @@
 
 <div class="text-right lead">
   <% user = User.find(@usager.user_id) %>
-  <%= "Usager ajouté par " %><%= link_to "#{user.identifiant}", user %><%= " (#{@usager.created_at})" %>
+  <%= "Usager ajouté par " %><%= link_to "#{user.identifiant}", user %><%= " (#{@usager.created_at.strftime("%d/%m/%Y, %H:%M")})" %>
   <% if logged_in? && current_user.admin? %>
     <br><br><%= link_to "Supprimer cet usager", @usager,  method: :delete,
                                                       data: { confirm: "Etes-vous sûr(e) ?" },

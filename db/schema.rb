@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160302145803) do
+ActiveRecord::Schema.define(version: 20160310142345) do
 
   create_table "enfants", force: :cascade do |t|
     t.integer  "usager_id"
@@ -155,6 +155,7 @@ ActiveRecord::Schema.define(version: 20160302145803) do
     t.boolean  "mobil"
     t.boolean  "dmde"
     t.date     "date_dmde"
+    t.boolean  "vu"
   end
 
   add_index "usagers", ["groupe_id"], name: "index_usagers_on_groupe_id"
