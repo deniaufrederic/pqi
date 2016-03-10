@@ -143,7 +143,7 @@
 
 
       <% dates_renc = [] %>
-      <% Rencontre.where(usager_id: @usager.id, prev: false, dnv: false).each do |r| %>
+      <% Rencontre.where(usager_id: @usager.id, prev: false, dnv: false, tel: false).each do |r| %>
         <% dates_renc << "#{r.date.strftime("%d/%m/%y")} [#{r.type_renc}]" %>
         <% if @usager.enfants.any? %>
           <% dates_renc.last << " [#{pluralize(r.nb_enf, "enfant")}]" %>
@@ -218,7 +218,7 @@
   <h3>Statistiques</h3>
 
   <div>
-    <% renc = Rencontre.where(usager_id: @usager.id, prev: false, dnv: false) %>
+    <% renc = Rencontre.where(usager_id: @usager.id, prev: false, dnv: false, tel: false) %>
     <% a = 0 %>
     <% v = 0 %>
     <% d = 0 %>

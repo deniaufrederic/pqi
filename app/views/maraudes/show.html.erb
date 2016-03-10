@@ -14,7 +14,7 @@
 
 
 <% # Listes villes parcourues et usagers rencontrés %>
-<% rencontres = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, prev: false, dnv: false) %>
+<% rencontres = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, prev: false, dnv: false, tel: false) %>
 <% m_renc = [] %>
 <% rencontres.each do |r| %>
   <% u = Usager.find_by(id: r.usager_id) %>
@@ -252,7 +252,7 @@
           <% h = 0 %>
           <% f = 0 %>
           <% e = 0 %>
-          <% renc = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, prev: false, dnv: false) %>
+          <% renc = Rencontre.where(date: @maraude.date, type_renc: @maraude.type_maraude, prev: false, dnv: false, tel: false) %>
           <% renc.each do |r| %>
             <% u = Usager.find(r.usager_id) %>
             <% if u.sexe == "Mr" %>
