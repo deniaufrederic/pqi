@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20160310142345) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "enfants", force: :cascade do |t|
     t.integer  "usager_id"
     t.string   "nom"
@@ -23,7 +26,7 @@ ActiveRecord::Schema.define(version: 20160310142345) do
     t.datetime "updated_at",     null: false
   end
 
-  add_index "enfants", ["usager_id"], name: "index_enfants_on_usager_id"
+  add_index "enfants", ["usager_id"], name: "index_enfants_on_usager_id", using: :btree
 
   create_table "groupes", force: :cascade do |t|
     t.string   "nom"
@@ -31,7 +34,7 @@ ActiveRecord::Schema.define(version: 20160310142345) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "groupes", ["nom"], name: "index_groupes_on_nom", unique: true
+  add_index "groupes", ["nom"], name: "index_groupes_on_nom", unique: true, using: :btree
 
   create_table "intervenants", force: :cascade do |t|
     t.string   "nom"
@@ -40,15 +43,15 @@ ActiveRecord::Schema.define(version: 20160310142345) do
     t.boolean  "ref"
   end
 
-  add_index "intervenants", ["nom"], name: "index_intervenants_on_nom", unique: true
+  add_index "intervenants", ["nom"], name: "index_intervenants_on_nom", unique: true, using: :btree
 
   create_table "intervenants_maraudes", id: false, force: :cascade do |t|
     t.integer "maraude_id"
     t.integer "intervenant_id"
   end
 
-  add_index "intervenants_maraudes", ["intervenant_id"], name: "index_intervenants_maraudes_on_intervenant_id"
-  add_index "intervenants_maraudes", ["maraude_id"], name: "index_intervenants_maraudes_on_maraude_id"
+  add_index "intervenants_maraudes", ["intervenant_id"], name: "index_intervenants_maraudes_on_intervenant_id", using: :btree
+  add_index "intervenants_maraudes", ["maraude_id"], name: "index_intervenants_maraudes_on_maraude_id", using: :btree
 
   create_table "maraudes", force: :cascade do |t|
     t.date     "date"
@@ -59,8 +62,8 @@ ActiveRecord::Schema.define(version: 20160310142345) do
     t.text     "villes"
   end
 
-  add_index "maraudes", ["date", "type_maraude"], name: "index_maraudes_on_date_and_type_maraude", unique: true
-  add_index "maraudes", ["id"], name: "index_maraudes_on_id", unique: true
+  add_index "maraudes", ["date", "type_maraude"], name: "index_maraudes_on_date_and_type_maraude", unique: true, using: :btree
+  add_index "maraudes", ["id"], name: "index_maraudes_on_id", unique: true, using: :btree
 
   create_table "rencontres", force: :cascade do |t|
     t.integer  "usager_id"
@@ -86,8 +89,8 @@ ActiveRecord::Schema.define(version: 20160310142345) do
     t.integer  "user_id"
   end
 
-  add_index "rencontres", ["usager_id", "date", "type_renc"], name: "index_rencontres_on_usager_id_and_date_and_type_renc", unique: true
-  add_index "rencontres", ["usager_id"], name: "index_rencontres_on_usager_id"
+  add_index "rencontres", ["usager_id", "date", "type_renc"], name: "index_rencontres_on_usager_id_and_date_and_type_renc", unique: true, using: :btree
+  add_index "rencontres", ["usager_id"], name: "index_rencontres_on_usager_id", using: :btree
 
   create_table "structures", force: :cascade do |t|
     t.string   "nom"
@@ -97,15 +100,15 @@ ActiveRecord::Schema.define(version: 20160310142345) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "structures", ["nom"], name: "index_structures_on_nom", unique: true
+  add_index "structures", ["nom"], name: "index_structures_on_nom", unique: true, using: :btree
 
   create_table "structures_usagers", id: false, force: :cascade do |t|
     t.integer "structure_id"
     t.integer "usager_id"
   end
 
-  add_index "structures_usagers", ["structure_id"], name: "index_structures_usagers_on_structure_id"
-  add_index "structures_usagers", ["usager_id"], name: "index_structures_usagers_on_usager_id"
+  add_index "structures_usagers", ["structure_id"], name: "index_structures_usagers_on_structure_id", using: :btree
+  add_index "structures_usagers", ["usager_id"], name: "index_structures_usagers_on_usager_id", using: :btree
 
   create_table "type_rencs", force: :cascade do |t|
     t.string   "nom"
@@ -158,9 +161,9 @@ ActiveRecord::Schema.define(version: 20160310142345) do
     t.boolean  "vu"
   end
 
-  add_index "usagers", ["groupe_id"], name: "index_usagers_on_groupe_id"
-  add_index "usagers", ["nom"], name: "index_usagers_on_nom"
-  add_index "usagers", ["ville"], name: "index_usagers_on_ville"
+  add_index "usagers", ["groupe_id"], name: "index_usagers_on_groupe_id", using: :btree
+  add_index "usagers", ["nom"], name: "index_usagers_on_nom", using: :btree
+  add_index "usagers", ["ville"], name: "index_usagers_on_ville", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "nom"
@@ -173,7 +176,7 @@ ActiveRecord::Schema.define(version: 20160310142345) do
     t.boolean  "benev"
   end
 
-  add_index "users", ["identifiant"], name: "index_users_on_identifiant", unique: true
+  add_index "users", ["identifiant"], name: "index_users_on_identifiant", unique: true, using: :btree
 
   create_table "villes", force: :cascade do |t|
     t.string   "nom"
@@ -182,6 +185,9 @@ ActiveRecord::Schema.define(version: 20160310142345) do
     t.boolean  "ville_93"
   end
 
-  add_index "villes", ["nom"], name: "index_villes_on_nom", unique: true
+  add_index "villes", ["nom"], name: "index_villes_on_nom", unique: true, using: :btree
 
+  add_foreign_key "enfants", "usagers"
+  add_foreign_key "rencontres", "usagers"
+  add_foreign_key "usagers", "groupes"
 end
