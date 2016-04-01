@@ -10,7 +10,6 @@
     <br><%= link_to "Supprimer la rencontre", @rencontre,
                                             method: :delete,
                                             data: { confirm: "Etes-vous sûr(e) ?" },
-                                            id: 'no-styling',
                                             class: "btn btn-danger" %>
   <% else %>
     Confirmer la rencontre avec <%= "#{@usager.sexe} #{@usager.nom} #{@usager.prenom}" %><br>
