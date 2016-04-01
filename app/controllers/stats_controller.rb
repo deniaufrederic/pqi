@@ -11,8 +11,7 @@ class StatsController < ApplicationController
     Ville.where(ville_93: true).order('nom ASC').each do |v|
       @villes << ["#{v.nom}"]
     end
-    @types = [["Maraude salariés (toutes)", "sal_toutes"],
-              ["Maraude salariés et béénvoles", "sal_benev"]]
+    @types = [["Maraude salariés (toutes)", "sal_toutes"]]
     TypeRenc.all.each do |t|
       @types << ["#{t.nom}"]
     end
