@@ -149,8 +149,10 @@
           <% dates_renc.last << " [#{pluralize(r.nb_enf, "enfant")}]" %>
         <% end %>
         <% if r.user_id %>
-          <% user = User.find(r.user_id) %>
-          <% dates_renc.last << " -> #{user.identifiant}" %>
+          <% user = User.find_by(id: r.user_id) %>
+          <% if user != nil %>
+            <% dates_renc.last << " -> #{user.identifiant}" %>
+          <% end %>
         <% end %>
       <% end %>
 
@@ -384,8 +386,10 @@
 </div>
 
 <div class="text-right lead">
-  <% user = User.find(@usager.user_id) %>
-  <%= "Usager ajouté par " %><%= link_to "#{user.identifiant}", user %><%= " (#{@usager.created_at.strftime("%d/%m/%Y, %H:%M")})" %>
+  <% user = User.find_by(id: @usager.user_id) %>
+  <% if user != nil %>
+    <%= "Usager ajouté par " %><%= link_to "#{user.identifiant}", user %><%= " (#{@usager.created_at.strftime("%d/%m/%Y, %H:%M")})" %>
+  <% end %>
   <% if logged_in? && current_user.admin? %>
     <br><br><%= link_to "Supprimer cet usager", @usager,  method: :delete,
                                                       data: { confirm: "Etes-vous sûr(e) ?" },
