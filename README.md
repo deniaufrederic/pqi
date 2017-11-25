@@ -6,4 +6,4 @@ This app was developed in end of 2015 to help the organization of the associatio
 
 For more information on how to use the software and how the database is built, check Info\_app.pdf (in French !).
 
-To try a test version of the app, go to https://application-pqi-x.herokuapp.com . You can connect as admin ("Test" / "test123"), as an employee ("SalTest" / "stest123") or a volunteer ("BenevTest" / "btest123").
+To try a test version of the app, go to https://application-pqi-x.herokuapp.com . You can connect as an admin ("Test" / "test123"), an employee ("SalTest" / "stest123") or a volunteer ("BenevTest" / "btest123").
